@@ -293,7 +293,7 @@ Some of the readers might notice that, in the example above, the value of `d` is
 The reason is that the compiler does not execute the code (which is when assigning 5.0 to `d` happens) and it (largely) looks at the code, statement-by-statement. Thus, the line `i = d` is considered independently from the earlier code shown in the example. In practice, Line 4 might appear thousands of lines away from earlier lines, or may even be placed in a different source file. The values stored in `d` might not be known until run time (e.g., it might be an input from the user).
 {% endhint %}
 
-## Functions
+## [Functions](https://nus-cs2030s.github.io/2425-s2/03-function.html)
 
 ### Functions as an Abstraction over Computation
 
@@ -330,6 +330,107 @@ We can imagine an _abstraction barrier_ between the code that calls a function a
 
 The abstraction barrier separates the role of the programmer into two: (i) an _implementer_, who provides the implementation of the function, and (ii) a _client_, who uses the function to perform the task. Part of the aim of CS2030/S is to switch your mindset into thinking in terms of these two roles. In fact, in CS2030/S, you will be both but may be restricted to just being either a client or an implementer on specific functionality.
 
+## [Encapsulation](https://nus-cs2030s.github.io/2425-s2/04-encapsulation.html)
+
+### Abstraction: Composite Data Type
+
+Just like functions allow programmers to group instructions, give it a name, and refer to it later, a _composite data type_ allows programmers to group _primitive types_ together, give it a name to become a new type, and refer to it later. An example is `struct` in C, which we have seen in [CS1010](https://wenbo-notes.gitbook.io/cs1010-notes/lec-tut-lab-exes/lecture/lec-11-strcut-and-standard-i-o#structure). For example, we have defined a circle `struct` in C and written some functions associated[^5] to the circle `struct`.
+
+{% code lineNumbers="true" %}
+```c
+// Define the circle struct
+typedef struct {
+  double x, y; // (x,y) coordinate of the center.
+  double r;    // radius
+} circle;
+
+// Functions associated to the struct
+double circle_area(circle c) { ... };
+bool   circle_contains_point(circle c, double x, double y) { ... };
+bool   circle_overlaps(circle c1, circle c2) { ... };
+```
+{% endcode %}
+
+### Abstraction: Class and Object (or, Encapsulation) <a href="#abstraction-class-and-object-or-encapsulation" id="abstraction-class-and-object-or-encapsulation"></a>
+
+The bundling of the _composite data type_ _and its associated functions_ forms another abstraction called a _class_.
+
+We call the data in the class as _fields_ (also called states, attributes, or properties). The associated functions are called _methods_. A well-designed class maintains the abstraction barrier, properly wraps the barrier around the internal representation and implementation, and **exposes just the right&#x20;**_**method interface**_**&#x20;for others to use**.
+
+The concept of keeping all the data and functions operating on the data related to a composite data type **together within an abstraction barrier** is called _encapsulation_.
+
+#### Create a class
+
+For example, let's see how we can encapsulate the circle example above into a class.
+
+{% code lineNumbers="true" %}
+```java
+class Circle {
+  double x;
+  double y;
+  double r;
+
+  double getArea() {
+    return 3.141592653589793 * r * r;
+  }
+}
+```
+{% endcode %}
+
+The code above defines a new class using the keyword `class`, gives it a name `Circle`, followed by a block listing the member variables (with types) and the function definitions.
+
+Just like we can create variables of a given type, we can create _objects_ of a given class. Objects are _instances_ of a class, each allowing the same methods to be called, and each containing the same set of variables of the same types, **but (possibly) storing different values**.
+
+#### Create an object of a given class
+
+In Java, the keyword `new` creates an object of a given class. For instance, to create a `Circle` object, we can use
+
+{% code lineNumbers="true" %}
+```java
+Circle c = new Circle();
+c.r = 10;    // set the radius to 10
+c.getArea(); // return 314.1592653589793
+```
+{% endcode %}
+
+Line 1 is also called _instantiation_. To access the fields and the methods, we use the `.` notation. For example, `object.field` or `object.method(..)`. This can be seen in Line 2 and Line 3 of the example above.
+
+{% hint style="info" %}
+If a method is not associated with and **does not utilize the fields in the class,** it should not be  specific to a class and should exist outside.
+{% endhint %}
+
+### Object-Oriented Programming
+
+A program written in an _object-oriented language_ such as Java consists of classes, with **one main class as the entry point**. One can view a running object-oriented (or OO) program as something that **instantiates** objects of different classes and orchestrates their interactions with each other by calling each other's methods.
+
+For the example of utilising OOP to design, please see [here](https://nus-cs2030s.github.io/2425-s2/04-encapsulation.html#object-oriented-programming).
+
+### Reference Types in Java
+
+We mentioned in [#unit-2-variable-and-type](lec-01-compiler-types-classes-objects.md#unit-2-variable-and-type "mention") that there are two kinds of types in Java. You have been introduced to the primitive types. **Everything else in Java is a reference type.**
+
+The `Circle` class is an example of a reference type. Unlike primitive variables, which never share the value, a reference variable stores only the reference to the value, and therefore two reference variables can share the same value. For instance,
+
+{% code lineNumbers="true" %}
+```java
+Circle c1 = new Circle();
+Circle c2 = c1;
+System.out.println(c2.r); // print 0
+c1.r = 10.0;
+System.out.println(c2.r); // print 10.0
+```
+{% endcode %}
+
+The behavior above is due to the variables `c1` and `c2` referencing to the same `Circle` object in the memory. Therefore, changing the field `r` of `c1` causes the field `r` of `c2` to change as well.
+
+#### Special Reference Value: `null` <a href="#special-reference-value-null" id="special-reference-value-null"></a>
+
+Any reference variable that is not initialized will have the special reference value `null`. So, remember to _always instantiate a reference variable_ before using it.
+
+{% hint style="info" %}
+This idea of reference type in Java is similar to the idea of pointers in C, which is covered in [CS1010](https://wenbo-notes.gitbook.io/cs1010-notes/lec-tut-lab-exes/lecture/lec-07-pointers-memory-management#pointers).
+{% endhint %}
+
 [^1]: I believe this needs the computer organization knowledge. Basically, you can recap the behavior of fetching variables and instructions from the computer memory.
 
 [^2]: This will generate the so-called **compilation error.**
@@ -337,3 +438,5 @@ The abstraction barrier separates the role of the programmer into two: (i) an _i
 [^3]: Here, "used" means the **code** which works on variables of type $$S$$, will also work on variables of type $$T$$. That means the range of values represented by type $$T$$ should be less than the range of values represented by type $$S$$.
 
 [^4]: This needs some digital logic knowledge.
+
+[^5]: In C, here "associated" means the function takes in one or some circle `struct` as its  parameters.
