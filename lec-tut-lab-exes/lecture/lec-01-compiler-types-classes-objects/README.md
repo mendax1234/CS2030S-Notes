@@ -13,8 +13,8 @@ A software program is [a collection of data variables and instructions on how to
 
 **Java** programs, on the other hand, can be executed in two ways:
 
-1. The Java program can first be compiled into bytecode. During execution, the bytecode is interpreted and compiled on-the-fly by the _Java Virtual Machine_ (_JVM_) into machine code. See [#compiling-and-running-java-programs](lec-01-compiler-types-classes-objects.md#compiling-and-running-java-programs "mention")
-2. The Java program can be interpreted by the Java interpreter. See [#interpreting-a-java-program](lec-01-compiler-types-classes-objects.md#interpreting-a-java-program "mention")
+1. The Java program can first be compiled into bytecode. During execution, the bytecode is interpreted and compiled on-the-fly by the _Java Virtual Machine_ (_JVM_) into machine code. See [#compiling-and-running-java-programs](./#compiling-and-running-java-programs "mention")
+2. The Java program can be interpreted by the Java interpreter. See [#interpreting-a-java-program](./#interpreting-a-java-program "mention")
 
 #### Compiling and Running Java Programs
 
@@ -80,7 +80,7 @@ For the difference between **Compilation Error** and **Runtime Error**, please s
 
 A typical workflow in a compiled language is the **edit, compile, execute**, loop. This is shown as follows
 
-<figure><img src="../../.gitbook/assets/lec01-java-workflow.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec01-java-workflow.png" alt=""><figcaption></figcaption></figure>
 
 ## [Variable and Type](https://nus-cs2030s.github.io/2425-s2/02-type.html) <a href="#unit-2-variable-and-type" id="unit-2-variable-and-type"></a>
 
@@ -252,7 +252,7 @@ Related to the subtype relationship,
 
 The following diagram summarises the Subtyping between Java Primitive Types
 
-<figure><img src="../../.gitbook/assets/lec01-subtype-java-primitive-types.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec01-subtype-java-primitive-types.png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 #### Long $$<:$$ Float?
@@ -407,7 +407,7 @@ For the example of utilising OOP to design, please see [here](https://nus-cs2030
 
 ### Reference Types in Java
 
-We mentioned in [#unit-2-variable-and-type](lec-01-compiler-types-classes-objects.md#unit-2-variable-and-type "mention") that there are two kinds of types in Java. You have been introduced to the primitive types. **Everything else in Java is a reference type.**
+We mentioned in [#unit-2-variable-and-type](./#unit-2-variable-and-type "mention") that there are two kinds of types in Java. You have been introduced to the primitive types. **Everything else in Java is a reference type.**
 
 The `Circle` class is an example of a reference type. Unlike primitive variables, which never share the value, a reference variable stores only the reference to the value, and therefore two reference variables can share the same value. For instance,
 
