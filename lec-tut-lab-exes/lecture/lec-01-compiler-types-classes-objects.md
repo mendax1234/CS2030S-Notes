@@ -431,6 +431,33 @@ Any reference variable that is not initialized will have the special reference v
 This idea of reference type in Java is similar to the idea of pointers in C, which is covered in [CS1010](https://wenbo-notes.gitbook.io/cs1010-notes/lec-tut-lab-exes/lecture/lec-07-pointers-memory-management#pointers).
 {% endhint %}
 
+## QnA
+
+{% stepper %}
+{% step %}
+### Is it possible to instantiate an object twice?&#x20;
+
+The problem is that, in java, is the following code correct? What kind of error will we get?
+
+{% code lineNumbers="true" %}
+```java
+class Circle {
+    // ...
+}
+
+Circle c1 = new Circle();
+Circle c1 = new Circle();
+```
+{% endcode %}
+
+{% hint style="info" %}
+Note that till now, we haven't learned how to write complete compilable java program. This code snippet is just for demo only.
+{% endhint %}
+
+**Ans**: We will get a **compilation error**. However, if you run this code in `jshell`, it should overwrite a c1 to a new object.
+{% endstep %}
+{% endstepper %}
+
 [^1]: I believe this needs the computer organization knowledge. Basically, you can recap the behavior of fetching variables and instructions from the computer memory.
 
 [^2]: This will generate the so-called **compilation error.**
