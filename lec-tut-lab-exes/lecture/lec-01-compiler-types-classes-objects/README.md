@@ -4,16 +4,16 @@
 
 ### Software Program
 
-A software program is [a collection of data variables and instructions on how to modify these variables](#user-content-fn-1)[^1]. To dictate these instructions to the computer, programmers usually write down the instructions using a programming language.
+A software program is [a collection of data variables and instructions](#user-content-fn-1)[^1] on how to modify these variables. To dictate these instructions to the computer, programmers usually write down the instructions using a programming language.
 
 ### Compiled vs. Intepreted Programs
 
 * Compiler: The compiler reads in the **entire program** written in a higher-level programming language and translates it into machine code. The machine code is then saved into an **executable file**, which can be executed later. e.g., C/C++
-* Interpreter: The interpreter reads in the program **one statement at a time** interprets what the statement means, and executes its directly. e.g., Python, JavaScript
+* Interpreter: The interpreter reads in the program **one statement at a time,** interprets what the statement means, and executes its directly. e.g., Python, JavaScript
 
 **Java** programs, on the other hand, can be executed in two ways:
 
-1. The Java program can first be compiled into bytecode. During execution, the bytecode is interpreted and compiled on-the-fly by the _Java Virtual Machine_ (_JVM_) into machine code. See [#compiling-and-running-java-programs](./#compiling-and-running-java-programs "mention")
+1. The Java program can first be compiled into **bytecode**. During execution, the bytecode is interpreted and compiled on-the-fly by the _Java Virtual Machine_ (_JVM_) into machine code. See [#compiling-and-running-java-programs](./#compiling-and-running-java-programs "mention")
 2. The Java program can be interpreted by the Java interpreter. See [#interpreting-a-java-program](./#interpreting-a-java-program "mention")
 
 #### Compiling and Running Java Programs
@@ -22,7 +22,7 @@ Suppose we have a Java program called `Hello.java`.
 
 {% stepper %}
 {% step %}
-### Compile the Java Program into bytecode
+#### Compile the Java Program into bytecode
 
 To compile the program, we type
 
@@ -36,7 +36,7 @@ into the command line. `javac` is the Java compiler. This step will either lead 
 {% endstep %}
 
 {% step %}
-### Interpret/Execute the compiled bytecode
+#### Interpret/Execute the compiled bytecode
 
 Assuming that there is no error in compilation, we can now run
 
@@ -65,7 +65,7 @@ jshell Hello.jsh
 {% endcode %}
 
 {% hint style="info" %}
-Files intended to be run on jshell typically uses `.jsh` extension while files intended to be compiled and run uses `.java` extension. However, this difference is merely a convention. You can still interpret `.java` program on jshell.
+Files intended to be **run** on jshell typically uses `.jsh` extension while files intended to be **compiled and run** uses `.java` extension. However, this difference is merely a convention. You can still interpret `.java` program on jshell.
 {% endhint %}
 
 ### Compiler
@@ -90,13 +90,16 @@ A _variable_ is an **abstraction** that allows us to give a user-friendly name t
 
 ### Type
 
-As the program gets more complex, our variables might be an abstraction over different types of data: some variables might refer to a number, some to a string, some to a list of numbers, etc. Not all operations are meaningful over all types of data.
+As the program gets more complex, our variables might be **an abstraction over different types of data**: some variables might refer to a number, some to a string, some to a list of numbers, etc. Not all operations are meaningful over all types of data.
 
-To help mitigate the complexity, we can assign a _type_ to a variable. The type communicates to the readers what **data type** the variable is an abstraction over, and to the compiler/interpreter what **operations** are valid on this variable and how the operation behaves.
+To help mitigate the complexity, we can assign a _type_ to a variable. The type communicates:
+
+1. to the **readers** what **data type** the variable is an abstraction over,&#x20;
+2. and to the **compiler/interpreter** what **operations** are **valid** on this variable and how the operation behaves.
 
 #### Dynamic vs. Static Type
 
-In _dynamically typed_ programming languages, like Python, JavsScript, the type is associated with the _values,_ and the type of the variable changes depending on the value it holds. For example, we can do the following:
+In _dynamically typed_ programming languages, like Python, JavsScript, **the type is associated with the&#x20;**_**values,**_**&#x20;and the type of the variable changes depending on the value it holds.** For example, we can do the following:
 
 {% tabs %}
 {% tab title="JavaScript" %}
@@ -111,14 +114,14 @@ i = "5";     // ok, i is now a string
 {% tab title="Python" %}
 {% code lineNumbers="true" %}
 ```python
-i = 4        // i is an integer
-i = "5"      // ok, i is now a string
+i = 4        # i is an integer
+i = "5"      # ok, i is now a string
 ```
 {% endcode %}
 {% endtab %}
 {% endtabs %}
 
-However, in _statically-typed_ language, like Java, we need to _declare_ every variable we use in the program and specify its type. Once a variable is _declared_ with a particular, the type of the variable cannot be changed. In other words, the variable can only hold values of that declared type.
+However, in _statically-typed_ language, like Java, we need to _**declare**_**&#x20;every variable we use in the program and specify its type.** Once a variable is _declared_ with a particular type, the type of the variable **cannot be changed**. In other words, the variable can only hold values of that declared type.
 
 {% code lineNumbers="true" %}
 ```java
@@ -128,12 +131,10 @@ i = "5"; // error, cannot assign a string to an `int`
 ```
 {% endcode %}
 
-The type that a variable is assigned when we declare the variable is also known as the _compile-time type_. During the compilation, this is the only type that the compiler is aware of. The compiler will check if the compile-time type matches when it parses the variables, expressions, values, and function calls, and [**throw an error if there is a type mismatch**](#user-content-fn-2)[^2]. This type-checking step helps to catch errors in the code early.
+The type that a variable is assigned when we declare the variable is also known as the _compile-time type_. During the compilation, this is the **only** type that the compiler is aware of. The compiler will check if the compile-time type matches **when it parses the variables, expressions, values, and function calls**, and [**throw an error if there is a type mismatch**](#user-content-fn-2)[^2]. This type-checking step helps to catch errors in the code early.
 
 {% hint style="info" %}
-#### **Types on Variables**
-
-An important distinction between dynamic and static type is where is the type gets **attached** to. In static typing, the type is attached to the _variable_ such that the variable can only store values of that particular type (_or its subtype as you will see later_). In fact, in Java, the type that is attached to a variable is the _declared_ type (_i,e., the type written in the variable declaration also commonly known as compile-time type_).
+An important distinction between dynamic and static type is where the type gets **attached** to. In static typing, the type is attached to the _variable_ such that the variable can only store values of that particular type (_or its subtype as you will see later_). In fact, in Java, the type that is attached to a variable is the _declared_ type (_i,e., the type written in the variable declaration also commonly known as compile-time type_).
 
 On the other hand, in dynamically typed language, the type is attached to the _value_. In other words, a variable can store anything but we can know what the type is because the type can be queried from the value.
 {% endhint %}
@@ -176,7 +177,7 @@ because the compiler enforces a stricter rule and allows typecasting only if it 
 
 ### Type Checking with A Compiler
 
-In addition to checking for syntax errors, the compiler can check for **type compatibility** according to the compile-time type, to catch possible errors as early as possible. Such type-checking is made possible with static typing. Consider the following Python program:
+In addition to checking for syntax errors, the compiler can check for **type compatibility** according to the **compile-time type**, to catch possible errors as early as possible. Such type-checking is made possible with static typing. Consider the following Python program:
 
 {% code lineNumbers="true" %}
 ```python
@@ -188,9 +189,9 @@ print("i is " + i)
 ```
 {% endcode %}
 
-Since Python does not allow adding a string to an integer, there is a type mismatch error on Line 5. The type mismatch error is only caught when Line 5 is executed after the program is run for a long time. Since the type of the variable `i` can change during run time, Python (and generally, dynamically typed languages) cannot tell if Line 5 will lead to an error until it is evaluated during run time.
+Since Python does not allow adding a string to an integer, there is a type mismatch error on Line 5. The type mismatch error is **only caught** when Line 5 is executed after the program is run for a long time. Since the type of the variable `i` can change during run time, Python (and generally, dynamically typed languages) cannot tell if Line 5 will lead to an error until it is evaluated during run time.
 
-In contrast, statically typed language like Java can detect type mismatch during compile time since the compile-time type of a variable is fixed. As you will see later, **Java allows "addition" on string and integer, and but doesn't allow multiplication of a string and an integer.** If we have the following code, Java can **confidently produce compilation errors** without even running a program:
+In contrast, statically typed language like Java can detect type mismatch **during compile time** since the compile-time type of a variable is fixed. As you will see later, **Java allows "addition" on string and integer, and but doesn't allow multiplication of a string and an integer.** If we have the following code, Java can **confidently produce compilation errors** without even running a program:
 
 {% code lineNumbers="true" %}
 ```java
@@ -227,7 +228,9 @@ Primitive types are types that hold numeric values (integers, floating-point num
 {% hint style="info" %}
 #### Long and Float constant
 
-By default, an integer literal (e.g., `888`) is assigned an `int` type. To differentiate between a `long` and an `int` constant, you can use the suffix `L` to denote that the value is expected to be of `long` type (e.g., `888L` is a `long`). This is important for large values beyond the range of `int`. On the other hand, if the constant is a floating-point constant, by default it is treated as type `double`. You need to add the suffix `f` to indicate that the value is to be treated as a `float` type.
+By default, an integer literal (e.g., `888`) is assigned an `int` type. To differentiate between a `long` and an `int` constant, you can use the suffix `L` to denote that the value is expected to be of `long` type (e.g., `888L` is a `long`). This is important for large values beyond the range of `int`. Also, to make your large numbers looks clear, you can add underscore `_` in the number. (e.g., `888_888_888_888L` )
+
+On the other hand, if the constant is a floating-point constant, **by default it is treated as type** `double`. You need to add the suffix `f` to indicate that the value is to be treated as a `float` type.
 {% endhint %}
 
 ### Subtypes
