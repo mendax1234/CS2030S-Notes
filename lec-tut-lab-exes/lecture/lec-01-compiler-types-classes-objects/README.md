@@ -2,10 +2,6 @@
 
 ## [Program and Compiler](https://nus-cs2030s.github.io/2425-s1/01-compiler.html)
 
-### Software Program
-
-A software program is [a collection of data variables and instructions](#user-content-fn-1)[^1] on how to modify these variables. To dictate these instructions to the computer, programmers usually write down the instructions using a programming language.
-
 ### Compiled vs. Intepreted Programs
 
 * Compiler: The compiler reads in the **entire program** written in a higher-level programming language and translates it into machine code. The machine code is then saved into an **executable file**, which can be executed later. e.g., C/C++
@@ -131,7 +127,7 @@ i = "5"; // error, cannot assign a string to an `int`
 ```
 {% endcode %}
 
-The type that a variable is assigned when we declare the variable is also known as the _compile-time type_. During the compilation, this is the **only** type that the compiler is aware of. The compiler will check if the compile-time type matches **when it parses the variables, expressions, values, and function calls**, and [**throw an error if there is a type mismatch**](#user-content-fn-2)[^2]. This type-checking step helps to catch errors in the code early.
+The type that a variable is assigned when we declare the variable is also known as the _compile-time type_. During the compilation, this is the **only** type that the compiler is aware of. The compiler will check if the compile-time type matches **when it parses the variables, expressions, values, and function calls**, and [**throw an error if there is a type mismatch**](#user-content-fn-1)[^1]. This type-checking step helps to catch errors in the code early.
 
 {% hint style="info" %}
 An important distinction between dynamic and static type is where the type gets **attached** to. In static typing, the type is attached to the _variable_ such that the variable can only store values of that particular type (_or its subtype as you will see later_). In fact, in Java, the type that is attached to a variable is the _declared_ type (_i,e., the type written in the variable declaration also commonly known as compile-time type_).
@@ -175,7 +171,7 @@ we will get the following compile-time error message:
 
 because the compiler enforces a stricter rule and allows typecasting only if it makes sense. More specifically, we will get a **compilation error** if the compiler can determine with _certainty_ that such conversion can never happen successfully.
 
-### Type Checking with A Compiler
+### Type Checking with a compiler
 
 In addition to checking for syntax errors, the compiler can check for **type compatibility** according to the **compile-time type**, to catch possible errors as early as possible. Such type-checking is made possible with **static typing**. Consider the following Python program:
 
@@ -251,7 +247,7 @@ Fields that are declared but **not initialized** will be set to a reasonable def
 
 ### Subtypes
 
-Let $$S$$ and $$T$$ be two types. We say that $$T$$ is a _subtype_ of $$S$$ if _a piece of code written for variables of type_ $$S$$ _can also safely be_ [_used_](#user-content-fn-3)[^3] _on variables of type_ $$T$$.
+Let $$S$$ and $$T$$ be two types. We say that $$T$$ is a _subtype_ of $$S$$ if _a piece of code written for variables of type_ $$S$$ _can also safely be_ [_used_](#user-content-fn-2)[^2] _on variables of type_ $$T$$.
 
 We use the notation $$T<:S$$ or $$S:>T$$ to denote that $$T$$ is $$T$$a subtype of $$S$$. The subtyping relationship in general must satisfy **two** properties:
 
@@ -278,7 +274,7 @@ The following diagram summarises the Subtyping between Java Primitive Types
 
 Why is `long` a subtype of `float`? More specifically, `long` is 64-bit, and `float` is only 32-bit. There are more values in `long` than in `float`.
 
-The resolution lies in the _range_ of values that can be represented with `float` and `long`. `long` can represent every integer between -263 and 263-1, a 19-digit number. `float`, however, can represent floating point numbers as big as [38 digits in the integral part](#user-content-fn-4)[^4] (although it can not represent _every_ floating point number and every integer values within the range).
+The resolution lies in the _range_ of values that can be represented with `float` and `long`. `long` can represent every integer between -263 and 263-1, a 19-digit number. `float`, however, can represent floating point numbers as big as [38 digits in the integral part](#user-content-fn-3)[^3] (although it can not represent _every_ floating point number and every integer values within the range).
 
 Thus, a piece of code written to handle `float` can also **handle** `long` (since all `long` values can be represented with a `float`, albeit with possible loss of precision).
 {% endhint %}
@@ -320,7 +316,9 @@ The reason is that the compiler **does not execute the code** (which is when ass
 
 ## [Functions](https://nus-cs2030s.github.io/2425-s2/03-function.html)
 
-### Functions as an Abstraction over Computation
+### Functions as an Abstraction
+
+> In Java, we treat Function as an **abstraction** over computation
 
 In this course, we'd better consider _functions_ as an _abstraction_. This abstraction allows programmers to group a set of instructions and give it a name. The named set of instructions may take one or more variables as input parameters, and return zero or one values.
 
@@ -340,14 +338,6 @@ int factorial(int n) {
 {% endcode %}
 
 Note that the return type is **not optional**. If the function does not return anything, we use the type called `void`. Note that, unlike Python, Java **does not allow returning more than one value**.
-
-### Reducing Code Complexity With Function <a href="#reducing-code-complexity-with-function" id="reducing-code-complexity-with-function"></a>
-
-Functions help us deal with complexity in a few ways
-
-* Functions allow programmers to compartmentalize computation and its effects, which means we have **less** variables to keep track of and worry about since some become the **local variables** inside the functions.
-* Functions allow programmers to hide _how_ a task is performed. The caller of the function only needs to worry about _what_ the function does.
-* Functions allow us to reduce repetition in our code through _code reuse_.
 
 ### Abstraction Barrier
 
@@ -428,12 +418,6 @@ Bicycle myBike = new Bicycle(10, 0, 1);
 2. If your class includes a constructor with parameters (like the one in your `Bicycle` class), **you are required to provide arguments** when creating an object using that constructor.
 {% endhint %}
 
-### Object-Oriented Programming
-
-A program written in an _object-oriented language,_ such as Java, consists of classes, with **one main class as the entry point**. One can view a running object-oriented (or OO) program as something that **instantiates** objects of different classes and orchestrates their interactions with each other by calling each other's methods.
-
-For the example of utilising OOP to design, please see [here](https://nus-cs2030s.github.io/2425-s2/04-encapsulation.html#object-oriented-programming).
-
 ### Reference Types in Java
 
 We mentioned in [#unit-2-variable-and-type](./#unit-2-variable-and-type "mention") that there are two kinds of types in Java. You have been introduced to the primitive types. **Everything else in Java is a reference type.**
@@ -492,10 +476,8 @@ Note that till now, we haven't learned how to write complete compilable java pro
 1. [Java Object-Oriented Programming Concepts](https://docs.oracle.com/javase/tutorial/java/concepts/index.html)
 2. [Java Class and Objects](https://docs.oracle.com/javase/tutorial/java/javaOO/index.html)
 
-[^1]: I believe this needs the computer organization knowledge. Basically, you can recap the behavior of fetching variables and instructions from the computer memory.
+[^1]: This will generate the so-called **compilation error.**
 
-[^2]: This will generate the so-called **compilation error.**
+[^2]: Here, "used" means the **code** which works on variables of type $$S$$, will also work on variables of type $$T$$. That means the range of values represented by type $$T$$ should be less than the range of values represented by type $$S$$.
 
-[^3]: Here, "used" means the **code** which works on variables of type $$S$$, will also work on variables of type $$T$$. That means the range of values represented by type $$T$$ should be less than the range of values represented by type $$S$$.
-
-[^4]: This needs some digital logic knowledge.
+[^3]: This needs some digital logic knowledge.
