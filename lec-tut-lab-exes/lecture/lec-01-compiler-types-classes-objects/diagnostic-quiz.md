@@ -4,7 +4,7 @@
 
 ### 8. Statically, Dymically, Strongly or Weakly Typed Language
 
-<figure><img src="../../../.gitbook/assets/image.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec01-quiz-Q8.png" alt="" width="563"><figcaption></figcaption></figure>
 
 Java is:
 

@@ -177,7 +177,7 @@ because the compiler enforces a stricter rule and allows typecasting only if it 
 
 ### Type Checking with A Compiler
 
-In addition to checking for syntax errors, the compiler can check for **type compatibility** according to the **compile-time type**, to catch possible errors as early as possible. Such type-checking is made possible with static typing. Consider the following Python program:
+In addition to checking for syntax errors, the compiler can check for **type compatibility** according to the **compile-time type**, to catch possible errors as early as possible. Such type-checking is made possible with **static typing**. Consider the following Python program:
 
 {% code lineNumbers="true" %}
 ```python
@@ -225,19 +225,35 @@ Primitive types are types that hold numeric values (integers, floating-point num
 | Floating-Point | `float`   | 32              |
 |                | `double`  | 64              |
 
-{% hint style="info" %}
-#### Long and Float constant
+#### **Long and Float constant**
 
 By default, an integer literal (e.g., `888`) is assigned an `int` type. To differentiate between a `long` and an `int` constant, you can use the suffix `L` to denote that the value is expected to be of `long` type (e.g., `888L` is a `long`). This is important for large values beyond the range of `int`. Also, to make your large numbers looks clear, you can add underscore `_` in the number. (e.g., `888_888_888_888L` )
 
 On the other hand, if the constant is a floating-point constant, **by default it is treated as type** `double`. You need to add the suffix `f` to indicate that the value is to be treated as a `float` type.
-{% endhint %}
+
+#### Default Values
+
+Fields that are declared but **not initialized** will be set to a reasonable default by the compiler. Generally speaking, this default will be zero or `null`, depending on the data type. Relying on such default values, however, is generally considered **bad programming style**.
+
+| Data Type                | Default Value (for fields) |
+| ------------------------ | -------------------------- |
+| byte                     | 0                          |
+| short                    | 0                          |
+| int                      | 0                          |
+| long                     | 0L                         |
+| float                    | 0.0f                       |
+| double                   | 0.0d                       |
+| char                     | '\u0000'                   |
+| String (or any object)   | null                       |
+| boolean                  | false                      |
+
+**Local variables** are slightly different; the compiler never assigns a default value to an uninitialized local variable. If you cannot initialize your local variable where it is declared, make sure to assign it a value before you attempt to use it. Accessing an uninitialized local variable will result in a compile-time error.
 
 ### Subtypes
 
 Let $$S$$ and $$T$$ be two types. We say that $$T$$ is a _subtype_ of $$S$$ if _a piece of code written for variables of type_ $$S$$ _can also safely be_ [_used_](#user-content-fn-3)[^3] _on variables of type_ $$T$$.
 
-We use the notation $$T<:S$$ or $$S:>T$$ to denote that $$T$$ is $$T$$a subtype of $$S$$. The subtyping relationship in general must satisfy two properties:
+We use the notation $$T<:S$$ or $$S:>T$$ to denote that $$T$$ is $$T$$a subtype of $$S$$. The subtyping relationship in general must satisfy **two** properties:
 
 1. **Reflexive**: For any type S, we have $$S<:S$$ (_i.e._, S is a subtype of itself).
 2. **Transitive**: If  $$S<:T$$ and $$T<:U,$$ then $$S<:U$$. In other words, if $$S$$ is a subtype of $$T$$ and $$T$$ is a subtype of $$U$$, then $$S$$ is a subtype of $$U$$.
@@ -258,7 +274,7 @@ The following diagram summarises the Subtyping between Java Primitive Types
 <figure><img src="../../../.gitbook/assets/lec01-subtype-java-primitive-types.png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
-#### Long $$<:$$ Float?
+**Long** $$<:$$ **Float?**
 
 Why is `long` a subtype of `float`? More specifically, `long` is 64-bit, and `float` is only 32-bit. There are more values in `long` than in `float`.
 
@@ -267,14 +283,14 @@ The resolution lies in the _range_ of values that can be represented with `float
 Thus, a piece of code written to handle `float` can also **handle** `long` (since all `long` values can be represented with a `float`, albeit with possible loss of precision).
 {% endhint %}
 
-Valid subtype relationship is part of what the Java compiler checks for when it compiles. Consider the following example:
+**Valid subtype relationship** is part of what the Java compiler checks for when it compiles. This means _narrow type conversion_ without **explicit casting** is not allowed. Consider the following example:
 
 {% code lineNumbers="true" %}
 ```java
 double d = 5.0;
 int i = 5;
-d = i; // ok
-i = d; // error
+d = i; // ok; wider type conversion
+i = d; // error; narrow type conversion without explicit conversion
 ```
 {% endcode %}
 
@@ -288,12 +304,18 @@ Line 4 above would lead to an error:
 
 But Line 3 is OK.
 
-To understand why, let's consider the compile-type of `d` and `i`. The compile-time type of the variable `d` is `double` because that is what we declared it as. Similarly, the compile-time type of the variable `i` is `int`. `double` can hold a larger range of values than `int`, thus all values that can be represented by `i` can be represented by `d` (with possible loss of precision). Using the terminology that you just learned, `double` is a supertype of `int`.
+Using the terminology that you just learned, `double` is a supertype of `int`. And this conversion is known as a _narrow type conversion_ and since it is done **without explicit casting**, this is not allowed in Java. However, after we implement the **explicit casting** as follows, the code should be ok,
+
+{% code lineNumbers="true" %}
+```java
+i = (int) d;
+```
+{% endcode %}
 
 {% hint style="info" %}
-Some of the readers might notice that, in the example above, the value of `d` is 5.0, so, we can store the value as `5` in `i`, without any loss. Or, in Line 3, we already copied the value stored in `i` to `d`, and we are just copying it back to `i`? Since the value in `d` now can be represented by `i`, what is wrong with copying it back? Why doesn't the compiler allow Line 4 to proceed?
+Some of the readers might notice that, in the example above, the value of `d` is 5.0, so, we can store the value as `5` in `i`, without any loss. Or, in Line 3, we already copied the value stored in `i` to `d`, and we are just copying it back to `i`? Since the value in `d` now can be represented by `i`, **what is wrong with copying it back? Why doesn't the compiler allow Line 4 to proceed?**
 
-The reason is that the compiler does not execute the code (which is when assigning 5.0 to `d` happens) and it (largely) looks at the code, statement-by-statement. Thus, the line `i = d` is considered independently from the earlier code shown in the example. In practice, Line 4 might appear thousands of lines away from earlier lines, or may even be placed in a different source file. The values stored in `d` might not be known until run time (e.g., it might be an input from the user).
+The reason is that the compiler **does not execute the code** (which is when assigning 5.0 to `d` happens) and it (largely) looks at the code, statement-by-statement. Thus, the line `i = d` is considered independently from the earlier code shown in the example. In practice, Line 4 might appear thousands of lines away from earlier lines, or may even be placed in a different source file. The values stored in `d` **might not be known** until run time (e.g., it might be an input from the user).
 {% endhint %}
 
 ## [Functions](https://nus-cs2030s.github.io/2425-s2/03-function.html)
@@ -317,13 +339,13 @@ int factorial(int n) {
 ```
 {% endcode %}
 
-Note that the return type is **not optional**. If the function does not return anything, we use the type called `void`[1](https://nus-cs2030s.github.io/2425-s2/03-function.html#fn:1). Note that, unlike Python, Java does not allow returning more than one value.
+Note that the return type is **not optional**. If the function does not return anything, we use the type called `void`. Note that, unlike Python, Java **does not allow returning more than one value**.
 
 ### Reducing Code Complexity With Function <a href="#reducing-code-complexity-with-function" id="reducing-code-complexity-with-function"></a>
 
 Functions help us deal with complexity in a few ways
 
-* Functions allow programmers to compartmentalize computation and its effects, which means we have **less** variables to keep track of and worry about since some become the local variables inside the functions.
+* Functions allow programmers to compartmentalize computation and its effects, which means we have **less** variables to keep track of and worry about since some become the **local variables** inside the functions.
 * Functions allow programmers to hide _how_ a task is performed. The caller of the function only needs to worry about _what_ the function does.
 * Functions allow us to reduce repetition in our code through _code reuse_.
 
@@ -331,80 +353,84 @@ Functions help us deal with complexity in a few ways
 
 We can imagine an _abstraction barrier_ between the code that calls a function and the code that defines the function body. Above the barrier, the concern is about _what_ task a function performs, while below the barrier, the concern is about _how_ the function performs the task.
 
-The abstraction barrier separates the role of the programmer into two: (i) an _implementer_, who provides the implementation of the function, and (ii) a _client_, who uses the function to perform the task. Part of the aim of CS2030/S is to switch your mindset into thinking in terms of these two roles. In fact, in CS2030/S, you will be both but may be restricted to just being either a client or an implementer on specific functionality.
+The abstraction barrier separates the role of the programmer into two:
+
+1. an _implementer_, who provides the implementation of the function, and
+2. a _client_, who uses the function to perform the task.&#x20;
+
+<figure><img src="../../../.gitbook/assets/lec01-abstraction-barrier.png" alt=""><figcaption></figcaption></figure>
+
+Part of the aim of CS2030/S is to switch your mindset into thinking in terms of these two roles. In fact, in CS2030/S, you will be both but may be restricted to just being either a client or an implementer on specific functionality.
 
 ## [Encapsulation](https://nus-cs2030s.github.io/2425-s2/04-encapsulation.html)
 
-### Abstraction: Composite Data Type
+### Object
 
-Just like functions allow programmers to group instructions, give it a name, and refer to it later, a _composite data type_ allows programmers to group _primitive types_ together, give it a name to become a new type, and refer to it later. An example is `struct` in C, which we have seen in [CS1010](https://wenbo-notes.gitbook.io/cs1010-notes/lec-tut-lab-exes/lecture/lec-11-strcut-and-standard-i-o#structure). For example, we have defined a circle `struct` in C and written some functions associated[^5] to the circle `struct`.
+Look around the world, you will find that Real-world objects share two characteristics: They all have _state_ and _behavior_. For example, Bicycles have state (current gear, current pedal cadence, current speed) and behavior (changing gear, changing pedal cadence, applying brakes).
 
-{% code lineNumbers="true" %}
-```c
-// Define the circle struct
-typedef struct {
-  double x, y; // (x,y) coordinate of the center.
-  double r;    // radius
-} circle;
+Software objects are conceptually similar to real-world objects: they too consist of **state** and related **behavior**. An _object_ stores its **state in&#x20;**_**fields**_ (**variables** in some programming languages) and **exposes its behavior through&#x20;**_**methods**_ (**functions** in some programming languages). **Methods operate on an object's internal state and serve as the primary mechanism for object-to-object communication**. **Hiding internal state and requiring all interaction to be performed through an object's methods** is known as _data encapsulation_ — a fundamental principle of object-oriented programming.
 
-// Functions associated to the struct
-double circle_area(circle c) { ... };
-bool   circle_contains_point(circle c, double x, double y) { ... };
-bool   circle_overlaps(circle c1, circle c2) { ... };
-```
-{% endcode %}
+### Class
 
-### Abstraction: Class and Object (or, Encapsulation) <a href="#abstraction-class-and-object-or-encapsulation" id="abstraction-class-and-object-or-encapsulation"></a>
+In the real world, you'll often find **many individual objects all of the same kind**. There may be thousands of other bicycles in existence, all of the same make and model. Each bicycle was built from the same set of blueprints and therefore contains the same components. In object-oriented terms, we say that your bicycle is an _instance_ of the _class of objects_ known as bicycles. A _class_ is the blueprint from which **individual** objects are created.
 
-The bundling of the _composite data type_ _and its associated functions_ forms another abstraction called a _class_.
-
-We call the data in the class as _fields_ (also called states, attributes, or properties). The associated functions are called _methods_. A well-designed class maintains the abstraction barrier, properly wraps the barrier around the internal representation and implementation, and **exposes just the right&#x20;**_**method interface**_**&#x20;for others to use**.
-
-The concept of keeping all the data and functions operating on the data related to a composite data type **together within an abstraction barrier** is called _encapsulation_.
-
-#### Create a class
-
-For example, let's see how we can encapsulate the circle example above into a class.
+For example, below is an example to create a `Bicycle` class
 
 {% code lineNumbers="true" %}
 ```java
-class Circle {
-  double x;
-  double y;
-  double r;
-
-  double getArea() {
-    return 3.141592653589793 * r * r;
-  }
+public class Bicycle {
+        
+    // the Bicycle class has
+    // three fields
+    public int cadence;
+    public int gear;
+    public int speed;
+        
+    // the Bicycle class has
+    // one constructor
+    public Bicycle(int startCadence, int startSpeed, int startGear) {
+        gear = startGear;
+        cadence = startCadence;
+        speed = startSpeed;
+    }
+        
+    // the Bicycle class has
+    // four methods
+    public void setCadence(int newValue) {
+        cadence = newValue;
+    }
+        
+    public void setGear(int newValue) {
+        gear = newValue;
+    }
+        
+    public void applyBrake(int decrement) {
+        speed -= decrement;
+    }
+        
+    public void speedUp(int increment) {
+        speed += increment;
+    }
 }
 ```
 {% endcode %}
 
-The code above defines a new class using the keyword `class`, gives it a name `Circle`, followed by a block listing the member variables (with types) and the function definitions.
-
-Just like we can create variables of a given type, we can create _objects_ of a given class. Objects are _instances_ of a class, each allowing the same methods to be called, and each containing the same set of variables of the same types, **but (possibly) storing different values**.
-
-#### Create an object of a given class
-
-In Java, the keyword `new` creates an object of a given class. For instance, to create a `Circle` object, we can use
+After creating our blueprint - class, we can use `new` keyword to create an object of this class. For instance, to create a `Bicycle` object, we can use
 
 {% code lineNumbers="true" %}
 ```java
-Circle c = new Circle();
-c.r = 10;    // set the radius to 10
-c.getArea(); // return 314.1592653589793
+Bicycle myBike = new Bicycle(10, 0, 1);
 ```
 {% endcode %}
 
-Line 1 is also called _instantiation_. To access the fields and the methods, we use the `.` notation. For example, `object.field` or `object.method(..)`. This can be seen in Line 2 and Line 3 of the example above.
-
 {% hint style="info" %}
-If a method is not associated with and **does not utilize the fields in the class,** it should not be  specific to a class and should exist outside.
+1. If a method is not associated with and **does not utilize the fields in the class,** it should not be specific to a class and should exist outside.
+2. If your class includes a constructor with parameters (like the one in your `Bicycle` class), **you are required to provide arguments** when creating an object using that constructor.
 {% endhint %}
 
 ### Object-Oriented Programming
 
-A program written in an _object-oriented language_ such as Java consists of classes, with **one main class as the entry point**. One can view a running object-oriented (or OO) program as something that **instantiates** objects of different classes and orchestrates their interactions with each other by calling each other's methods.
+A program written in an _object-oriented language,_ such as Java, consists of classes, with **one main class as the entry point**. One can view a running object-oriented (or OO) program as something that **instantiates** objects of different classes and orchestrates their interactions with each other by calling each other's methods.
 
 For the example of utilising OOP to design, please see [here](https://nus-cs2030s.github.io/2425-s2/04-encapsulation.html#object-oriented-programming).
 
@@ -412,19 +438,19 @@ For the example of utilising OOP to design, please see [here](https://nus-cs2030
 
 We mentioned in [#unit-2-variable-and-type](./#unit-2-variable-and-type "mention") that there are two kinds of types in Java. You have been introduced to the primitive types. **Everything else in Java is a reference type.**
 
-The `Circle` class is an example of a reference type. Unlike primitive variables, which never share the value, a reference variable stores only the reference to the value, and therefore two reference variables can share the same value. For instance,
+The `Bicycle` class is an example of a reference type. Unlike primitive variables, which never share the value, a reference variable stores only the reference to the value, and therefore two reference variables can share the same value. For instance,
 
 {% code lineNumbers="true" %}
 ```java
-Circle c1 = new Circle();
-Circle c2 = c1;
-System.out.println(c2.r); // print 0
-c1.r = 10.0;
-System.out.println(c2.r); // print 10.0
+Bicycle b1 = new Bicycle(10, 0, 1);
+Bicycle b2 = b1;
+System.out.println(b2.cadence); // print 10
+b1.cadence = 20;
+System.out.println(b2.cadence); // print 20
 ```
 {% endcode %}
 
-The behavior above is due to the variables `c1` and `c2` referencing to the same `Circle` object in the memory. Therefore, changing the field `r` of `c1` causes the field `r` of `c2` to change as well.
+The behavior above is due to the variables `b1` and `b2` referencing to the same `Bicycle` object in the memory. Therefore, changing the field `cadence` of `b1` causes the field `cadence` of `b2` to change as well.
 
 #### Special Reference Value: `null` <a href="#special-reference-value-null" id="special-reference-value-null"></a>
 
@@ -461,6 +487,11 @@ Note that till now, we haven't learned how to write complete compilable java pro
 {% endstep %}
 {% endstepper %}
 
+## Useful Resourcse
+
+1. [Java Object-Oriented Programming Concepts](https://docs.oracle.com/javase/tutorial/java/concepts/index.html)
+2. [Java Class and Objects](https://docs.oracle.com/javase/tutorial/java/javaOO/index.html)
+
 [^1]: I believe this needs the computer organization knowledge. Basically, you can recap the behavior of fetching variables and instructions from the computer memory.
 
 [^2]: This will generate the so-called **compilation error.**
@@ -468,5 +499,3 @@ Note that till now, we haven't learned how to write complete compilable java pro
 [^3]: Here, "used" means the **code** which works on variables of type $$S$$, will also work on variables of type $$T$$. That means the range of values represented by type $$T$$ should be less than the range of values represented by type $$S$$.
 
 [^4]: This needs some digital logic knowledge.
-
-[^5]: In C, here "associated" means the function takes in one or some circle `struct` as its  parameters.
