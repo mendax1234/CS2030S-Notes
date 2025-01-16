@@ -18,7 +18,7 @@ This means _the variable can only hold values of the declared type._
 {% step %}
 #### **Strongly typed**
 
-This means everything needs to make sense, a.k.a if there are any problems with the program, it is not due to the type. For example, _no implicit conversion is allowed_
+This means everything needs to make sense, a.k.a if there are any problems with the program, it is not due to the type. For example, _narrow type conversion without explicit conversion is **not** allowed._
 
 {% code lineNumbers="true" %}
 ```java
@@ -32,6 +32,16 @@ This code snippet will generate a **compilation error**.
 {% endstep %}
 {% endstepper %}
 
-### 15. Four type conversion
+### 15. Widening/Narrowing type conversion
+
+<figure><img src="../../../.gitbook/assets/lec01-quiz-Q15.png" alt="" width="563"><figcaption></figcaption></figure>
+
+In this problem `i` is `int` and `f` is float, and `int <: float`, so `f=i` is a _widening type conversion_. For this question, we can get two tips as follows:&#x20;
+
+* Java is a **strongly typed language**, but it allows _widening type conversion_ and will do this automatically **without explicit casting**.
+* However, _narrowing type conversion_ without explicit casting is not allowed in Java. (WHY? Prof said will find out in future lec)
 
 ## Tips
+
+1. Java is a **strongly typed language**, but it allows _widening type conversion_ and will do this automatically **without explicit casting**.
+2. However, _narrowing type conversion_ without explicit casting is not allowed in Java.
