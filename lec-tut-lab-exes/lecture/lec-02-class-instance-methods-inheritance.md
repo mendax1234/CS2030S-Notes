@@ -174,6 +174,63 @@ Now, the `Circle` class can change its internal structure (e.g., the type of the
 2. For beginner OO programmers, it is better to **not define classes with any accessor and modifier** to the `private` fields and force yourselves to think in the OO way — to **tell an object what task to perform as a client, and then implement this task within the class as a method as the implementer**.
 {% endhint %}
 
+## Class Field
 
+In our `Circle` class, we have a constant $$\pi$$ and this constant $$\pi$$ is universal and **does not really belong to any object**. (The value of $$\pi$$ is same for every circle!) In C, we have the solution to define a global constant using the `define` keyword.
+
+In Java, we can associate these _global_ values and functions with a _class_ instead of with an _object_. For instance. Java predefines a [`java.lang.Math`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Math.html) class[1](https://nus-cs2030s.github.io/2425-s2/07-static-field.html#fn:1) that is populated with constants `PI` and `E` (for Euler's number $$e$$), along with a long list of mathematical functions.
+
+To associate a method or a field with a class in Java, we declare them with the `static` keyword. We can additionally add the keyword `final` to indicate that the value of the field will not change and `public` to indicate that the field is accessible from outside the class. In short, the combination of `public static final` modifiers is used for constant values in Java.
+
+{% code lineNumbers="true" %}
+```java
+class Math {
+  :
+  public static final double PI = 3.141592653589793;
+  :
+  :
+}
+```
+{% endcode %}
+
+We call these `static` fields that are associated with a **class** as _class fields_ and fields that are associated with an **object** as _instance fields_. Class fields are useful for storing pre-computed values or configuration parameters associated with a class rather than individual objects.
+
+{% hint style="info" %}
+A `static` class field needs not be `final` and it needs not be `public`.
+{% endhint %}
+
+### The `static` keyword
+
+Because `static` field is associated with the class rather than an instance, we can think about `static` field as having **exactly one** instance during the entire execution of the program. In other words, there is only exactly one instance of `PI` regardless of how many instances of `Math` we have created. In fact, we need not create any instance of `Math` at all to be able to use `PI`.
+
+### Access Class Fields
+
+{% stepper %}
+{% step %}
+**Import the certain class**
+
+For example, if we want to use the `PI` constant defined in class `java.lang.Math`, we should first use the `import` keyword to import the `java.lang.Math` class
+
+{% code lineNumbers="true" %}
+```java
+import java.lang.Math;
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+**Use `.` operator to access the class field**
+
+After importing the class, we can use `class.FIELD_NAME` to acccess the specific class field.
+
+{% code lineNumbers="true" %}
+```java
+public double getArea() {
+  return Math.PI * this.r * this.r;
+}
+```
+{% endcode %}
+{% endstep %}
+{% endstepper %}
 
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
