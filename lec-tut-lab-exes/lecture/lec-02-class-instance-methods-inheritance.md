@@ -176,9 +176,9 @@ Now, the `Circle` class can change its internal structure (e.g., the type of the
 
 ## Class Field
 
-In our `Circle` class, we have a constant $$\pi$$ and this constant $$\pi$$ is universal and **does not really belong to any object**. (The value of $$\pi$$ is same for every circle!) In C, we have the solution to define a global constant using the `define` keyword.
+In our `Circle` class, we have a constant $$\pi$$ and this constant $$\pi$$ is universal and **does not really belong to any object** (The value of $$\pi$$ is same for every circle!). In C, we have the solution to define a global constant using the `define` keyword.
 
-In Java, we can associate these _global_ values and functions with a _class_ instead of with an _object_. For instance. Java predefines a [`java.lang.Math`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Math.html) class[1](https://nus-cs2030s.github.io/2425-s2/07-static-field.html#fn:1) that is populated with constants `PI` and `E` (for Euler's number $$e$$), along with a long list of mathematical functions.
+In Java, we can associate these _global_ values and functions with a _class_ instead of with an _object_. For instance. Java predefines a [`java.lang.Math`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Math.html) class that is populated with constants `PI` and `E` (for Euler's number $$e$$), along with a long list of mathematical functions.
 
 To associate a method or a field with a class in Java, we declare them with the `static` keyword. We can additionally add the keyword `final` to indicate that the value of the field will not change and `public` to indicate that the field is accessible from outside the class. In short, the combination of `public static final` modifiers is used for constant values in Java.
 
@@ -193,15 +193,11 @@ class Math {
 ```
 {% endcode %}
 
-We call these `static` fields that are associated with a **class** as _class fields_ and fields that are associated with an **object** as _instance fields_. Class fields are useful for storing pre-computed values or configuration parameters associated with a class rather than individual objects.
+We call these `static` fields that are associated with a **class** as _class fields_ and fields that are associated with an **object** as _instance fields_. _Class fields_ are useful for storing pre-computed values or configuration parameters associated with a class rather than individual objects. `static` fields have **exactly one instance** of it throughout the lifetime of the program.
 
 {% hint style="info" %}
 A `static` class field needs not be `final` and it needs not be `public`.
 {% endhint %}
-
-### The `static` keyword
-
-Because `static` field is associated with the class rather than an instance, we can think about `static` field as having **exactly one** instance during the entire execution of the program. In other words, there is only exactly one instance of `PI` regardless of how many instances of `Math` we have created. In fact, we need not create any instance of `Math` at all to be able to use `PI`.
 
 ### Access Class Fields
 
@@ -232,5 +228,90 @@ public double getArea() {
 {% endcode %}
 {% endstep %}
 {% endstepper %}
+
+## Class Method
+
+Similar to a `static` field, a `static` method is associated with a class, not with an instance of the class. Such a method is called a _class method_.
+
+A class method is always invoked without being attached to an instance, so it **cannot access its instance fields or call other of its instance methods**. The reference `this` has no meaning within a class method. Furthermore, just like a class field, a class method should be accessed through the class. For example, in our `Circle` class, we wish to assign a unique integer identifier to every `Circle` object ever created:
+
+<pre class="language-java" data-line-numbers><code class="lang-java">class Circle {
+  private double x;  // x-coordinate of the center
+  private double y;  // y-coordinate of the center
+  private double r;  // the length of the radius
+<strong>  private final int id; // identifier
+</strong><strong>  private static int lastId = 0; // the id of the latest circle instance
+</strong>
+  /**
+   * Create a circle centered on (x, y) with a given radius
+   */
+  public Circle(double x, double y, double r) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+<strong>    this.id = Circle.lastId;
+</strong><strong>    Circle.lastId += 1;
+</strong>  }
+
+  /**
+   * Return how many circles have ever existed.
+   */
+<strong>  public static int getNumOfCircles() {
+</strong><strong>    return Circle.lastId;
+</strong><strong>  }
+</strong>
+   : 
+}
+</code></pre>
+
+{% hint style="info" %}
+Note that all of the above are done privately **beneath the abstraction barrier**.
+{% endhint %}
+
+Other examples of class methods include the methods provided in `java.lang.Math`: `sqrt`, `min`, etc. These methods can be invoked through the `Math` class: e.g., `Math.sqrt(x)`.
+
+### The `static` keyword
+
+Recap that for static fields (i.e., class fields), we only have exactly **one instance** of it t**hroughout the lifetime of the program**. More generally, **a field or method with modifier** `static` **belongs to the class rather than the specific instance**. In other words, they can be accessed/updated (for fields, assuming proper access modifier) or invoked (for methods, assuming proper access modifier) **without even instantiating the class**.
+
+### More on `this`
+
+As we have seen `this` [first time](lec-02-class-instance-methods-inheritance.md#the-this-keyword) in the [constructor](lec-02-class-instance-methods-inheritance.md#constructor), let's talk more about `this` with `static` methods.
+
+As a follow up, if we have not instantiated a class, no instance of that class has been created. The keyword `this` is meant to refer to the _current instance_, and if there is no instance, the keyword `this` is not meaningful. Therefore, within the context of a `static` method, Java actually **prevents the use of** `this` **from any method with the** `static` **modifier**.
+
+{% code lineNumbers="true" %}
+```java
+  public static int getLastId() {
+    return this.id; 
+  }
+  // This will generate an error
+```
+{% endcode %}
+
+The opposite is **not** true. We can access class fields from non-static methods.
+
+### The `main()` method
+
+The most common class method you will use is probably the `main` method.
+
+Every Java program has a class method called `main`, which serves as the **entry point** to the program. To run a Java program, we need to tell the JVM the class **whose** `main` **method should be invoked first**. In the example that we have seen,
+
+{% code lineNumbers="true" %}
+```bash
+java Hello
+```
+{% endcode %}
+
+will invoke the `main` method defined within the class `Hello` to kick start the execution of the program.
+
+The `main` method must be defined in the following way:
+
+{% code lineNumbers="true" %}
+```javascript
+public static final void main(String[] args) {
+}
+```
+{% endcode %}
 
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
