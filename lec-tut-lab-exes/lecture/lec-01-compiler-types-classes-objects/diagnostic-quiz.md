@@ -18,7 +18,7 @@ This means _the variable can only hold values of the declared type._
 {% step %}
 #### **Strongly typed**
 
-This means everything needs to make sense, a.k.a if there are any problems with the program, it is not due to the type. For example, _narrow type conversion without explicit conversion is **not** allowed._
+This means everything needs to make sense, a.k.a if there are any problems with the program, it is not due to the type. For example, _no implicit **narrowing** conversion is allowed_
 
 {% code lineNumbers="true" %}
 ```java
@@ -33,6 +33,10 @@ This code snippet will generate a **compilation error**.
 {% endstepper %}
 
 ### 15. Widening/Narrowing type conversion
+
+_Java allows a variable of type_ $$T$$ _to hold a value from a variable of type_ $$S$$ _only if_ $$S<:T$$. This step is called _**widening type conversion**_.
+
+The term "widening" is easy to see for primitive types -- the subtype has a narrower range of values than the supertype. The **opposite** conversion is called _**narrowing**_ because the size is narrower.
 
 <figure><img src="../../../.gitbook/assets/lec01-quiz-Q15.png" alt="" width="563"><figcaption></figcaption></figure>
 
