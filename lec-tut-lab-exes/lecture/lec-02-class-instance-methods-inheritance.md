@@ -21,7 +21,7 @@ To solve this problem, many Object-oriented languages allow programmers to **exp
 
 Such a mechanism to protect the abstraction barrier from being broken is called _data hiding_ or _information hiding_. This protection is enforced by the _compiler_ at compile time.
 
-### A new problem?
+### Constructor
 
 But now, a new problem emerges. If we define all our fields in the class to be `private`, then how we can initialize them? :joy: To solve this problem, it is common for a class to provide methods to **initialise these internal fields**.
 
@@ -67,5 +67,113 @@ Note that in a class, there may exist many constructors, but:
 1. They have the same method name, which is the same as the class name
 2. They have different number of parameters
 {% endhint %}
+
+## Tell, Don't Ask
+
+### Accessors and Mutators
+
+Similar to providing [constructors](lec-02-class-instance-methods-inheritance.md#constructor), a class can also provide methods to **retrieve or modify** the properties of the object. These methods are called the _accessor_ (or _getter_) or _mutator_ (or _setter_).
+
+For example, for our `Circle` class, we have the following _accessors_ and _mutators_.
+
+| Fields | Accessors | Mutators |
+| ------ | --------- | -------- |
+| `x`    | `getX`    | `setX`   |
+| `y`    | `getY`    | `setY`   |
+| `r`    | `getR`    | `setR`   |
+
+#### Advantage
+
+The use of _accessors_ and _mutators_ has the following advantages over using the `public` keyword to make the field public directly. By having an accessor and a mutator:
+
+{% stepper %}
+{% step %}
+We are **adding a layer of abstraction.** For instance, we can still rename a field without affecting the client.
+
+**Why?** This is because we are calling the methods (a.k.a _accessors_ and _mutators_) to retrieve or modify the fields in the object, so as long as we don't change the method name, changing the **field name** merely in class won't affect the client's code.
+{% endstep %}
+
+{% step %}
+We may be able to peform some **checks on the mutator.**
+
+This is because sometimes user may set invalid or not-compatible values to the fields. However, by using a mutator, we can do some checks to prevent this kind of bug-prone behavior. For example,
+
+{% code lineNumbers="true" %}
+```java
+public void setR(double r) {
+  if (r > 0) {
+    this.r = r;
+  } else {
+    // handle error
+  }
+}
+```
+{% endcode %}
+{% endstep %}
+{% endstepper %}
+
+#### Disadvantage
+
+However, the use of _accessors_ and _mutators_ is **not** an error-free solution. For example, when the client is calling an _accessor_, the client should know the type that will be returned, a.k.a, the type of the certain field in the class. However, the client should **not** know this kind of information since it belongs to the implementer! So, here comes the first problem:
+
+> 1. Information Leak
+
+The problem does not stop here. Let's say if the implementer wants to change the type of the field, which will also change the return type of the _accessors_, and the client doesn't know that! This is very dangerous because likely the code will generate a **compilation error**!
+
+> 2. May genertae compilation error
+
+For example, let's use the following code regarding our `Circle` class as an example:
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+int cX = c.getX(); // Suppose getX() will return an double, same for the following
+int cY = c.getY();
+int r = c.getR();
+boolean isInCircle = ((x - cX) * (x - cX) + (y - cY) * (y - cY)) <= r * r;
+```
+{% endcode %}
+
+As we have seen earlier in the [subtype](lec-01-compiler-types-classes-objects/#subtypes), `int` is the **subtype** of `double`. Assign a `double` to a `int` is considered as [_narrowing type conversion_](lec-01-compiler-types-classes-objects/#subtyping-between-java-primitive-types) and [it is **not allowed** without explicit casting](lec-01-compiler-types-classes-objects/diagnostic-quiz.md#id-15.-widening-narrowing-type-conversion)! So, here we will get a **compilation error!**
+
+***
+
+So, the question comes, when should we use _accessors_ and _mutators_?
+
+### The "Tell, Don't Ask" Principle
+
+One guiding principle to whether the implementer should provide and whether the client should call the _accessor_ and _mutator_ is the "**Tell, Don't Ask**" principle. This principle suggests that we should tell an object what to do, **instead of asking an object for its state and then performing the task on its behalf**.
+
+For example, in the example above, what we are trying to do is as follows:
+
+<figure><img src="../../.gitbook/assets/lec02-tell-don&#x27;t-ask-previous.png" alt="" width="375"><figcaption></figcaption></figure>
+
+Applying the "Tell Don't Ask" principle, a better approach would be to add a new `boolean` method in the `Circle` class,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+boolean contains(double x, double y) {
+  return ((x - this.x) * (x - this.x) + (y - this.y) * (y - this.y)) <= this.r * this.r;
+}
+```
+{% endcode %}
+
+and let the client _tell_ the `Circle` object to check if the point is within the circle.
+
+{% code lineNumbers="true" %}
+```java
+boolean isInCircle = c.contains(x, y);
+```
+{% endcode %}
+
+<figure><img src="../../.gitbook/assets/lec02-tell-don&#x27;t-ask-current.png" alt="" width="363"><figcaption></figcaption></figure>
+
+Now, the `Circle` class can change its internal structure (e.g., the type of the fields) without affecting the client.
+
+{% hint style="info" %}
+1. In general, _a task that is performed only on the fields of a class should be implemented in the class itself._
+2. For beginner OO programmers, it is better to **not define classes with any accessor and modifier** to the `private` fields and force yourselves to think in the OO way — to **tell an object what task to perform as a client, and then implement this task within the class as a method as the implementer**.
+{% endhint %}
+
+
 
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
