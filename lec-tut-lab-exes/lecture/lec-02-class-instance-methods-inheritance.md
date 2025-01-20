@@ -447,6 +447,71 @@ Circle c = new ColoredCircle(p, 0, blue); // OK
 
 Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later.
 
+## Overriding
+
+Before we talk about overriding, let's introduce another very important point in Java, that is:
+
+> In Java, **every class** that does not extend another class inherits from class `Object` implicitly. `Object` is, therefore, the "ancestor" of **all classes** in Java and is at the root of the class hierarchy.&#x20;
+
+The `Object` class provides useful common methods to all objects, below are two of them:
+
+1. `equals(Object obj)`, which checks if two objects are equal to each other, and
+2. `toString()`, which returns a string representation of the object as a `String` object.
+
+Among them, the second method is quite interesting and explains why _Java allows_ [_"addition"_](#user-content-fn-3)[^3] _on string and integer,_ which was covered in [Lec 01](https://wenbo-notes.gitbook.io/cs2030s-notes/lec-tut-lab-exes/lecture/lec-01-compiler-types-classes-objects#type-checking-with-a-compiler). For example,
+
+{% code lineNumbers="true" %}
+```java
+Circle c = new Circle(new Point(0, 0), 4.0);
+String s = "Circle c is " + c; // s will be "Circle c is Circle@1ce92674"
+```
+{% endcode %}
+
+### Customize `toString` method
+
+We may note that `Circle@1ce92674` is not user-friendly so that we want customize it. To do so, let's define our own `toString` method in `Circle` to _override_ the `Object::toString()`. This technique is called _Overriding_.
+
+{% code lineNumbers="true" %}
+```java
+import java.lang.Math;
+
+/**
+ * A Circle object encapsulates a circle on a 2D plane.  
+ */
+class Circle {
+
+  // ...
+  
+  /**
+   * Return the string representation of this circle.
+   */
+  @Override
+  public String toString() {
+    return "{ center: " + this.c + ", radius: " + this.r + " }";
+  }
+}
+```
+{% endcode %}
+
+From this example, we can see that _inheritance_ is not only good for extending the behavior of an existing class but through method _overriding_, we can _alter_ the behavior of an existing class as well.
+
+{% hint style="info" %}
+**Using** `super` **to access overriden methods**
+
+After a subclass overrides a method in the superclass, the methods that have been overridden can still be called, with the `super` keyword. For instance, the following `Circle::toString` calls `Object::toString` to prefix the string representation of the circle with `Circle@1ce92674`.
+
+{% code overflow="wrap" lineNumbers="true" fullWidth="false" %}
+```java
+@Override
+public String toString() {
+      return super.toString() + " { center: " + this.c + ", radius: " + this.r + " }";
+}
+```
+{% endcode %}
+{% endhint %}
+
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
 
 [^2]: Alternatively, you can think of Java as always using _call by value_. It's just that the value of a reference is, in fact, just a reference.
+
+[^3]: The formal notation is concatenation.
