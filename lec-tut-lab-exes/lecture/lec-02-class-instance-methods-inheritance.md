@@ -402,6 +402,51 @@ To summarize, Java uses _call by value_ for primitive types, and [_call by refer
 Unlike in C, In Java, we don't have to manage our memory manually, the JVM has a _garbage collector_ that does all this stuff for us!
 {% endhint %}
 
+## Inheritance
+
+Recall the concept of _subtyping._ We say that $$S<:T$$ if any piece of code written for type $$T$$ also works for type $$S$$.
+
+Now, let's use the example of `Circle` class. Suppose we want to **add** a color to the `Circle` class to make it a `ColoredCircle`. Now, we may find that all the methods and properties within the `Cricle` class should apply to `ColoredCircle` as well! So, we can think `ColoredCricle` as a _subtype_ of `Circle`.
+
+### Inheritate from a class
+
+We now show you how we can introduce this _subtype_ relationship in Java, using the `extends` keyword. We can implement our `ColoredCircle` class this way:
+
+{% code lineNumbers="true" %}
+```java
+class ColoredCircle extends Circle {
+  private Color color;
+
+  public ColoredCircle(Point center, double radius, Color color) {
+    super(center, radius);  // call the parent's constructor
+    this.color = color;
+  }
+}
+```
+{% endcode %}
+
+We have just created a new type called `ColoredCircle` as a class that **extends** from `Circle`. We call `Circle` the _parent class_ or _superclass_ of `ColoredCircle`; and `ColoredCircle` a _subclass_ of `Circle`.
+
+Line 6 of the code above introduces another keyword in Java: `super`. Here, we use `super` to call the constructor of the superclass, to initialize its center and radius
+
+{% hint style="info" %}
+We can think of inheritance as a model for the "_**is a**_" relationship between two entities. And when to use _inheritance_ and when to use _composition_ depends on the following rule:
+
+> _Use composition to model a **has-a** relationship; and inheritance for an **is-a** relationship_. _Make sure inheritance preserves the meaning of subtyping_.
+{% endhint %}
+
+### Run-Time Type
+
+For the following code:
+
+{% code lineNumbers="true" %}
+```java
+Circle c = new ColoredCircle(p, 0, blue); // OK
+```
+{% endcode %}
+
+Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later.
+
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
 
 [^2]: Alternatively, you can think of Java as always using _call by value_. It's just that the value of a reference is, in fact, just a reference.
