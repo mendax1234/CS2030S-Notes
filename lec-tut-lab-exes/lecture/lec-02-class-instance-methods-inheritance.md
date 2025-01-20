@@ -21,11 +21,19 @@ To solve this problem, many Object-oriented languages allow programmers to **exp
 
 Such a mechanism to protect the abstraction barrier from being broken is called _data hiding_ or _information hiding_. This protection is enforced by the _compiler_ at compile time.
 
+{% hint style="info" %}
+Usually, we make fields as `private` becasue of the _information hidden_ principle, unless we have proper reason to make it `public` to the client, such as it is a constant, like `Math.PI`, which will we see more in [_class fields_](lec-02-class-instance-methods-inheritance.md#class-field).
+{% endhint %}
+
 ### Constructor
 
 But now, a new problem emerges. If we define all our fields in the class to be `private`, then how we can initialize them? :joy: To solve this problem, it is common for a class to provide methods to **initialise these internal fields**.
 
 > A method that initializes an object is called a _**constructor**._
+
+{% hint style="info" %}
+So, basically, we can see _constructor_ as a way to "set up" our object.
+{% endhint %}
 
 A constructor method is a special method within the class. It **cannot be called directly** but **is invoked automatically when an object is instantiated**. In Java, a constructor method _has **the same name as the class**_ and _has **no return type**_. A constructor can take in arguments just like other functions. Let's add a constructor to our `Circle` class:
 
@@ -141,7 +149,7 @@ So, the question comes, when should we use _accessors_ and _mutators_?
 
 ### The "Tell, Don't Ask" Principle
 
-One guiding principle to whether the implementer should provide and whether the client should call the _accessor_ and _mutator_ is the "**Tell, Don't Ask**" principle. This principle suggests that we should tell an object what to do, **instead of asking an object for its state and then performing the task on its behalf**.
+One guiding principle to whether the implementer should provide and whether the client should call the _accessor_ and _mutator_ is the "**Tell, Don't Ask**" principle. This principle suggests that we should **tell an object what to do**, **instead of asking an object for its state and then performing the task on its behalf**.
 
 For example, in the example above, what we are trying to do is as follows:
 
@@ -196,7 +204,7 @@ class Math {
 We call these `static` fields that are associated with a **class** as _class fields_ and fields that are associated with an **object** as _instance fields_. _Class fields_ are useful for storing pre-computed values or configuration parameters associated with a class rather than individual objects. `static` fields have **exactly one instance** of it throughout the lifetime of the program.
 
 {% hint style="info" %}
-A `static` class field needs not be `final` and it needs not be `public`.
+A `static` class field needs **not** be `final` and it needs **not** be `public`.
 {% endhint %}
 
 ### Access Class Fields
@@ -215,7 +223,7 @@ import java.lang.Math;
 {% endstep %}
 
 {% step %}
-**Use `.` operator to access the class field**
+**Use** `class.FIELD_NAME`  **to access the class field**
 
 After importing the class, we can use `class.FIELD_NAME` to acccess the specific class field.
 
@@ -228,6 +236,10 @@ public double getArea() {
 {% endcode %}
 {% endstep %}
 {% endstepper %}
+
+{% hint style="info" %}
+To access a _class field_. It is only allowed to use `class.FIELD_NAME`, we **cannot** use `object.FIELD_NAME` to access a `static` field inside an object!
+{% endhint %}
 
 ## Class Method
 
@@ -319,6 +331,10 @@ public static final void main(String[] args) {
 Till now, in our class, we only use the [primitive type](lec-01-compiler-types-classes-objects/#primitive-types-in-java) as the _fields_. However, it is advised and a good practice to use other classes (a.k.a [reference type](lec-01-compiler-types-classes-objects/#reference-types-in-java)) in the _fields_. And this technique is called _composition_.
 
 Basically, the main **advantage** of using _composition_ is that it adds more **abstraction**. Recall that we wish to **hide the implementation details as much as possible**, protecting them with an abstraction barrier, so that **the client does not have to bother about the details and it is easy for the implementer to change the details**.
+
+{% hint style="info" %}
+As you will see later also, what _composition_ does it to implement a **"has-a"** relationship.
+{% endhint %}
 
 ## Heap and Stack
 
@@ -412,22 +428,19 @@ Now, let's use the example of `Circle` class. Suppose we want to **add** a color
 
 We now show you how we can introduce this _subtype_ relationship in Java, using the `extends` keyword. We can implement our `ColoredCircle` class this way:
 
-{% code lineNumbers="true" %}
-```java
-class ColoredCircle extends Circle {
+<pre class="language-java" data-line-numbers><code class="lang-java">class ColoredCircle extends Circle {
   private Color color;
 
   public ColoredCircle(Point center, double radius, Color color) {
-    super(center, radius);  // call the parent's constructor
-    this.color = color;
+<strong>    super(center, radius);  // call the parent's constructor
+</strong>    this.color = color;
   }
 }
-```
-{% endcode %}
+</code></pre>
 
 We have just created a new type called `ColoredCircle` as a class that **extends** from `Circle`. We call `Circle` the _parent class_ or _superclass_ of `ColoredCircle`; and `ColoredCircle` a _subclass_ of `Circle`.
 
-Line 6 of the code above introduces another keyword in Java: `super`. Here, we use `super` to call the constructor of the superclass, to initialize its center and radius
+Line 5 of the code above introduces another keyword in Java: `super`. Here, we use `super` to call the **constructor** of the superclass, to initialize its center and radius.
 
 {% hint style="info" %}
 We can think of inheritance as a model for the "_**is a**_" relationship between two entities. And when to use _inheritance_ and when to use _composition_ depends on the following rule:
