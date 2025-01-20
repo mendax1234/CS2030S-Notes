@@ -314,4 +314,10 @@ public static final void main(String[] args) {
 ```
 {% endcode %}
 
+## Composition
+
+Till now, in our class, we only use the [primitive type](lec-01-compiler-types-classes-objects/#primitive-types-in-java) as the _fields_. However, it is advised and a good practice to use other classes (a.k.a [reference type](lec-01-compiler-types-classes-objects/#reference-types-in-java)) in the _fields_. And this technique is called _composition_.
+
+Basically, the main **advantage** of using _composition_ is that it adds more **abstraction**. Recall that we wish to **hide the implementation details as much as possible**, protecting them with an abstraction barrier, so that **the client does not have to bother about the details and it is easy for the implementer to change the details**.
+
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
