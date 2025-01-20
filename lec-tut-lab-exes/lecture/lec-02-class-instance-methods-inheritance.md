@@ -320,4 +320,88 @@ Till now, in our class, we only use the [primitive type](lec-01-compiler-types-c
 
 Basically, the main **advantage** of using _composition_ is that it adds more **abstraction**. Recall that we wish to **hide the implementation details as much as possible**, protecting them with an abstraction barrier, so that **the client does not have to bother about the details and it is easy for the implementer to change the details**.
 
+## Heap and Stack
+
+### Stack
+
+The _stack_ contains variables. Bascially, _stack_ is the region where all **variables** (including **primitive types** and **object references**) are allocated and stored.&#x20;
+
+#### Stack Frame
+
+_Stack frame_ is usually called _call frame_. Recall that the same variable names can exist in the program as long as they are in different methods. This means that **the variables are contained within the&#x20;**_**call frames**_. Call frames are **created** when we **invoke a method** and are removed when the method completes.
+
+And usually, when an **instance** method is called, a _stack frame_ is created and it contains:
+
+1. the `this` reference
+2. the method arguments
+3. local variables within the method
+
+When a **class** method is called, the _stack frame_ does not contain the `this` reference.
+
+{% hint style="info" %}
+1. Instance and class fields are **not** variable. As such, fields are not in the stack.
+2. If we make multiple nested method calls, as we usually do, the stack frames get stacked on top of each other.
+{% endhint %}
+
+### Heap
+
+The heap stores dynamically allocated objects. To put it simply, **whenever you use the keyword `new`, a new object is created in the heap**.
+
+An object in the _heap_ contains the following information:
+
+* Class name.
+* Instance fields and the respective values.
+* Captured variables (more on this in later units).
+
+### Stack and Heap Diagram
+
+#### Example One - Object Reference
+
+For the following code:
+
+{% code lineNumbers="true" %}
+```java
+Circle c;
+Point center;
+double radius;
+radius = 8;
+center = new Point(1, 1);
+c = new Circle(center, radius);
+```
+{% endcode %}
+
+Its stack and heap diagram should look like as follows:
+
+<figure><img src="../../.gitbook/assets/lec02-stack-heap-diagram-1.png" alt="" width="563"><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+Note that after Line 6, the field `c` inside the `Circle` class is referenced to the `Point` object, not the `center` variable!
+{% endhint %}
+
+#### Example Two - Call Method
+
+For the following code,
+
+{% code lineNumbers="true" %}
+```java
+Point p1 = new Point(0, 0);
+Point p2 = new Point(1, 1);
+p1.distanceTo(p2);
+```
+{% endcode %}
+
+Its stack and frame diagram should look like as follows:
+
+<figure><img src="../../.gitbook/assets/lec02-stack-heap-diagram-2.png" alt="" width="563"><figcaption></figcaption></figure>
+
+### Summary
+
+To summarize, Java uses _call by value_ for primitive types, and [_call by reference_](#user-content-fn-2)[^2] for objects.
+
+{% hint style="info" %}
+Unlike in C, In Java, we don't have to manage our memory manually, the JVM has a _garbage collector_ that does all this stuff for us!
+{% endhint %}
+
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
+
+[^2]: Alternatively, you can think of Java as always using _call by value_. It's just that the value of a reference is, in fact, just a reference.
