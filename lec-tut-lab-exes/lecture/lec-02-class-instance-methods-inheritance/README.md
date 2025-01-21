@@ -6,6 +6,8 @@ Slides:
 
 ## Information Hiding
 
+The _information hiding principle_ is about **hiding the internal from outsiders**.
+
 ### A Problem
 
 In the last lecture, we have introduced the idea of [_abstraction barrier_](../lec-01-compiler-types-classes-objects/#abstraction-barrier)_._ Above the abstraction barrier is the **client**, and as usual, the client shouldn't modify any content below the _abstraction barrier_ since it belongs to the **implementer** unless the implementer allows to do so.
