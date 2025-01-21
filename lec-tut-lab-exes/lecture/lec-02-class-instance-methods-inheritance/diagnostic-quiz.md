@@ -59,6 +59,10 @@ public static final void main(String[] args) {
 ```
 {% endcode %}
 
+### Q13. Method Signature and Descriptor
+
+For this problem, refer back to the lecture ntoes about [_method signature_ and _method descriptor_](./#method-signature-and-descriptor).
+
 ### Q15. Overriding and Overloading
 
 {% hint style="warning" %}
@@ -70,3 +74,4 @@ I will leave it when I learn Overloading.
 1. Private fields are accessible to **all methods within the same class**, **regardless of which instance is being accessed**.
 2. Suppose we have two classes $$P$$ and $$Q$$, if $$Q$$ inheritates from $$P$$, then we can say $$Q$$ is the **subtype** of $$P$$ or $$P:>Q$$.
 3. A class method (method with the keyword `static`) **cannot** **access its instance fields or call other of its instance methods**, and one corollory of this is that the keyword `this` is also **not allowed** in a class method. Otherwise, a **compilation-error** will be generated.
+4. Include the _method signature_ and _method descriptor_ in the cheatsheet!

@@ -1,6 +1,10 @@
 # Lec 01 - Compiler, Types, Classes, Objects
 
-## [Program and Compiler](https://nus-cs2030s.github.io/2425-s1/01-compiler.html)
+Slides:
+
+{% embed url="https://nus-cs2030s.github.io/2425-s2/slides/cs2030s-lec01.html#1" %}
+
+## Program and Compiler
 
 ### Compiled vs. Intepreted Programs
 
@@ -18,7 +22,7 @@ Suppose we have a Java program called `Hello.java`.
 
 {% stepper %}
 {% step %}
-#### Compile the Java Program into bytecode
+**Compile the Java Program into bytecode**
 
 To compile the program, we type
 
@@ -32,7 +36,7 @@ into the command line. `javac` is the Java compiler. This step will either lead 
 {% endstep %}
 
 {% step %}
-#### Interpret/Execute the compiled bytecode
+**Interpret/Execute the compiled bytecode**
 
 Assuming that there is no error in compilation, we can now run
 
@@ -78,7 +82,7 @@ A typical workflow in a compiled language is the **edit, compile, execute**, loo
 
 <figure><img src="../../../.gitbook/assets/lec01-java-workflow.png" alt=""><figcaption></figcaption></figure>
 
-## [Variable and Type](https://nus-cs2030s.github.io/2425-s2/02-type.html) <a href="#unit-2-variable-and-type" id="unit-2-variable-and-type"></a>
+## Variable and Type <a href="#unit-2-variable-and-type" id="unit-2-variable-and-type"></a>
 
 ### Data Abstraction: Type <a href="#unit-2-variable-and-type" id="unit-2-variable-and-type"></a>
 
@@ -314,7 +318,7 @@ Some of the readers might notice that, in the example above, the value of `d` is
 The reason is that the compiler **does not execute the code** (which is when assigning 5.0 to `d` happens) and it (largely) looks at the code, statement-by-statement. Thus, the line `i = d` is considered independently from the earlier code shown in the example. In practice, Line 4 might appear thousands of lines away from earlier lines, or may even be placed in a different source file. The values stored in `d` **might not be known** until run time (e.g., it might be an input from the user).
 {% endhint %}
 
-## [Functions](https://nus-cs2030s.github.io/2425-s2/03-function.html)
+## Functions
 
 ### Functions as an Abstraction
 
@@ -352,7 +356,7 @@ The abstraction barrier separates the role of the programmer into two:
 
 Part of the aim of CS2030/S is to switch your mindset into thinking in terms of these two roles. In fact, in CS2030/S, you will be both but may be restricted to just being either a client or an implementer on specific functionality.
 
-## [Encapsulation](https://nus-cs2030s.github.io/2425-s2/04-encapsulation.html)
+## Encapsulation
 
 ### Object
 

@@ -1,5 +1,9 @@
 # Lec 02 - Class Instance/Methods, Inheritance
 
+Slides:
+
+{% embed url="https://nus-cs2030s.github.io/2425-s2/slides/cs2030s-lec02.html#1" %}
+
 ## Information Hiding
 
 ### A Problem
