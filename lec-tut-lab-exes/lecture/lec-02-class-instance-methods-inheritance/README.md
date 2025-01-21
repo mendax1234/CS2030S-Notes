@@ -243,7 +243,7 @@ To access a _class field_. It is only allowed to use `class.FIELD_NAME`, we **ca
 
 ## Class Method
 
-Similar to a `static` field, a `static` method is associated with a class, not with an instance of the class. Such a method is called a _class method_.
+Similar to a `static` field, a `static` method is **associated with a class**, **not with any instance of the class**. Such a method is called a _class method_.
 
 A class method is always invoked without being attached to an instance, so it **cannot access its instance fields or call other of its instance methods**. The reference `this` has no meaning within a class method. Furthermore, just like a class field, a class method should be accessed through the class. For example, in our `Circle` class, we wish to assign a unique integer identifier to every `Circle` object ever created:
 
