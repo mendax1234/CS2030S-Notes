@@ -523,6 +523,30 @@ public String toString() {
 {% endcode %}
 {% endhint %}
 
+### Method Signature and Descriptor
+
+The _method signature_ of a method **contains**:
+
+1. the method name
+2. the number of parameters,
+3. the type of each parameter,&#x20;
+4. and the order of its parameters.
+
+The _method descriptor_ is defined as the _method signature_ plus the **return type**.
+
+For example, for the following code
+
+{% code lineNumbers="true" %}
+```java
+class C {
+  A foo(B1 x, B2 y) {
+  }
+}
+```
+{% endcode %}
+
+Its _method signature_ is `C::foo(B1, B2)` and its _method descriptor_ is `A C::foo(B1, B2)`.$$f(x) = x * e^{2 pi i \xi x}$$
+
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
 
 [^2]: Alternatively, you can think of Java as always using _call by value_. It's just that the value of a reference is, in fact, just a reference.
