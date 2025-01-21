@@ -2,7 +2,7 @@
 
 ## Problems
 
-### 8. Statically, Dymically, Strongly or Weakly Typed Language
+### Q8. Statically, Dymically, Strongly or Weakly Typed Language
 
 <figure><img src="../../../.gitbook/assets/lec01-quiz-Q8.png" alt="" width="563"><figcaption></figcaption></figure>
 
@@ -32,7 +32,7 @@ This code snippet will generate a **compilation error**.
 {% endstep %}
 {% endstepper %}
 
-### 15. Widening/Narrowing type conversion
+### Q15. Widening/Narrowing type conversion
 
 _Java allows a variable of type_ $$T$$ _to hold a value from a variable of type_ $$S$$ _only if_ $$S<:T$$. This step is called _**widening type conversion**_.
 

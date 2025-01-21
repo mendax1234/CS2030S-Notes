@@ -4,7 +4,7 @@
 
 ### A Problem
 
-In the last lecture, we have introduced the idea of [_abstraction barrier_](lec-01-compiler-types-classes-objects/#abstraction-barrier)_._ Above the abstraction barrier is the **client**, and as usual, the client shouldn't modify any content below the _abstraction barrier_ since it belongs to the **implementer** unless the implementer allows to do so.
+In the last lecture, we have introduced the idea of [_abstraction barrier_](../lec-01-compiler-types-classes-objects/#abstraction-barrier)_._ Above the abstraction barrier is the **client**, and as usual, the client shouldn't modify any content below the _abstraction barrier_ since it belongs to the **implementer** unless the implementer allows to do so.
 
 For example, we have a `Circle` class, an object `c` initialized from this class, and the **client** wants to set the `r` (one of the fields) to a certain number, let's say 10. (`c.r = 10`). But now, the **implementer** says the `r` field in the class will be changed to `d` (diameter). Then, bad things happen since calling `c.r = 10` will generate a **compilation error!** To fix it, the client have change every `c.r` to `c.d` ! This is tedious!
 
@@ -22,7 +22,7 @@ To solve this problem, many Object-oriented languages allow programmers to **exp
 Such a mechanism to protect the abstraction barrier from being broken is called _data hiding_ or _information hiding_. This protection is enforced by the _compiler_ at compile time.
 
 {% hint style="info" %}
-Usually, we make fields as `private` becasue of the _information hidden_ principle, unless we have proper reason to make it `public` to the client, such as it is a constant, like `Math.PI`, which will we see more in [_class fields_](lec-02-class-instance-methods-inheritance.md#class-field).
+Usually, we make fields as `private` becasue of the _information hidden_ principle, unless we have proper reason to make it `public` to the client, such as it is a constant, like `Math.PI`, which will we see more in [_class fields_](./#class-field).
 {% endhint %}
 
 ### Constructor
@@ -80,7 +80,7 @@ Note that in a class, there may exist many constructors, but:
 
 ### Accessors and Mutators
 
-Similar to providing [constructors](lec-02-class-instance-methods-inheritance.md#constructor), a class can also provide methods to **retrieve or modify** the properties of the object. These methods are called the _accessor_ (or _getter_) or _mutator_ (or _setter_).
+Similar to providing [constructors](./#constructor), a class can also provide methods to **retrieve or modify** the properties of the object. These methods are called the _accessor_ (or _getter_) or _mutator_ (or _setter_).
 
 For example, for our `Circle` class, we have the following _accessors_ and _mutators_.
 
@@ -141,7 +141,7 @@ boolean isInCircle = ((x - cX) * (x - cX) + (y - cY) * (y - cY)) <= r * r;
 ```
 {% endcode %}
 
-As we have seen earlier in the [subtype](lec-01-compiler-types-classes-objects/#subtypes), `int` is the **subtype** of `double`. Assign a `double` to a `int` is considered as [_narrowing type conversion_](lec-01-compiler-types-classes-objects/#subtyping-between-java-primitive-types) and [it is **not allowed** without explicit casting](lec-01-compiler-types-classes-objects/diagnostic-quiz.md#id-15.-widening-narrowing-type-conversion)! So, here we will get a **compilation error!**
+As we have seen earlier in the [subtype](../lec-01-compiler-types-classes-objects/#subtypes), `int` is the **subtype** of `double`. Assign a `double` to a `int` is considered as [_narrowing type conversion_](../lec-01-compiler-types-classes-objects/#subtyping-between-java-primitive-types) and [it is **not allowed** without explicit casting](../lec-01-compiler-types-classes-objects/diagnostic-quiz.md#id-15.-widening-narrowing-type-conversion)! So, here we will get a **compilation error!**
 
 ***
 
@@ -153,7 +153,7 @@ One guiding principle to whether the implementer should provide and whether the 
 
 For example, in the example above, what we are trying to do is as follows:
 
-<figure><img src="../../.gitbook/assets/lec02-tell-don&#x27;t-ask-previous.png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec02-tell-don&#x27;t-ask-previous.png" alt="" width="375"><figcaption></figcaption></figure>
 
 Applying the "Tell Don't Ask" principle, a better approach would be to add a new `boolean` method in the `Circle` class,
 
@@ -173,7 +173,7 @@ boolean isInCircle = c.contains(x, y);
 ```
 {% endcode %}
 
-<figure><img src="../../.gitbook/assets/lec02-tell-don&#x27;t-ask-current.png" alt="" width="363"><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec02-tell-don&#x27;t-ask-current.png" alt="" width="363"><figcaption></figcaption></figure>
 
 Now, the `Circle` class can change its internal structure (e.g., the type of the fields) without affecting the client.
 
@@ -288,7 +288,7 @@ Recap that for static fields (i.e., class fields), we only have exactly **one in
 
 ### More on `this`
 
-As we have seen `this` [first time](lec-02-class-instance-methods-inheritance.md#the-this-keyword) in the [constructor](lec-02-class-instance-methods-inheritance.md#constructor), let's talk more about `this` with `static` methods.
+As we have seen `this` [first time](./#the-this-keyword) in the [constructor](./#constructor), let's talk more about `this` with `static` methods.
 
 As a follow up, if we have not instantiated a class, no instance of that class has been created. The keyword `this` is meant to refer to the _current instance_, and if there is no instance, the keyword `this` is not meaningful. Therefore, within the context of a `static` method, Java actually **prevents the use of** `this` **from any method with the** `static` **modifier**.
 
@@ -328,7 +328,7 @@ public static final void main(String[] args) {
 
 ## Composition
 
-Till now, in our class, we only use the [primitive type](lec-01-compiler-types-classes-objects/#primitive-types-in-java) as the _fields_. However, it is advised and a good practice to use other classes (a.k.a [reference type](lec-01-compiler-types-classes-objects/#reference-types-in-java)) in the _fields_. And this technique is called _composition_.
+Till now, in our class, we only use the [primitive type](../lec-01-compiler-types-classes-objects/#primitive-types-in-java) as the _fields_. However, it is advised and a good practice to use other classes (a.k.a [reference type](../lec-01-compiler-types-classes-objects/#reference-types-in-java)) in the _fields_. And this technique is called _composition_.
 
 Basically, the main **advantage** of using _composition_ is that it adds more **abstraction**. Recall that we wish to **hide the implementation details as much as possible**, protecting them with an abstraction barrier, so that **the client does not have to bother about the details and it is easy for the implementer to change the details**.
 
@@ -388,7 +388,7 @@ c = new Circle(center, radius);
 
 Its stack and heap diagram should look like as follows:
 
-<figure><img src="../../.gitbook/assets/lec02-stack-heap-diagram-1.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec02-stack-heap-diagram-1.png" alt="" width="563"><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 Note that after Line 6, the field `c` inside the `Circle` class is referenced to the `Point` object, not the `center` variable!
@@ -408,7 +408,7 @@ p1.distanceTo(p2);
 
 Its stack and frame diagram should look like as follows:
 
-<figure><img src="../../.gitbook/assets/lec02-stack-heap-diagram-2.png" alt="" width="563"><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec02-stack-heap-diagram-2.png" alt="" width="563"><figcaption></figcaption></figure>
 
 ### Summary
 
