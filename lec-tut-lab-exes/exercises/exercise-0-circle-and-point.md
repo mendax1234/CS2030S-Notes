@@ -27,7 +27,9 @@ public boolean contains(Point p) {
 import java.lang.Math;
 
 public double distanceTo(Point p) {
-  return Math.sqrt((this.x - p.x) * (this.x - p.x) + (this.y - p.y) * (this.y - p.y));
+  double x = this.x - p.x;
+  double y = this.y - p.y;
+  return Math.sqrt(x * x + y * y);
 }
 ```
 {% endcode %}
