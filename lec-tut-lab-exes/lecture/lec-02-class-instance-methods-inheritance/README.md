@@ -446,6 +446,10 @@ We now show you how we can introduce this _subtype_ relationship in Java, using 
 
 We have just created a new type called `ColoredCircle` as a class that **extends** from `Circle`. We call `Circle` the _parent class_ or _superclass_ of `ColoredCircle`; and `ColoredCircle` a _subclass_ of `Circle`.
 
+{% hint style="info" %}
+The constructor for the subclass **should** invoke the constructor of the superclass.
+{% endhint %}
+
 Line 5 of the code above introduces another keyword in Java: `super`. Here, we use `super` to call the **constructor** of the superclass, to initialize its center and radius.
 
 {% hint style="info" %}

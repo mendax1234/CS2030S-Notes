@@ -60,3 +60,12 @@ Nesting of classes. "has a" relation is an easy check. Nest of class!
 
 Some usage.
 
+### Before you code, plan first
+
+Think through the program to decide:
+
+* What objects do we need (Nouns)?
+* What properties should each object encapsulate (Attributes)?
+* What tasks can each object perform (Verbs)?
+
+Establish a clear structure of the program first. **Draw a picture or diagram** to visualise!
