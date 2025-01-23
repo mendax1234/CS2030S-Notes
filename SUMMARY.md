@@ -10,4 +10,4 @@
   * [Lec 02 - Class Instance/Methods, Inheritance](lec-tut-lab-exes/lecture/lec-02-class-instance-methods-inheritance/README.md)
     * [Diagnostic Quiz](lec-tut-lab-exes/lecture/lec-02-class-instance-methods-inheritance/diagnostic-quiz.md)
 * [Lab](lec-tut-lab-exes/lab/README.md)
-  * [Lab 01](lec-tut-lab-exes/lab/lab-01.md)
+  * [Lab 01 - Logistics, Introduction to OOP, Exercise 0](lec-tut-lab-exes/lab/lab-01-logistics-introduction-to-oop-exercise-0.md)
