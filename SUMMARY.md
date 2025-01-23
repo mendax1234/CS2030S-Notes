@@ -9,3 +9,5 @@
     * [Diagnostic Quiz](lec-tut-lab-exes/lecture/lec-01-compiler-types-classes-objects/diagnostic-quiz.md)
   * [Lec 02 - Class Instance/Methods, Inheritance](lec-tut-lab-exes/lecture/lec-02-class-instance-methods-inheritance/README.md)
     * [Diagnostic Quiz](lec-tut-lab-exes/lecture/lec-02-class-instance-methods-inheritance/diagnostic-quiz.md)
+* [Lab](lec-tut-lab-exes/lab/README.md)
+  * [Lab 01](lec-tut-lab-exes/lab/lab-01.md)
