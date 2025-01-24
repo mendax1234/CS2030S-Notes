@@ -267,6 +267,10 @@ Related to the subtype relationship,
 * We use the term _supertype_ to denote the reversed relationship: if $$T$$ is a subtype of $$S$$, then $$S$$ is a supertype of $$T$$.
 * In specific scenarios, we use the term _proper subtype_ (or $$<$$) to denote a stricter subtyping: if $$T<:S$$ and $$T\neq S$$, then $$T$$ is a proper subtype of $$S$$, denoted as $$T<S$$.
 
+{% hint style="info" %}
+**Subtype** is nothing but a **subtype**! For more information, see [here](../../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#inheritance).
+{% endhint %}
+
 #### Subtyping Between Java Primitive Types
 
 The following diagram summarises the Subtyping between Java Primitive Types

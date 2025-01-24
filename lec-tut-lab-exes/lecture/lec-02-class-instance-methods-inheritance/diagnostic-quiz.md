@@ -8,6 +8,8 @@
 
 The first two options are relatively easy to analyze, the problem lies in the third option `b.y=1` and this is valid because `foo` belongs to class `B`, and thus has access to `y` of any instance of `B`.
 
+Private fields are accessible to **all methods within the same class**, **regardless of which instance is being accessed.**
+
 ### Q8. Subtype and Inheritance
 
 Given the following code,
