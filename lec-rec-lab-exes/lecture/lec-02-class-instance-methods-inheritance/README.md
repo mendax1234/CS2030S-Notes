@@ -468,7 +468,7 @@ Circle c = new ColoredCircle(p, 0, blue); // OK
 ```
 {% endcode %}
 
-Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later in Polymorphism.
+Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later in [Polymorphism](../lec-03-polymorphism.md#polymorphism).
 
 ## Overriding
 

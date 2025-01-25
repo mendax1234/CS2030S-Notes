@@ -21,7 +21,7 @@ Note that in overloading, usually the **return type** of the method is the same 
 
 ## Method Invocation
 
-"Thanks to" polymorphism and the [overriding](lec-02-class-instance-methods-inheritance/#overriding), we may find it hard to determine which method to invocate. To make this problem clear, let's introduce the mechanism of method invocation in Java.
+"Thanks to" [polymorphism](lec-03-polymorphism.md#polymorphism) and the [overriding](lec-02-class-instance-methods-inheritance/#overriding), we may find it hard to determine which method we invocate will be **executed**. To make this problem clear, let's introduce the mechanism of _method invocation_ in Java.
 
 Basically, the process can be divided into two parts:
 
@@ -105,5 +105,32 @@ The **first** matching method will be executed.
 {% endhint %}
 {% endstep %}
 {% endstepper %}
+
+## Polymorphism
+
+Methods [_overriding_](lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one.
+
+Since _polymorphism_ will **dynamically decide** which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. This is called _dynamic binding_.
+
+Let's use an example to have a glimpse of the power of _polymorphism_.
+
+<pre class="language-java" data-line-numbers><code class="lang-java">boolean contains(Object[] array, Object obj) {
+  for (Object curr : array) {
+<strong>    if (curr.equals(obj)) {
+</strong>      return true;
+    }
+  }
+  return false;
+}
+</code></pre>
+
+At Line 3, **depending on the run-time type** of `curr`, the corresponding, customized version of `equals` is called to compare against `obj`. So if the run-time type of `curr` is `Circle`, then we will invoke `Circle::equals(Object)` and if the run-time type of `curr` is `Point`, then we will invoke `Point::equals(Object)`. This, of course, assumes that `Object::equals(Object)` is overridden in both classes.
+
+## Tips
+
+1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory location or not.**
+2. The use of `instanceOf` operator: for example, `obj instanceOf Circle` will check if the **run-time type** of `obj` is a **subtype** of `Circle`.
+3. In polymorphism, remember to do explicit **type casting** since sometimes the object from the root class `Object` **does not have** the fields we want.
+4. Override the functions that **should not** be overriden will generate a compilation error.
 
 [^1]: "order" here means the **type** order! For example, changing from `double a, double b` to `double b, double a` is **not** considered as changing the order of the parameters.
