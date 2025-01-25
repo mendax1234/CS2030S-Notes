@@ -468,7 +468,7 @@ Circle c = new ColoredCircle(p, 0, blue); // OK
 ```
 {% endcode %}
 
-Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later.
+Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later in Polymorphism.
 
 ## Overriding
 
@@ -558,7 +558,7 @@ class C {
 Its _method signature_ is `C::foo(B1, B2)` and its _method descriptor_ is `A C::foo(B1, B2)`.
 
 {% hint style="info" %}
-Note that for the **parameters,** we are using their **type** instead of their **names**.
+Note that for the **parameters,** we are using their **type** instead of their **names**. And **class names** are not a requirement in _method signature_ and _method descriptor_, they are used just to make this notation clearer.
 {% endhint %}
 
 ***
