@@ -9,6 +9,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-01-compiler-types-classes-objects/diagnostic-quiz.md)
   * [Lec 02 - Class Instance/Methods, Inheritance](lec-rec-lab-exes/lecture/lec-02-class-instance-methods-inheritance/README.md)
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-02-class-instance-methods-inheritance/diagnostic-quiz.md)
+  * [Lec  03 - Polymorphism](lec-rec-lab-exes/lecture/lec-03-polymorphism.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
 * [Lab](lec-rec-lab-exes/lab/README.md)

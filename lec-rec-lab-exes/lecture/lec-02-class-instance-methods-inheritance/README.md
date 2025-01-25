@@ -555,7 +555,15 @@ class C {
 ```
 {% endcode %}
 
-Its _method signature_ is `C::foo(B1, B2)` and its _method descriptor_ is `A C::foo(B1, B2)`.$$f(x) = x * e^{2 pi i \xi x}$$
+Its _method signature_ is `C::foo(B1, B2)` and its _method descriptor_ is `A C::foo(B1, B2)`.
+
+{% hint style="info" %}
+Note that for the **parameters,** we are using their **type** instead of their **names**.
+{% endhint %}
+
+***
+
+So, using the idea of _method siganature_ and _method descriptor,_ **overriding** basically happens when a subclass defines an instance method with the same _**method descriptor**_ as an instance method in the parent class.
 
 [^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
 
