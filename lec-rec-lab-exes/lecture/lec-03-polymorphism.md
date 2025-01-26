@@ -195,6 +195,77 @@ An _abstract method_ cannot be implemented and therefore should not have any met
 A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^3] will be generated. On the other hand, an abstract class may have **no** abstract method.
 {% endhint %}
 
+### Concrete class
+
+We call a class that is not abstract as a _concrete class_. A concrete class cannot have any abstract method. Thus, any concrete subclass of `Shape` must override `getArea()` to supply its own implementation.
+
+## Interface
+
+**Goal**: To make a method even more **generalisable**!
+
+> The abstraction that _models what an entity can do_ is called **interface**.
+
+An _interface_ is also a **type** and is declared with the keyword `interface`. Since an interface models what an entity can do, the name usually ends with the "-able" suffix.
+
+For example, let's make the `getArea()` even more generalisable so that it can not only get the area of a shape, but also the area of a real estate property, etc
+
+{% code lineNumbers="true" %}
+```java
+interface GetAreable {
+  double getArea();
+}
+```
+{% endcode %}
+
+{% hint style="info" %}
+All methods declared in an interface are `public abstract` by default, so we can omit these two keywords.
+{% endhint %}
+
+Now, for every class that we wish to be able call `getArea()` on, we tell Java that the class `implements` that particular interface.
+
+{% stepper %}
+{% step %}
+**For an abstract class**
+
+For example, we want our abstract class `Shape` to be able to call `getArea`, we can do as follows:
+
+{% code lineNumbers="true" %}
+```java
+abstract class Shape implements GetAreable {
+    // ...
+}
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+**For an concrete class**
+
+For a concrete class, it can also implement the interface. For example,
+
+{% code lineNumbers="true" %}
+```java
+class Flat extends RealEstate implements GetAreable {
+  private int numOfRooms;
+  private String block;
+  private String street;
+  private int floor;
+  private int unit;
+
+  @Override
+  public double getArea() {
+      :
+  }
+}
+```
+{% endcode %}
+
+{% hint style="info" %}
+In a concrete class, for it to implement an interface, it has to override **all** abstract methods from the interface and provide implementation to each. Otherwise, the class becomes `abstract`.
+{% endhint %}
+{% endstep %}
+{% endstepper %}
+
 ## Tips
 
 1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory location or not.**
