@@ -126,6 +126,24 @@ Let's use an example to have a glimpse of the power of _polymorphism_.
 
 At Line 3, **depending on the run-time type** of `curr`, the corresponding, customized version of `equals` is called to compare against `obj`. So if the run-time type of `curr` is `Circle`, then we will invoke `Circle::equals(Object)` and if the run-time type of `curr` is `Point`, then we will invoke `Point::equals(Object)`. This, of course, assumes that `Object::equals(Object)` is overridden in both classes.
 
+## Liskov Substitution Principle
+
+**Goal**: To provide way to decide when we misuse of _overriding_ and _inheritance_ (a.k.a _polymorphism_).
+
+**Soul/Main content**: A _subclass **should not**_ break the expectations set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
+
+{% hint style="info" %}
+The LSP (**L**iskov **S**ubstitution **P**rinciple) is a fomal way of speaking [_subtype_](lec-01-compiler-types-classes-objects/#subtypes)_._
+{% endhint %}
+
+### The `final` keyword
+
+The `final` keyword can help prevent **a class to be inherited from** and **a method to be overriden**. So, till now, the use of `final` keyword is as follows:
+
+1. In a **field declaration** to prevent **re-assignment.**
+2. In a **class declaration** to prevent **inheritance**.
+3. In a **method declartion** to prevent **overriding**.
+
 ## Tips
 
 1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory location or not.**
