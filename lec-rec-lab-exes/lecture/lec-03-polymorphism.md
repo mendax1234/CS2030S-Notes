@@ -144,6 +144,57 @@ The `final` keyword can help prevent **a class to be inherited from** and **a me
 2. In a **class declaration** to prevent **inheritance**.
 3. In a **method declartion** to prevent **overriding**.
 
+## Abstract class
+
+**Goal**: To fully take the advantage of _inheritance_ and _polymorphism_, we want to make our method (a.k.a a kind of [_abstraction_](../../#four-pillars-of-oop)) as **general** as possible.
+
+One way to do so is to keep defining the object from the root class `Object`. For example, suppose we want to **generalise** `equals()` to check if two objects are equal or not (and extend it to all the other objects, like `Circle`, `Bicycle` etc), we can write the code as follows:
+
+{% code lineNumbers="true" %}
+```java
+boolean contains(Object[] array, Object obj) {
+  for (Object curr : array) {
+    if (curr.equals(obj)) {
+      return true;
+    }
+  }
+  return false;
+}
+```
+{% endcode %}
+
+However, this style of code has a **prerequisite**: the `Object` class must have the method called `equals()`. So, what if we want to generalise other functions, like a function `getArea()` to get the area of a circle, or rectangle? No,w the all-time `Object` method doesn't work because there is **no** such method called `getArea()` inside the root class `Object`!
+
+So, seems that now we want to create something more specific than `Object` that supports the function we want, yet more **general** than `Circle` or `Rectangle`. Here it comes the other way! The use of _abstract class_ and _abstract methods_.&#x20;
+
+***
+
+> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^2] will be generated!
+
+In our example, we may want to create an _abstract class_ called `Shape`. To do so, we can use the keyword `abstract`.
+
+### The `abstract` keyword
+
+**Goal**: Basically, the `abstract` keyword is used to creat an _abstract class_ and an _abstract method_.
+
+For example, we can implement our _abstract class_ `Shape` and the _abstract method_ `getArea()` as follows:
+
+{% code lineNumbers="true" %}
+```java
+abstract class Shape {
+  abstract public double getArea();
+}
+```
+{% endcode %}
+
+An _abstract method_ cannot be implemented and therefore should not have any method body.
+
+***
+
+{% hint style="info" %}
+A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^3] will be generated. On the other hand, an abstract class may have **no** abstract method.
+{% endhint %}
+
 ## Tips
 
 1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory location or not.**
@@ -152,3 +203,7 @@ The `final` keyword can help prevent **a class to be inherited from** and **a me
 4. Override the functions that **should not** be overriden will generate a compilation error.
 
 [^1]: "order" here means the **type** order! For example, changing from `double a, double b` to `double b, double a` is **not** considered as changing the order of the parameters.
+
+[^2]: which kind of error? Ask
+
+[^3]: which kind of error? Ask
