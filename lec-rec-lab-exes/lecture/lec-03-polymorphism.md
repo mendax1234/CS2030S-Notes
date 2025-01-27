@@ -133,7 +133,7 @@ At Line 3, **depending on the run-time type** of `curr`, the corresponding, cust
 **Soul/Main content**: A _subclass **should not**_ break the expectations set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
 
 {% hint style="info" %}
-The LSP (**L**iskov **S**ubstitution **P**rinciple) is a fomal way of speaking [_subtype_](lec-01-compiler-types-classes-objects/#subtypes)_._
+The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking [_subtype_](lec-01-compiler-types-classes-objects/#subtypes)_._
 {% endhint %}
 
 ### The `final` keyword
@@ -187,7 +187,7 @@ abstract class Shape {
 ```
 {% endcode %}
 
-An _abstract method_ cannot be implemented and therefore should not have any method body.
+An _abstract method_ **cannot** be implemented and therefore **should not have** any method body.
 
 ***
 
@@ -197,7 +197,7 @@ A class with **at least** one abstract method must be declared as `abstract`. Ot
 
 ### Concrete class
 
-We call a class that is not abstract as a _concrete class_. A concrete class cannot have any abstract method. Thus, any concrete subclass of `Shape` must override `getArea()` to supply its own implementation.
+We call a class that is **not** abstract as a _concrete class_. A concrete class **cannot** have any abstract method. Thus, **any** concrete subclass of `Shape` **must override** `getArea()` to supply its own implementation.
 
 ## Interface
 
