@@ -9,11 +9,11 @@ _Method overloading_ is when we have two or more methods:
 
 In other words, we create an overloaded method by changing the **type,** [**order**](#user-content-fn-1)[^1]**, and numbe**r of parameters of the method but keeping the method name identical.
 
-### Difference between [Overriding](lec-02-class-instance-methods-inheritance/#overriding)
+### Difference between [Overriding](../lec-02-class-instance-methods-inheritance/#overriding)
 
-| Override | **must** have same [_method descriptor_](lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor) |
-| -------- | -------------------------------------------------------------------------------------------------------------------- |
-| Overload | **must** have same method name and in the same class.                                                                |
+| Override | **must** have same [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor) |
+| -------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Overload | **must** have same method name and in the same class.                                                                   |
 
 {% hint style="info" %}
 Note that in overloading, usually the **return type** of the method is the same because since the methods' name are the same, meaning that the method do the same thing.
@@ -21,12 +21,12 @@ Note that in overloading, usually the **return type** of the method is the same 
 
 ## Method Invocation
 
-"Thanks to" [polymorphism](lec-03-polymorphism.md#polymorphism) and the [overriding](lec-02-class-instance-methods-inheritance/#overriding), we may find it hard to determine which method we invocate will be **executed**. To make this problem clear, let's introduce the mechanism of _method invocation_ in Java.
+"Thanks to" [polymorphism](./#polymorphism) and the [overriding](../lec-02-class-instance-methods-inheritance/#overriding), we may find it hard to determine which method we invocate will be **executed**. To make this problem clear, let's introduce the mechanism of _method invocation_ in Java.
 
 Basically, the process can be divided into two parts:
 
-1. [During Compile Time](lec-03-polymorphism.md#during-compile-time)
-2. [During Run Time](lec-03-polymorphism.md#during-run-time)
+1. [During Compile Time](./#during-compile-time)
+2. [During Run Time](./#during-run-time)
 
 ### During Compile Time
 
@@ -71,7 +71,7 @@ Note that after this step, if there are still more than one method that satisfy 
 As the name suggests, we will pass the _method descriptor_ to the next step.
 
 {% hint style="info" %}
-Note that in this step, we don't need to return any information about the class since it is not included in [_method descriptor_](lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor)_._
+Note that in this step, we don't need to return any information about the class since it is not included in [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor)_._
 {% endhint %}
 {% endstep %}
 {% endstepper %}
@@ -108,7 +108,7 @@ The **first** matching method will be executed.
 
 ## Polymorphism
 
-Methods [_overriding_](lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one.
+Methods [_overriding_](../lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one.
 
 Since _polymorphism_ will **dynamically decide** which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. This is called _dynamic binding_.
 
@@ -133,8 +133,14 @@ At Line 3, **depending on the run-time type** of `curr`, the corresponding, cust
 **Soul/Main content**: A _subclass **should not**_ break the expectations set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
 
 {% hint style="info" %}
-The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking [_subtype_](lec-01-compiler-types-classes-objects/#subtypes)_._
+The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking [_subtype_](../lec-01-compiler-types-classes-objects/#subtypes)_._
 {% endhint %}
+
+### Pure substitution vs. Impure substitution
+
+_Pure substitution_ can be thought of as _inheritance_ should override _only_ parent-class methods (and **not** add new methods that aren't in the parent class). In this case, the relationship between the derived-class and the base-class (a.k.a parent-class) can be view as a "is-a" relationship.
+
+_Pure substitution_ is the **ideal way** to treat inheritance. However, there are times we may need to add new method elements to the derived-class. In this case, the relationship becomes "is-like-a" relationship and it is known as _impure substitution_.
 
 ### The `final` keyword
 
@@ -146,7 +152,7 @@ The `final` keyword can help prevent **a class to be inherited from** and **a me
 
 ## Abstract class
 
-**Goal**: To fully take the advantage of _inheritance_ and _polymorphism_, we want to make our method (a.k.a a kind of [_abstraction_](../../#four-pillars-of-oop)) as **general** as possible.
+**Goal**: To fully take the advantage of _inheritance_ and _polymorphism_, we want to make our method (a.k.a a kind of [_abstraction_](../../../#four-pillars-of-oop)) as **general** as possible.
 
 One way to do so is to keep defining the object from the root class `Object`. For example, suppose we want to **generalise** `equals()` to check if two objects are equal or not (and extend it to all the other objects, like `Circle`, `Bicycle` etc), we can write the code as follows:
 
