@@ -5,6 +5,7 @@
 ## Lec/Rec/Lab/Exes
 
 * [Lecture](lec-rec-lab-exes/lecture/README.md)
+  * [Lec 00 - Overview](lec-rec-lab-exes/lecture/lec-00-overview.md)
   * [Lec 01 - Compiler, Types, Classes, Objects](lec-rec-lab-exes/lecture/lec-01-compiler-types-classes-objects/README.md)
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-01-compiler-types-classes-objects/diagnostic-quiz.md)
   * [Lec 02 - Class Instance/Methods, Inheritance](lec-rec-lab-exes/lecture/lec-02-class-instance-methods-inheritance/README.md)
