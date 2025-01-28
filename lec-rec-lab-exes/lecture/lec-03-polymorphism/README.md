@@ -5,15 +5,15 @@
 _Method overloading_ is when we have two or more methods:
 
 1. in the same class
-2. with the same name but a differeing method signature.
+2. with the same name but a different method signature.
 
 In other words, we create an overloaded method by changing the **type,** [**order**](#user-content-fn-1)[^1]**, and numbe**r of parameters of the method but keeping the method name identical.
 
-### Difference between [Overriding](../lec-02-class-instance-methods-inheritance/#overriding)
+### Overloading vs. [Overriding](../lec-02-class-instance-methods-inheritance/#overriding)
 
 | Override | **must** have same [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor) |
 | -------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Overload | **must** have same method name and in the same class.                                                                   |
+| Overload | **must** have same method name, in the same class and **different** method signature.                                   |
 
 {% hint style="info" %}
 Note that in overloading, usually the **return type** of the method is the same because since the methods' name are the same, meaning that the method do the same thing.
@@ -50,7 +50,7 @@ When doing the search, all the inherited methods from $$C$$'s supertypes/supercl
 
 We may have several matching methods, and how do you decide which one's descriptor to get? Here, we use the **principle of "the most specific one"**.
 
-Basically, we should first **pass in the arguments from our invocated method to the method we found during step 1.** If the arguments **cannot** be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation-error).
+Basically, we should first **pass in the** [**arguments from our invocated method**](#user-content-fn-2)[^2] **to the method we found during step 1.** If the arguments **cannot** be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation-error).
 
 After trying all the options, if there is **only one matching method**, then we have found!
 
@@ -108,17 +108,21 @@ The **first** matching method will be executed.
 
 ***
 
-Till now, we have seen that a variable `obj` with type[^2] `Object` can have many "similar"[^3] methods. In Java, which method is invoked is decided _during run-time_, depending on the run-time type of the `obj`. This is called _dynamic binding_ or _late binding_ or _dynamic dispatch_.
+Till now, we have seen that a variable `obj` with type[^3] `Object` can have many "similar"[^4] methods. In Java, which method is invoked is decided _during run-time_, depending on the run-time type of the `obj`. This is called _dynamic binding_ or _late binding_ or _dynamic dispatch_.
 
 {% hint style="info" %}
 Other programming like C may use a different mechanism called _early binding_, which basically means that which function to run will be decided during the compile-time.
 {% endhint %}
 
+### Class methods
+
+The description above **only** applies to instance methods. Class methods, on the other hand, **do not support** _dynamic binding_. The method to invoke is resolved **statically** during compile time. The same process in [compile-time](./#during-compile-time) is taken, but the corresponding method implementation in class will always be executed during run-time, without considering the run-time type of the target.
+
 ## Polymorphism
 
 Methods [_overriding_](../lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one. It basically states that we should use the base-type class as much as possible.
 
-Since _polymorphism_ will [**dynamically decide**](#user-content-fn-4)[^4] which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. Instead, we can just create a new derived/sub "type[^5]" and then use _polymorphism_ to achieve what we want to achieve.
+Since _polymorphism_ will [**dynamically decide**](#user-content-fn-5)[^5] which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. Instead, we can just create a new derived/sub "type[^6]" and then use _polymorphism_ to achieve what we want to achieve.
 
 Let's use an example to have a glimpse of the power of _polymorphism_.
 
@@ -183,7 +187,7 @@ So, seems that now we want to create something more **specific** than `Object` t
 
 ***
 
-> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^6] will be generated!
+> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^7] will be generated!
 
 In our example, we may want to create an _abstract class_ called `Shape`. To do so, we can use the keyword `abstract`.
 
@@ -206,7 +210,7 @@ An _abstract method_ **cannot** be implemented and therefore **should not have**
 ***
 
 {% hint style="info" %}
-A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^7] will be generated. On the other hand, an abstract class may have **no** abstract method.
+A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^8] will be generated. On the other hand, an abstract class may have **no** abstract method.
 {% endhint %}
 
 ### Concrete class
@@ -283,20 +287,22 @@ In a concrete class, for it to implement an interface, it has to override **all*
 ## Tips
 
 1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory address or not.**
-2. The use of `instanceOf` operator: for example, `obj instanceOf Circle` will check if the **run-time type** of `obj` is a **subtype** of `Circle`.
+2. The use of `instanceOf` operator: for example, `obj instanceOf Circle` will check if the **run-time type** of `obj` is a **subtype** of `Circle`. (Note that it is the **run-time** of `obj`)
 3. In polymorphism, remember to do explicit **type casting** since sometimes the object from the root class `Object` **does not have** the fields we want.
 4. Override the functions that **should not** be overriden will generate a compilation error.
 
 [^1]: "order" here means the **type** order! For example, changing from `double a, double b` to `double b, double a` is **not** considered as changing the order of the parameters.
 
-[^2]: "type" is the synonym of "class" in Java
+[^2]: Is it the compile-time or run-time?
 
-[^3]: I call them "similar" because they look very alike.
+[^3]: "type" is the synonym of "class" in Java
 
-[^4]: This is the _dynamic binding_ we have introduced above.
+[^4]: I call them "similar" because they look very alike.
 
-[^5]: if you are not familiar with the idea that "type" is the synonym of "class", just take every type I have mentioned in this document as "class".
+[^5]: This is the _dynamic binding_ we have introduced above.
 
-[^6]: which kind of error? Ask
+[^6]: if you are not familiar with the idea that "type" is the synonym of "class", just take every type I have mentioned in this document as "class".
 
 [^7]: which kind of error? Ask
+
+[^8]: which kind of error? Ask

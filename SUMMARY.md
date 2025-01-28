@@ -12,6 +12,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-02-class-instance-methods-inheritance/diagnostic-quiz.md)
   * [Lec  03 - Polymorphism](lec-rec-lab-exes/lecture/lec-03-polymorphism/README.md)
     * [More on polymorphism](lec-rec-lab-exes/lecture/lec-03-polymorphism/more-on-polymorphism.md)
+    * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-03-polymorphism/diagnostic-quiz.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
 * [Lab](lec-rec-lab-exes/lab/README.md)
