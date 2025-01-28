@@ -36,14 +36,14 @@ This code snippet will generate a **compilation error**.
 
 _Java allows a variable of type_ $$T$$ _to hold a value from a variable of type_ $$S$$ _only if_ $$S<:T$$. This step is called _**widening type conversion**_.
 
-The term "widening" is easy to see for primitive types -- the subtype has a narrower range of values than the supertype. The **opposite** conversion is called _**narrowing**_ because the size is narrower.
+The term "widening" is easy to see for primitive types — the subtype has a narrower range of values than the supertype. The **opposite** conversion is called _**narrowing**_ because the size is narrower.
 
 <figure><img src="../../../.gitbook/assets/lec01-quiz-Q15.png" alt="" width="563"><figcaption></figcaption></figure>
 
-In this problem `i` is `int` and `f` is float, and `int <: float`, so `f=i` is a _widening type conversion_. For this question, we can get two tips as follows:&#x20;
+In this problem `i` is `int` and `f` is float, and `int <: float`, so `f = i` is a _widening type conversion_. For this question, we can get two tips as follows:&#x20;
 
 * Java is a **strongly typed language**, but it allows _widening type conversion_ and will do this automatically **without explicit casting**.
-* However, _narrowing type conversion_ without explicit casting is not allowed in Java. (WHY? Prof said will find out in future lec)
+* However, _narrowing type conversion_ without explicit casting is **not** allowed in Java. (WHY? Prof said will find out in future lec)
 
 ## Tips
 

@@ -84,21 +84,21 @@ Note that in this step, we don't need to return any information about the class 
 {% step %}
 **Retrieve the method descriptor**
 
-As the name suggests, this step will retrieve the _method descriptor_ that is passed from the compile process above.
+As the name suggests, this step will retrieve the _method descriptor_ that is passed from the [compile process](./#during-compile-time) above.
 {% endstep %}
 
 {% step %}
 **Find the run-time type target**
 
-Similar to the compile process, now we should find the **run-time type** of the target, let's say it's $$D$$ (If using the same example, $$D$$ should be the **subtype** of $$C$$).
+Similar to the compile process, now we should find the **run-time type** of the target, let's say it's $$D$$ (If using the same example, $$D$$ should be the **subtype** of $$C$$. Otherwise, a compilation error will be generated because this is considered as a _narrowing type conversion without explicit casting_)
 
-This **run-time type** information tells us the class we should start to search from. Basically, from this class all the way up to the root class `Object`.
+This **run-time type** information tells us the class we should start to search from. Basically, it is from this class all the way up to the root class `Object`.
 {% endstep %}
 
 {% step %}
 **Find a matching method descriptor**
 
-Using the **retrieved method descriptor**, now we should find a method from the **run-time class** all the way up to the root class `Object` that has the **same descriptor** with our **retrieved method descriptor.**
+Using the **retrieved method descriptor**, now we should find a method from the **run-time class** all the way up to the root class `Object` which has the **same descriptor** with our **retrieved method descriptor.**
 
 {% hint style="info" %}
 The **first** matching method will be executed.
@@ -106,11 +106,19 @@ The **first** matching method will be executed.
 {% endstep %}
 {% endstepper %}
 
+***
+
+Till now, we have seen that a variable `obj` with type[^2] `Object` can have many "similar"[^3] methods. In Java, which method is invoked is decided _during run-time_, depending on the run-time type of the `obj`. This is called _dynamic binding_ or _late binding_ or _dynamic dispatch_.
+
+{% hint style="info" %}
+Other programming like C may use a different mechanism called _early binding_, which basically means that which function to run will be decided during the compile-time.
+{% endhint %}
+
 ## Polymorphism
 
-Methods [_overriding_](../lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one.
+Methods [_overriding_](../lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one. It basically states that we should use the base-type class as much as possible.
 
-Since _polymorphism_ will **dynamically decide** which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. This is called _dynamic binding_.
+Since _polymorphism_ will [**dynamically decide**](#user-content-fn-4)[^4] which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. Instead, we can just create a new derived/sub "type[^5]" and then use _polymorphism_ to achieve what we want to achieve.
 
 Let's use an example to have a glimpse of the power of _polymorphism_.
 
@@ -128,7 +136,7 @@ At Line 3, **depending on the run-time type** of `curr`, the corresponding, cust
 
 ## Liskov Substitution Principle
 
-**Goal**: To provide way to decide when we misuse of _overriding_ and _inheritance_ (a.k.a _polymorphism_).
+**Goal**: To provide a way to decide when we misuse of _overriding_ and _inheritance_ (a.k.a _polymorphism_).
 
 **Soul/Main content**: A _subclass **should not**_ break the expectations set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
 
@@ -138,9 +146,9 @@ The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking 
 
 ### Pure substitution vs. Impure substitution
 
-_Pure substitution_ can be thought of as _inheritance_ should override _only_ parent-class methods (and **not** add new methods that aren't in the parent class). In this case, the relationship between the derived-class and the base-class (a.k.a parent-class) can be view as a "is-a" relationship.
+_Pure substitution_ can be thought of as _inheritance_ should override _only_ parent-class methods (and **not** add new methods that aren't in the parent class). In this case, the relationship between the derived-class and the base-class (a.k.a parent-class) can be viewed as a "**is-a**" relationship.
 
-_Pure substitution_ is the **ideal way** to treat inheritance. However, there are times we may need to add new method elements to the derived-class. In this case, the relationship becomes "is-like-a" relationship and it is known as _impure substitution_.
+_Pure substitution_ is the **ideal way** to treat _inheritance_. However, there are times we may need to add new method elements to the derived-class. In this case, the relationship becomes "**is-like-a**" relationship and it is known as _impure substitution_.
 
 ### The `final` keyword
 
@@ -152,7 +160,7 @@ The `final` keyword can help prevent **a class to be inherited from** and **a me
 
 ## Abstract class
 
-**Goal**: To fully take the advantage of _inheritance_ and _polymorphism_, we want to make our method (a.k.a a kind of [_abstraction_](../../../#four-pillars-of-oop)) as **general** as possible.
+**Goal**: To fully take the advantage of _polymorphism_, we want to make our method (a.k.a a kind of [_abstraction_](../../../#four-pillars-of-oop)) as **general** as possible.
 
 One way to do so is to keep defining the object from the root class `Object`. For example, suppose we want to **generalise** `equals()` to check if two objects are equal or not (and extend it to all the other objects, like `Circle`, `Bicycle` etc), we can write the code as follows:
 
@@ -169,13 +177,13 @@ boolean contains(Object[] array, Object obj) {
 ```
 {% endcode %}
 
-However, this style of code has a **prerequisite**: the `Object` class must have the method called `equals()`. So, what if we want to generalise other functions, like a function `getArea()` to get the area of a circle, or rectangle? No,w the all-time `Object` method doesn't work because there is **no** such method called `getArea()` inside the root class `Object`!
+However, this style of code has a **prerequisite**: the `Object` class must have the method called `equals()`. So, what if we want to generalise other functions, like a function `getArea()` to get the area of a circle, or rectangle? Now the all-time `Object` method doesn't work because there is **no** such method called `getArea()` inside the root class `Object`!
 
-So, seems that now we want to create something more specific than `Object` that supports the function we want, yet more **general** than `Circle` or `Rectangle`. Here it comes the other way! The use of _abstract class_ and _abstract methods_.&#x20;
+So, seems that now we want to create something more **specific** than `Object` that supports the function we want, yet more **general** than `Circle` or `Rectangle`. Here it comes the other way —  The use of _abstract class_ and _abstract methods_.&#x20;
 
 ***
 
-> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^2] will be generated!
+> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^6] will be generated!
 
 In our example, we may want to create an _abstract class_ called `Shape`. To do so, we can use the keyword `abstract`.
 
@@ -198,7 +206,7 @@ An _abstract method_ **cannot** be implemented and therefore **should not have**
 ***
 
 {% hint style="info" %}
-A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^3] will be generated. On the other hand, an abstract class may have **no** abstract method.
+A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^7] will be generated. On the other hand, an abstract class may have **no** abstract method.
 {% endhint %}
 
 ### Concrete class
@@ -211,7 +219,7 @@ We call a class that is **not** abstract as a _concrete class_. A concrete class
 
 > The abstraction that _models what an entity can do_ is called **interface**.
 
-An _interface_ is also a **type** and is declared with the keyword `interface`. Since an interface models what an entity can do, the name usually ends with the "-able" suffix.
+An _interface_ is also a **type** and is declared with the keyword `interface`. Since an interface models what an entity can do, the name usually ends with the "**-able**" suffix.
 
 For example, let's make the `getArea()` even more generalisable so that it can not only get the area of a shape, but also the area of a real estate property, etc
 
@@ -274,13 +282,21 @@ In a concrete class, for it to implement an interface, it has to override **all*
 
 ## Tips
 
-1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory location or not.**
+1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory address or not.**
 2. The use of `instanceOf` operator: for example, `obj instanceOf Circle` will check if the **run-time type** of `obj` is a **subtype** of `Circle`.
 3. In polymorphism, remember to do explicit **type casting** since sometimes the object from the root class `Object` **does not have** the fields we want.
 4. Override the functions that **should not** be overriden will generate a compilation error.
 
 [^1]: "order" here means the **type** order! For example, changing from `double a, double b` to `double b, double a` is **not** considered as changing the order of the parameters.
 
-[^2]: which kind of error? Ask
+[^2]: "type" is the synonym of "class" in Java
 
-[^3]: which kind of error? Ask
+[^3]: I call them "similar" because they look very alike.
+
+[^4]: This is the _dynamic binding_ we have introduced above.
+
+[^5]: if you are not familiar with the idea that "type" is the synonym of "class", just take every type I have mentioned in this document as "class".
+
+[^6]: which kind of error? Ask
+
+[^7]: which kind of error? Ask
