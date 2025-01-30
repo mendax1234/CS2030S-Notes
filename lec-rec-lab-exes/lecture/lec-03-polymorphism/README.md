@@ -16,7 +16,7 @@ In other words, we create an overloaded method by changing the **type,** [**orde
 | Overload | **must** have same method name, in the same class and **different** method signature.                                   |
 
 {% hint style="info" %}
-Note that in overloading, usually the **return type** of the method is the same because since the methods' name are the same, meaning that the method do the same thing.
+Note that in overloading methods, the **return type doesn't matter**. Sometimes, it will be useful to write overloading methods with different return types. See more in this [thread](https://edstem.org/us/courses/72783/discussion/6049016?comment=14044537).
 {% endhint %}
 
 ## Method Invocation
