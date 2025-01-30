@@ -5,7 +5,7 @@
 _Method overloading_ is when we have two or more methods:
 
 1. in the same class
-2. with the same name but a different method signature.
+2. with the **same method name** but a **different method signature**.
 
 In other words, we create an overloaded method by changing the **type,** [**order**](#user-content-fn-1)[^1]**, and numbe**r of parameters of the method but keeping the method name identical.
 
@@ -68,7 +68,7 @@ Note that after this step, if there are still more than one method that satisfy 
 {% step %}
 **Pass the method description we found to run-time step**
 
-As the name suggests, we will pass the _method descriptor_ to the next step.
+As the name suggests, we will pass the **all the information** in the _method descriptor_ to the next step.
 
 {% hint style="info" %}
 Note that in this step, we don't need to return any information about the class since it is not included in [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor)_._
@@ -84,7 +84,14 @@ Note that in this step, we don't need to return any information about the class 
 {% step %}
 **Retrieve the method descriptor**
 
-As the name suggests, this step will retrieve the _method descriptor_ that is passed from the [compile process](./#during-compile-time) above.
+As the name suggests, this step will retrieve the information of the _method descriptor_ that is passed from the [compile process](./#during-compile-time) above.
+
+{% hint style="info" %}
+The information from the _method descriptor_ we get during compile-time includes:
+
+1. The compile-time type of the method parameters.
+2. The return type of the method.
+{% endhint %}
 {% endstep %}
 
 {% step %}
@@ -151,6 +158,10 @@ The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking 
 ### Pure substitution vs. Impure substitution
 
 _Pure substitution_ can be thought of as _inheritance_ should override _only_ parent-class methods (and **not** add new methods that aren't in the parent class). In this case, the relationship between the derived-class and the base-class (a.k.a parent-class) can be viewed as a "**is-a**" relationship.
+
+{% hint style="info" %}
+Even if we only override the parent-class methods, that doesn't mean **we are 100% sure** that the overriden method conforms to the LSP. An example is in the [lecture notes](https://nus-cs2030s.github.io/2425-s2/16-lsp.html#lsp-through-the-lens-of-testing) about `Restaurant` and `LunchRestaurant`.
+{% endhint %}
 
 _Pure substitution_ is the **ideal way** to treat _inheritance_. However, there are times we may need to add new method elements to the derived-class. In this case, the relationship becomes "**is-like-a**" relationship and it is known as _impure substitution_.
 
@@ -293,7 +304,7 @@ In a concrete class, for it to implement an interface, it has to override **all*
 
 [^1]: "order" here means the **type** order! For example, changing from `double a, double b` to `double b, double a` is **not** considered as changing the order of the parameters.
 
-[^2]: Is it the compile-time or run-time?
+[^2]: The arguments should be **compile-time type** since during compile-time, we have no idea about the run-time.
 
 [^3]: "type" is the synonym of "class" in Java
 
