@@ -97,6 +97,102 @@ Let $$C(S)$$ correspond to some **complex type** based on type $$S$$, which mean
 Java Array is **covariant**.
 {% endhint %}
 
+## Exceptions
 
+### `try`-`catch`-`finally` block
+
+In Java, we use `try`-`catch`-`finally` block in our process to handle exceptions. Their usage is summarised as follows:
+
+{% code lineNumbers="true" %}
+```java
+try {
+  // do something
+} catch (an exception parameter) {
+  // handle exception
+} finally {
+  // clean up code
+  // regardless of there is an exception or not
+}
+```
+{% endcode %}
+
+#### Compile-error in `catch` block
+
+In the `catch` block, the first catch block that has an exception type compatible with the type of the thrown exception (i.e. a subtype) is selected to handle the exception. So, if there are multiple avialable blocks, the compiler will generate a **compile-time error**.
+
+### Throwing Exceptions
+
+We can control our program to throw an exception when our program doesn't behave as we expect. To throw an exception, we need to:
+
+1. use the keyword `throw` (not `throws`)
+2. create a new exception object and throw it to the caller. (e.g. `IllegalArgumentException("radius cannot be negative.")`)
+
+The complete Java code should be as follows:
+
+{% code lineNumbers="true" %}
+```java
+  if (r < 0) {
+    throw new IllegalArgumentException("radius cannot be negative.");
+  }
+```
+{% endcode %}
+
+### Checked vs. Unchecked Exceptions
+
+An _unchecked exception_ is an exception caused by a programmer's errors. They should not happen if perfect code is written. `IllegalArgumentException`, `NullPointerException`, `ClassCastException` are examples of unchecked exceptions. Generally, unchecked exceptions are not explicitly caught or thrown. They indicate that something is wrong with the program and cause **run-time errors**.
+
+A _checked exception_ is an exception that a programmer has **no control** over. Even if the code written is perfect, such an exception might still happen. The programmer should thus actively anticipate the exception and handle them. For instance, when we open a file, we should anticipate that in some cases, the file cannot be opened. `FileNotFoundException` and `InputMismatchException` are two examples of is an example of a checked exception. A checked exception must be either handled, or else the program **will not compile**.
+
+{% hint style="info" %}
+In Java, unchecked exceptions are subclasses of the class `RuntimeException`.
+{% endhint %}
+
+An unchecked exception, if not caught[^2], will propagate automatically down the stack until either it is caught or if it is not caught at all, resulting in an error message displayed to the user.
+
+A checked exception, however, must be handled. And this is done by either handling it in the calling method, or handling it in the caller. Below is an example regarding handling the `FileNotFoundException`)
+
+{% stepper %}
+{% step %}
+**Handle in the calling method**
+
+<pre class="language-java" data-line-numbers><code class="lang-java">class Main {
+  static FileReader openFile(String filename) {
+<strong>    try {
+</strong>      return new FileReader(filename);
+<strong>    } catch (FileNotFoundException e) {
+</strong><strong>      System.err.println("Unable to open " + filename + " " + e);
+</strong><strong>    }
+</strong>  }
+  public static void main(String[] args) {
+    openFile();
+  }
+}
+</code></pre>
+{% endstep %}
+
+{% step %}
+**Handle in the caller**
+
+<pre class="language-java" data-overflow="wrap" data-line-numbers><code class="lang-java">class Main {
+<strong>  static FileReader openFile(String filename) throws FileNotFoundException {
+</strong>    return new FileReader(filename);
+  }
+  public static void main(String[] args) {
+<strong>    try {
+</strong>      openFile();
+<strong>    } catch (FileNotFoundException e) {
+</strong><strong>      // warn user and pop up dialog box to select another file.
+</strong><strong>    }
+</strong>  }
+}
+</code></pre>
+{% endstep %}
+{% endstepper %}
+
+{% hint style="info" %}
+_A good program always handles checked exception gracefully_ and hides the details from the users.
+{% endhint %}
 
 [^1]: or "elements" if you are from CS1010, which uses C as the teaching language.
+
+[^2]: here "catch" means the exception being handled.
