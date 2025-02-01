@@ -295,6 +295,50 @@ In a concrete class, for it to implement an interface, it has to override **all*
 {% endstep %}
 {% endstepper %}
 
+### Interface as Supertype
+
+If a class $$C$$ implements an interface $$I$$, then $$C<:I$$. This definition implies that a type can have multiple supertypes because a type can implement multiple interfaces.
+
+{% hint style="info" %}
+This idea will be useful when we want to analyze the program behavor with `interface` using the [#method-invocation](./#method-invocation "mention") we have learned as above.
+{% endhint %}
+
+#### Type Casting using an interface
+
+As we have seen in the previous lecture, in Java, two types without a _subtype_ relationship [cannot be casted](#user-content-fn-9)[^9]. However, let's consider the code as follows,
+
+<pre class="language-java" data-line-numbers><code class="lang-java">interface I {
+  :
+}
+
+class A {
+  :
+}
+
+class B implements I {
+  :
+}
+
+I i1 = new B(); // Compiles, widening type conversion
+<strong>I i2 = (I) new A(); // Also compiles?
+</strong></code></pre>
+
+Will the Line 14 compile? The answer is **yes**. The compiling principle for the Java compiler is that:
+
+> it does not let us cast when it is **provable** that it will not work. i.e. casting between two classes that have no subtype relationship. However, for `interface`, there is the _possibility_ that a subclass _could_ implement the interface. Therefore, the Java compiler trusts that the programmer knows what they are doing, and allows it to compile.
+
+So, in our example, one such possibility is as follows,
+
+{% code lineNumbers="true" %}
+```java
+class AI extends A implements I{
+  :
+}
+```
+{% endcode %}
+
+Here, the subtype relationship we can get is $$AI<:I$$ and $$AI<:A$$.
+
 ## Tips
 
 1. The essence of the original `equals` method in `Object` is that **it will compare whether** two objects are **referenced to the same memory address or not.**
@@ -317,3 +361,5 @@ In a concrete class, for it to implement an interface, it has to override **all*
 [^7]: which kind of error? Ask
 
 [^8]: which kind of error? Ask
+
+[^9]: Both explicitly and implicitly are not allowed.
