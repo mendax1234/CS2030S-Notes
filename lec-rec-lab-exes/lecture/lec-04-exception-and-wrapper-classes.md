@@ -64,3 +64,17 @@ Both auto-boxing and unboxing are implemented automatically.
 ### Performance
 
 For the sake of general code and polymorphism, why don't we use _wrapper class_ all the time? The reason is **performance**. Using primitive types is **faster** than using its _wrapper class_ since the latter needs to instantiate an object every time it is being used.
+
+## Run-Time Class Mismatch
+
+The main point of this part is about **when explicit casting will be successful**?
+
+***
+
+**Explicit casting** is usually done during the _narrowing type conversion_ process, which is happened during the **run-time**, and as the name suggests, the type must be "narrowed down". So, for an **explicit casting** to be successful, the two types must have a **subtype relationship**.
+
+### Run-Time error or compile-time error?
+
+When doing type casting, there will be **no** compile-time error since the compiler has no idea about what the run-time type of the object will be.
+
+So, the only error that is possible using type casting is the **run-time error**. This kind of error is usually generated because there is **no** subtype relationship between the two types you are operating on.
