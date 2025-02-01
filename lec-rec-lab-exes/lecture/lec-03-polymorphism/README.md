@@ -300,7 +300,10 @@ In a concrete class, for it to implement an interface, it has to override **all*
 If a class $$C$$ implements an interface $$I$$, then $$C<:I$$. This definition implies that a type can have multiple supertypes because a type can implement multiple interfaces.
 
 {% hint style="info" %}
-This idea will be useful when we want to analyze the program behavor with `interface` using the [#method-invocation](./#method-invocation "mention") we have learned as above.
+So far, we have seen two ways to establish the **subtype relationship** between classes and interfaces:
+
+1. base on _inheritance_ and use the keyword `extends`
+2. base on _interface_ and use the keyword `implements`
 {% endhint %}
 
 #### Type Casting using an interface
