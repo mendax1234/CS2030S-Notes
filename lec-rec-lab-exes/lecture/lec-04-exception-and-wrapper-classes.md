@@ -75,6 +75,28 @@ The main point of this part is about **when explicit casting will be successful*
 
 ### Run-Time error or compile-time error?
 
-When doing type casting, there will be **no** compile-time error since the compiler has no idea about what the run-time type of the object will be.
+When doing type casting, if the **compile-time type** of the two objects have **no** subtype relationship, then a **compile-time error** will be generated.
 
-So, the only error that is possible using type casting is the **run-time error**. This kind of error is usually generated because there is **no** subtype relationship between the two types you are operating on.
+On the other hand, a **run-time error** will be generated when there is **no** subtype relationship between the **run-time** **type** of the two objects you are operating on.
+
+## Variance
+
+Till now, we have seen the **subtype relationship** on classes and interefaces, this is trivial. However, how about the _complex types_ such as arrays? Seems that the subtype relationship is not that trivial. So, here it comes — the principle of _variance of types_:
+
+> The _variance of types_ refers to how the **subtype relationship** between _complex types_ relates to the subtype relationship between [_components_](#user-content-fn-1)[^1].
+
+### Variance of types
+
+Let $$C(S)$$ correspond to some **complex type** based on type $$S$$, which means $$C(S)$$ is the type of the array and $$S$$ is the type of each element/component in the array. We say a complex type is:
+
+* _covariant:_ which means if $$S<:T$$, then $$C(S)<:C(T)$$
+* _contravariant:_ which means if $$S<:T$$, then $$C(T)<:C(S)$$
+* _invariant_: if it is neither covariant nor contravariant
+
+{% hint style="info" %}
+Java Array is **covariant**.
+{% endhint %}
+
+
+
+[^1]: or "elements" if you are from CS1010, which uses C as the teaching language.
