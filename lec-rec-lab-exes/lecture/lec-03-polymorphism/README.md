@@ -308,6 +308,10 @@ So far, we have seen two ways to establish the **subtype relationship** between 
 
 #### Type Casting using an interface
 
+{% hint style="warning" %}
+This is a knowledge point that almost all students in the past cohort fail, so it must be very valuable! See more [here](https://edstem.org/us/courses/72783/discussion/6079061?answer=14080449).
+{% endhint %}
+
 As we have seen in the previous lecture, in Java, two types without a _subtype_ relationship [cannot be casted](#user-content-fn-9)[^9]. However, let's consider the code as follows,
 
 <pre class="language-java" data-line-numbers><code class="lang-java">interface I {
@@ -340,7 +344,26 @@ class AI extends A implements I{
 ```
 {% endcode %}
 
-Here, the subtype relationship we can get is $$AI<:I$$ and $$AI<:A$$.
+Here, the subtype relationship we can get is $$AI<:I$$ and $$AI<:A$$. This **cannot** tell us the $$A$$ is the subtype of $$I$$. And based **solely** on this code, it **can compile** but it will generate a **run-time error**.
+
+So, given that we are pretty sure that $$A$$ is **not** the **subtype** of $$I$$, why this code still compiles? That is because **the compiler doesn't know whether there is a possibility that** $$A$$ **has a subclass that&#x20;**_**implements**_ $$I$$. If so, the code will run perfectly without any **compile-time error** and **run-time error**.
+
+For example, let's assume class $$C$$ extends from $$A$$ and implements $$I$$. Now, we run the following code
+
+{% code lineNumbers="true" %}
+```javascript
+A a = new C(); // Compiles because C is subtype of A
+I i = (I) a; // Should work! Because Run time type of a is C!
+```
+{% endcode %}
+
+Type casting can work in this case because even though compile-time type of `a` is `A` , its actual run-time type is `C` , which implements `I` . Since compiler **can't foresee** what is the actual run-time type of `a` , it would just be lenient and allow your code to compile.
+
+***
+
+So, coming back to our problem about this line of code `I i2 = (I) new A();`. Since the compiler has no idea about what kinds of subclasses `A` has, so even if class `C` does not exist in the code. The line `I i2 = (I) new A();` would still compile.
+
+However, if you actually declare class `A` with `final` keyword which prevents it from being extended with any subclasses. Compiler can be 100% sure that class `A` cannot hold any instance whose type is a subtype of `I` in any situation and simply give you compile-time error.
 
 ## Tips
 
@@ -348,6 +371,7 @@ Here, the subtype relationship we can get is $$AI<:I$$ and $$AI<:A$$.
 2. The use of `instanceOf` operator: for example, `obj instanceOf Circle` will check if the **run-time type** of `obj` is a **subtype** of `Circle`. (Note that it is the **run-time** of `obj`)
 3. In polymorphism, remember to do explicit **type casting** since sometimes the object from the root class `Object` **does not have** the fields we want.
 4. Override the functions that **should not** be overriden will generate a compilation error.
+5. Include the behavior of the compiler regarding the typecasting containing `Interface` into cheatsheet!
 
 [^1]: "order" here means the **type** order! For example, changing from `double a, double b` to `double b, double a` is **not** considered as changing the order of the parameters.
 
