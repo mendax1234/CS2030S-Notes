@@ -127,7 +127,7 @@ We can control our program to throw an exception when our program doesn't behave
 1. use the keyword `throw` (not `throws`)
 2. create a new exception object and throw it to the caller. (e.g. `IllegalArgumentException("radius cannot be negative.")`)
 
-The complete Java code should be as follows:
+For example, the complete Java code should be as follows:
 
 {% code lineNumbers="true" %}
 ```java
@@ -139,7 +139,7 @@ The complete Java code should be as follows:
 
 ### Checked vs. Unchecked Exceptions
 
-An _unchecked exception_ is an exception caused by a programmer's errors. They should not happen if perfect code is written. `IllegalArgumentException`, `NullPointerException`, `ClassCastException` are examples of unchecked exceptions. Generally, unchecked exceptions are not explicitly caught or thrown. They indicate that something is wrong with the program and cause **run-time errors**.
+An _unchecked exception_ is an exception caused by a programmer's errors. They should not happen if perfect code is written. `IllegalArgumentException`, `NullPointerException`, `ClassCastException` are examples of unchecked exceptions. Generally, unchecked exceptions are **not** explicitly caught or thrown. They indicate that something is wrong with the program and cause **run-time errors**.
 
 A _checked exception_ is an exception that a programmer has **no control** over. Even if the code written is perfect, such an exception might still happen. The programmer should thus actively anticipate the exception and handle them. For instance, when we open a file, we should anticipate that in some cases, the file cannot be opened. `FileNotFoundException` and `InputMismatchException` are two examples of is an example of a checked exception. A checked exception must be either handled, or else the program **will not compile**.
 
@@ -153,7 +153,7 @@ A checked exception, however, must be handled. And this is done by either handli
 
 {% stepper %}
 {% step %}
-**Handle in the calling method**
+**Handle in the called method**
 
 <pre class="language-java" data-line-numbers><code class="lang-java">class Main {
   static FileReader openFile(String filename) {
@@ -171,7 +171,7 @@ A checked exception, however, must be handled. And this is done by either handli
 {% endstep %}
 
 {% step %}
-**Handle in the caller**
+**Handle in the calling method**
 
 <pre class="language-java" data-overflow="wrap" data-line-numbers><code class="lang-java">class Main {
 <strong>  static FileReader openFile(String filename) throws FileNotFoundException {
@@ -186,12 +186,93 @@ A checked exception, however, must be handled. And this is done by either handli
 </strong>  }
 }
 </code></pre>
+
+Line 2 is a **method declaration** which indicates that the method `openFile()` **may** throw a `FileNotFoundException`.
 {% endstep %}
 {% endstepper %}
 
 {% hint style="info" %}
 _A good program always handles checked exception gracefully_ and hides the details from the users.
 {% endhint %}
+
+### Control Flow of Exceptions
+
+The use of Exceptions can affect the control flow of our program. For example, with the code following
+
+{% code lineNumbers="true" %}
+```java
+try {
+    m1();
+} catch (E1 e) {
+    :
+} catch (E2 e) {
+    :
+} finally {
+    :
+}
+
+void m1() {
+    :
+    m2();
+    :
+}
+
+void m2() {
+    :
+    m3();
+    :
+}
+
+void m3() {
+    :
+    m4();
+    :
+}
+
+void m4() {
+    :
+    // throw new E2();
+    :
+}
+```
+{% endcode %}
+
+Our normal control flow is as follows,
+
+<figure><img src="../../.gitbook/assets/lec04-control-flow-exceptions-normal.png" alt=""><figcaption></figcaption></figure>
+
+Then, what if we have thrown an exception `E2` inside the `m4()`? (We decomment the Line 31 in the code above). Then, our control flow will become:
+
+<figure><img src="../../.gitbook/assets/lec04-control-flow-exceptions-throw.png" alt=""><figcaption></figcaption></figure>
+
+{% hint style="info" %}
+Note that the `finally` block is always executed even when `return` or `throw` is called in a `catch` block.
+{% endhint %}
+
+### Good Practices for Exception Handling
+
+#### Catch Exceptions to Clean Up <a href="#catch-exceptions-to-clean-up" id="catch-exceptions-to-clean-up"></a>
+
+In the example, we may notice that if we have allocated some resources in `m2()` or `m3()`, they might not be deallocated because of the control flow of our exception handling.
+
+So, it is recommended to handle the exception in the **called method** itself by using another `try-catch-finally` block. And if you still feel a need to pass the exception to the calling method, you can also do it by throwing this exception again in the `catch` block. For example,
+
+{% code lineNumbers="true" %}
+```java
+public void m2() throws E2 {
+  try {
+    // setup resources
+    m3();
+  }
+  catch (E2 e) {
+    throw e;
+  }
+  finally {
+    // clean up resources
+  }
+}
+```
+{% endcode %}
 
 [^1]: or "elements" if you are from CS1010, which uses C as the teaching language.
 
