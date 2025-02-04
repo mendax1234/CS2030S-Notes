@@ -48,30 +48,30 @@ When doing the search, all the inherited methods from $$C$$'s supertypes/supercl
 {% step %}
 **Find the most specific method**
 
-We may have several matching methods, and how do you decide which one's descriptor to get? Here, we use the **principle of "the most specific one"**.
+We may have several matching methods, and how do we decide which one's descriptor to get? Here, we use the **principle of "the most specific one"**.
 
-Basically, we should first **pass in the** [**arguments from our invocated method**](#user-content-fn-2)[^2] **to the method we found during step 1.** If the arguments **cannot** be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation-error).
+Basically, we should first **pass in the** [**arguments from our invocated method**](#user-content-fn-2)[^2] **to the method we found during step 1.** If the arguments [**cannot**](#user-content-fn-3)[^3] be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation-error).
 
 After trying all the options, if there is **only one matching method**, then we have found!
 
-Otherwise, if there are **more than one methods** that satisfy our requirements, we can use the **principle of "the most specific one"** to return the method description of the **most specific one**.
+Otherwise, if there are **more than one methods** that satisfy our requirements, we can use the **principle of "the most specific one"** to return the method descriptor of the **most specific one**.
 
 > **The principle of "the most specific one"**: a method $$M$$ is more specific than method $$N$$ if the arguments to $$M$$ can be passed to $$N$$ without compilation error.
 
-Basically, this means that the **type of the parameter in** $$M$$ is **subtype** of the **type of the parameter in** $$N$$. For example, `equals(Circle)` is **more specific than** `equals(Object)`.
+Basically, this means that the **type of the parameter in** $$M$$ is the **subtype** of the **type of the parameter in** $$N$$. For example, `equals(Circle)` is **more specific than** `equals(Object)`.
 
 {% hint style="info" %}
-Note that after this step, if there are still more than one method that satisfy our requirements, than the compiler will **generate a compilation-error**.
+Note that after this step, if there are still more than one method that satisfy our requirements, than the compiler will **generate a compilation error**.
 {% endhint %}
 {% endstep %}
 
 {% step %}
-**Pass the method description we found to run-time step**
+**Pass the method descriptor we found to run-time step**
 
 As the name suggests, we will pass the **all the information** in the _method descriptor_ to the next step.
 
 {% hint style="info" %}
-Note that in this step, we don't need to return any information about the class since it is not included in [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor)_._
+Note that in this step, we don't need to return any information about the class since it is **not** included in [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor)_._
 {% endhint %}
 {% endstep %}
 {% endstepper %}
@@ -99,7 +99,7 @@ The information from the _method descriptor_ we get during compile-time includes
 
 Similar to the compile process, now we should find the **run-time type** of the target, let's say it's $$D$$ (If using the same example, $$D$$ should be the **subtype** of $$C$$. Otherwise, a compilation error will be generated because this is considered as a _narrowing type conversion without explicit casting_)
 
-This **run-time type** information tells us the class we should start to search from. Basically, it is from this class all the way up to the root class `Object`.
+This **run-time type** information tells us the class that we should start to search from. Basically, it is searching from this class all the way up to the root class `Object`.
 {% endstep %}
 
 {% step %}
@@ -115,10 +115,10 @@ The **first** matching method will be executed.
 
 ***
 
-Till now, we have seen that a variable `obj` with type[^3] `Object` can have many "similar"[^4] methods. In Java, which method is invoked is decided _during run-time_, depending on the run-time type of the `obj`. This is called _dynamic binding_ or _late binding_ or _dynamic dispatch_.
+Till now, we have seen that a variable `obj` with type[^4] `Object` can have many "similar"[^5] methods. In Java, which method is invoked is decided _during run-time_, depending on the run-time type of the `obj`. This is called _dynamic binding_ or _late binding_ or _dynamic dispatch_.
 
 {% hint style="info" %}
-Other programming like C may use a different mechanism called _early binding_, which basically means that which function to run will be decided during the compile-time.
+Other programming language, like C, may use a different mechanism called _early binding_, which basically means that which function to run will be decided during the _compile-time_.
 {% endhint %}
 
 ### Class methods
@@ -129,7 +129,7 @@ The description above **only** applies to instance methods. Class methods, on th
 
 Methods [_overriding_](../lec-02-class-instance-methods-inheritance/#overriding) enables _polymorphism_, which is the last pillar of OOP, and arguably the most powerful one. It basically states that we should use the base-type class as much as possible.
 
-Since _polymorphism_ will [**dynamically decide**](#user-content-fn-5)[^5] which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. Instead, we can just create a new derived/sub "type[^6]" and then use _polymorphism_ to achieve what we want to achieve.
+Since _polymorphism_ will [**dynamically decide**](#user-content-fn-6)[^6] which method implementation to execute during **run-time**, so that to change how our existing code behaves, we don't have to change a single line of our existing code. Instead, we can just create a new derived/sub "type[^7]" and then use _polymorphism_ to achieve what we want to achieve.
 
 Let's use an example to have a glimpse of the power of _polymorphism_.
 
@@ -198,7 +198,7 @@ So, seems that now we want to create something more **specific** than `Object` t
 
 ***
 
-> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^7] will be generated!
+> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^8] will be generated!
 
 In our example, we may want to create an _abstract class_ called `Shape`. To do so, we can use the keyword `abstract`.
 
@@ -221,7 +221,7 @@ An _abstract method_ **cannot** be implemented and therefore **should not have**
 ***
 
 {% hint style="info" %}
-A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^8] will be generated. On the other hand, an abstract class may have **no** abstract method.
+A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^9] will be generated. On the other hand, an abstract class may have **no** abstract method.
 {% endhint %}
 
 ### Concrete class
@@ -312,7 +312,7 @@ So far, we have seen two ways to establish the **subtype relationship** between 
 This is a knowledge point that almost all students in the past cohort fail, so it must be very valuable! See more [here](https://edstem.org/us/courses/72783/discussion/6079061?answer=14080449).
 {% endhint %}
 
-As we have seen in the previous lecture, in Java, two types without a _subtype_ relationship [cannot be casted](#user-content-fn-9)[^9]. However, let's consider the code as follows,
+As we have seen in the previous lecture, in Java, two types without a _subtype_ relationship [cannot be casted](#user-content-fn-10)[^10]. However, let's consider the code as follows,
 
 <pre class="language-java" data-line-numbers><code class="lang-java">interface I {
   :
@@ -377,16 +377,18 @@ However, if you actually declare class `A` with `final` keyword which prevents i
 
 [^2]: The arguments should be **compile-time type** since during compile-time, we have no idea about the run-time.
 
-[^3]: "type" is the synonym of "class" in Java
+[^3]: "cannot" doesn't mean the type must be exactly the same! Note that the subtype can be passed into its supertype!
 
-[^4]: I call them "similar" because they look very alike.
+[^4]: "type" is the synonym of "class" in Java
 
-[^5]: This is the _dynamic binding_ we have introduced above.
+[^5]: I call them "similar" because they look very alike.
 
-[^6]: if you are not familiar with the idea that "type" is the synonym of "class", just take every type I have mentioned in this document as "class".
+[^6]: This is the _dynamic binding_ we have introduced above.
 
-[^7]: which kind of error? Ask
+[^7]: if you are not familiar with the idea that "type" is the synonym of "class", just take every type I have mentioned in this document as "class".
 
 [^8]: which kind of error? Ask
 
-[^9]: Both explicitly and implicitly are not allowed.
+[^9]: which kind of error? Ask
+
+[^10]: Both explicitly and implicitly are not allowed.
