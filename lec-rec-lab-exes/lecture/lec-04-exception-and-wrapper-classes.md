@@ -4,6 +4,10 @@
 
 In the previous [lec](lec-03-polymorphism/), we have introduced how to write general code on **reference type** by using _polymorphism_. Then, how about the **primitive type**? How do we write general code for the primitive type (a.k.a make primitive types less primitive)? Here it comes — The Wrapper class.
 
+{% hint style="info" %}
+Another reason to use _Wrapper Class_ is that `int[]` **cannot** be converted to `Obj[]` automatically.
+{% endhint %}
+
 ***
 
 A _wrapper class_ is a class that encapsulates a _type_. For example, the wrapper class for `int` is called `Integer`, for `double` is called `Double`, etc. The table for the wrapper class for all primitive types in Java is summarised as follows:
@@ -42,6 +46,10 @@ Integer i = 4;
 {% endcode %}
 
 Here, the primitive value of `int` 4 is converted into an _instance_ of `Integer`.
+
+{% hint style="info" %}
+Auto-boxing **doesn't** work for complex types, like Array. So, Java cannot convert `int[]` to `Integer[]`.
+{% endhint %}
 {% endstep %}
 
 {% step %}

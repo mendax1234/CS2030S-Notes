@@ -252,6 +252,8 @@ interface GetAreable {
 
 {% hint style="info" %}
 All methods declared in an interface are `public abstract` by default, so we can omit these two keywords.
+
+Interface cannot have fields.
 {% endhint %}
 
 Now, for every class that we wish to be able call `getArea()` on, we tell Java that the class `implements` that particular interface.
