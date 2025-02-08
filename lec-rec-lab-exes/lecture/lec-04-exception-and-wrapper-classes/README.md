@@ -1,8 +1,12 @@
 # Lec 04 - Exception and Wrapper Classes
 
+Slides:
+
+{% embed url="https://nus-cs2030s.github.io/2425-s2/slides/cs2030s-lec04.html#1" %}
+
 ## Wrapper Class
 
-In the previous [lec](lec-03-polymorphism/), we have introduced how to write general code on **reference type** by using _polymorphism_. Then, how about the **primitive type**? How do we write general code for the primitive type (a.k.a make primitive types less primitive)? Here it comes — The Wrapper class.
+In the previous [lec](../lec-03-polymorphism/), we have introduced how to write general code on **reference type** by using _polymorphism_. Then, how about the **primitive type**? How do we write general code for the primitive type (a.k.a make primitive types less primitive)? Here it comes — The Wrapper class.
 
 {% hint style="info" %}
 Another reason to use _Wrapper Class_ is that `int[]` **cannot** be converted to `Obj[]` automatically.
@@ -81,9 +85,13 @@ The main point of this part is about **when explicit casting will be successful*
 
 **Explicit casting** is usually done during the _narrowing type conversion_ process, which is happened during the **run-time**, and as the name suggests, the type must be "narrowed down". So, for an **explicit casting** to be successful, the two types must have a **subtype relationship**.
 
-### Run-Time error or compile-time error?
+### Run-Time error or Compile-Time error?
 
 When doing type casting, if the **compile-time type** of the two objects have **no** subtype relationship, then a **compile-time error** will be generated.
+
+{% hint style="info" %}
+Explicit Type casting using `()` will happen during the compile-time.
+{% endhint %}
 
 On the other hand, a **run-time error** will be generated when there is **no** subtype relationship between the **run-time** **type** of the two objects you are operating on.
 
@@ -247,11 +255,11 @@ void m4() {
 
 Our normal control flow is as follows,
 
-<figure><img src="../../.gitbook/assets/lec04-control-flow-exceptions-normal.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec04-control-flow-exceptions-normal.png" alt=""><figcaption></figcaption></figure>
 
 Then, what if we have thrown an exception `E2` inside the `m4()`? (We decomment the Line 31 in the code above). Then, our control flow will become:
 
-<figure><img src="../../.gitbook/assets/lec04-control-flow-exceptions-throw.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec04-control-flow-exceptions-throw.png" alt=""><figcaption></figcaption></figure>
 
 {% hint style="info" %}
 Note that the `finally` block is always executed even when `return` or `throw` is called in a `catch` block.

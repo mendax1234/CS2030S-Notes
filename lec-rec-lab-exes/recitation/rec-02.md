@@ -40,7 +40,7 @@ Conversely, a `Rectangle` cannot be inheritted from a `Square` since a `Square` 
 
 Let's see the following example, where we have `A::foo` and `B::foo`. Class `C` inherits from `A` and `B`.&#x20;
 
-<figure><img src="../../.gitbook/assets/image.png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/rec02-extend-multiple-classes.png" alt="" width="375"><figcaption></figcaption></figure>
 
 If we do not override `foo`. What will `C::foo` call? `A::foo` or `B::foo`? We don't know. So does the compiler. Thus, we cannot inherit a class from multiple classes.
 
@@ -48,7 +48,7 @@ If we do not override `foo`. What will `C::foo` call? `A::foo` or `B::foo`? We d
 
 Suppose now `A` and `B` become two interfaces. Recall that all the methods in `interface` are `public abstract`, thus have no implementation. And all concrete classes that implement an interface must override the methods in the interface to provide a concrete implementation.
 
-<figure><img src="../../.gitbook/assets/image (1).png" alt="" width="375"><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/rec02-implement-multiple-interfaces.png" alt="" width="375"><figcaption></figcaption></figure>
 
 So, now what will happen if we call `C::foo`? By the knowledge of [#method-invocation](../lecture/lec-03-polymorphism/#method-invocation "mention"), we can clearly notice that `C::foo` will call the `foo` that is overriden in the class `C` itself. Thus, there is no problem for a class to implement several interfaces.
 

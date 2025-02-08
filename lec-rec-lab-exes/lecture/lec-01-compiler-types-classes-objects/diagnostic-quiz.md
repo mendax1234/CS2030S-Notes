@@ -43,7 +43,7 @@ The term "widening" is easy to see for primitive types — the subtype has a nar
 In this problem `i` is `int` and `f` is float, and `int <: float`, so `f = i` is a _widening type conversion_. For this question, we can get two tips as follows:&#x20;
 
 * Java is a **strongly typed language**, but it allows _widening type conversion_ and will do this automatically **without explicit casting**.
-* However, _narrowing type conversion_ without explicit casting is **not** allowed in Java. (WHY? Prof said will find out in future lec)
+* However, _narrowing type conversion_ without explicit casting is **not** allowed in Java and it will generate a **compile-time error** (so, there is even no chance to get an **run-time error** here)
 
 ## Tips
 
