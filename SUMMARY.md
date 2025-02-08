@@ -19,5 +19,6 @@
   * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)
 * [Lab](lec-rec-lab-exes/lab/README.md)
   * [Lab 01 - Logistics, Introduction to OOP, Exercise 0](lec-rec-lab-exes/lab/lab-01-logistics-introduction-to-oop-exercise-0.md)
+  * [Lab 02 - Interface,Wrapper Class, Exercise 1,2](lec-rec-lab-exes/lab/lab-02-interface-wrapper-class-exercise-1-2.md)
 * [Exercises](lec-rec-lab-exes/exercises/README.md)
   * [Exercise 0 - Circle and Point](lec-rec-lab-exes/exercises/exercise-0-circle-and-point.md)
