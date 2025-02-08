@@ -52,6 +52,10 @@ We may have several matching methods, and how do we decide which one's descripto
 
 Basically, we should first **pass in the** [**arguments from our invocated method**](#user-content-fn-2)[^2] **to the method we found during step 1.** If the arguments [**cannot**](#user-content-fn-3)[^3] be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation-error).
 
+{% hint style="info" %}
+Type casting is done durint the compilte-time. So it means for example, if we have an argument `(Circle) o2`, where `o2` 's CTT is `Object` . It will be considered as  `Circle` during the compile-time.
+{% endhint %}
+
 After trying all the options, if there is **only one matching method**, then we have found!
 
 Otherwise, if there are **more than one methods** that satisfy our requirements, we can use the **principle of "the most specific one"** to return the method descriptor of the **most specific one**.
@@ -149,10 +153,10 @@ At Line 3, **depending on the run-time type** of `curr`, the corresponding, cust
 
 **Goal**: To provide a way to decide when we misuse of _overriding_ and _inheritance_ (a.k.a _polymorphism_).
 
-**Soul/Main content**: A _subclass **should not**_ break the expectations set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
+**Soul/Main content**: A _subclass **should not**_ break the expectations / specifications set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
 
 {% hint style="info" %}
-The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking [_subtype_](../lec-01-compiler-types-classes-objects/#subtypes)_._
+The LSP (**L**iskov **S**ubstitution **P**rinciple) is a formal way of speaking [_subtype_](../lec-01-compiler-types-classes-objects/#subtypes)_._ It is a very important technique to tell you whether you should inherit a class from another.
 {% endhint %}
 
 ### Pure substitution vs. Impure substitution

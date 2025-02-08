@@ -16,6 +16,7 @@
   * [Lec 04 - Exception and Wrapper Classes](lec-rec-lab-exes/lecture/lec-04-exception-and-wrapper-classes.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
+  * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)
 * [Lab](lec-rec-lab-exes/lab/README.md)
   * [Lab 01 - Logistics, Introduction to OOP, Exercise 0](lec-rec-lab-exes/lab/lab-01-logistics-introduction-to-oop-exercise-0.md)
 * [Exercises](lec-rec-lab-exes/exercises/README.md)
