@@ -12,11 +12,17 @@ That is, if $$A<:B$$ and $$B<:C$$, then $$A<:C$$
 
 > To see whether a code will generate compile-error or not, we **only** see the CTT of the variable and the type casting.
 
-Type casting will cast the variable to that specific type during the compile-time.
+Type casting will cast the variable to that specific type during the **compile-time**.
 
 ### 03. Type casting and rum-time error
 
-> Run-time error judgement **only** needs us to see the RTT of the variable and whether the type casting follows the subtype relationship.
+> Run-time error judgement **only** needs us to see the RTT of the variable. We **must** ignore the type casting!
+
+As we have seen above, type casting is only done during the compile-time. So, during the run-time, we can just **ignore** the type casting and see the subtype relationship between the RTT of the L.H.S and R.H.S variable.
+
+{% hint style="info" %}
+This is because Java is **strongly typed**, meaning objects always retain their actual type (RTT).
+{% endhint %}
 
 ### 04. Wrapper class
 
@@ -68,5 +74,5 @@ try {
 
 1. Pay attention to the _reflexive_ property of the subtype relationship. This willl ensure you get **all** the correct options! Don't miss one!
 2. To see whether a code will generate **compile-error** or not, we **only** see the **CTT** of the variable and the type casting.
-3. **Run-time error** judgement **only** needs us to see the **RTT** of the variable and whether the type casting follows the subtype relationship.
+3. **Run-time** error judgement **only** needs us to see the **RTT** of the variable. We **must ignore** the type casting because Java is **strongly typed**, meaning objects always retain their actual type (RTT).
 4. Include the exception hierarchy in the cheatsheet!
