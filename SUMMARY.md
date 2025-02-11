@@ -15,6 +15,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-03-polymorphism/diagnostic-quiz.md)
   * [Lec 04 - Exception and Wrapper Classes](lec-rec-lab-exes/lecture/lec-04-exception-and-wrapper-classes/README.md)
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-04-exception-and-wrapper-classes/diagnostic-quiz.md)
+  * [Lec 05 - Generics](lec-rec-lab-exes/lecture/lec-05-generics.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
   * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)
