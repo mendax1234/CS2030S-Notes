@@ -88,7 +88,7 @@ Type arguments must be _reference type_. You cannot replace a type parameter wit
 class Pair<S,T> implements Comparable<Pair<S,T>>
 ```
 
-For the explanation about this code, please go to [#an-interesting-example](lec-05-generics.md#an-interesting-example "mention") since it may invole some knowledge in the later parts of this lecture.
+For the explanation about this code, please go to [#an-interesting-example](./#an-interesting-example "mention") since it may invole some knowledge in the later parts of this lecture.
 {% endstep %}
 
 {% step %}
@@ -221,7 +221,9 @@ Different languages implement the Generics differently. Basically, we have the f
 
 Part of the reason that Java uses **code sharing** is because of the backward compatibility since before Java 5, java uses `Object` to implement classes that are general enough to work on multiple types.
 
-### Type Erause process in Java
+### Type Erasure process in Java
+
+Type Erasure is performed during **compile-time**.
 
 {% stepper %}
 {% step %}
@@ -287,4 +289,8 @@ But actually, the first code snippet **cannot compile** because generic array de
 
 ## Unchecked warnings
 
-In Java, generics are [**invariant**](lec-04-exception-and-wrapper-classes/#variance-of-types)**.** This means there is no subtype relationship between for example, `ArrayList<Object>` and `ArrayList<Pair<String, Integer>>`.
+In Java, generics are [**invariant**](../lec-04-exception-and-wrapper-classes/#variance-of-types)**.** This means there is no subtype relationship between for example, `ArrayList<Object>` and `ArrayList<Pair<String, Integer>>`.
+
+***
+
+An _unchecked warning_ is basically a message from the compiler that it has done what it can, but because of type erasures, there could be a run-time error that it cannot prevent.
