@@ -255,7 +255,7 @@ Integer i = (Integer) new Pair("hello", 4).getSecond();
 
 ### Some dangers of Type Erasure
 
-One big danger of type erasure is the **heap pollution**, this is also caused because generics and arrays can't mix. For example,
+One big danger of type erasure is the **heap pollution**, this is because generics and arrays can't mix. For example,
 
 ```java
 // create a new array of pairs
@@ -284,3 +284,7 @@ objArray[0] = new Pair(3.14, true);
 Seems that this code will generate no compile-time error and run-time error! But you are storing a pair `<Double, boolean>` into the pair array of `<String, Integer>`!
 
 But actually, the first code snippet **cannot compile** because generic array declaration is fine but generic array instantiation is **not**!
+
+## Unchecked warnings
+
+In Java, generics are [**invariant**](lec-04-exception-and-wrapper-classes/#variance-of-types)**.** This means there is no subtype relationship between for example, `ArrayList<Object>` and `ArrayList<Pair<String, Integer>>`.
