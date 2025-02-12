@@ -194,3 +194,77 @@ class Pair<S extends Comparable<S>,T> implements Comparable<Pair<S,T>> {
 * We declared `Pair` to be a generic type of two type parameters: the first one `S` is bounded and must be a subtype of `Comparable<S>`. This bound is self-referential, but it is intuitive — we say that `S` must be comparable to itself, which is common in many use cases.
 * Since we want to compare two `Pair` instances, we make `Pair` implement the `Comparable` interface too, passing in `Pair<S,T>` as the type argument to `Comparable`. (So, actually here the type arguement is a generic type, which serves as a good example for our second case)
 
+## Type Erasure
+
+### Implementing Generics
+
+Different languages implement the Generics differently. Basically, we have the following two methods:
+
+1. **Code specialization**: it means that instantiating the generic types, like `Pair<String, Integer>` causes new code to be generated during **compile-time**. C++ and Rust use this method.
+2. **Code sharing**: it means that instead of creating a new type for every instantiation, it chooses to _erase_ the type parameters and type arguments during **compilation** (after type checking, of course). Thus, there is only one representation of the generic type in the generated code, representing all the instantiated generic types, regardless of the type arguments. Java uses this method.
+
+Part of the reason that Java uses **code sharing** is because of the backward compatibility since before Java 5, java uses `Object` to implement classes that are general enough to work on multiple types.
+
+### Type Erause process in Java
+
+{% stepper %}
+{% step %}
+**Replace the type parameters**
+
+The non-bounded type parameters are replaced with `Object`. The bounded type parameters are replaced by the bounds instead. (e.g., If `T extends GetAreable`, then `T` is replaced with `GetAreable`.)
+
+{% hint style="info" %}
+This step is done implicitly.
+{% endhint %}
+{% endstep %}
+
+{% step %}
+**Do the necessary type casting**
+
+This is done after the compiler has done the type checking
+{% endstep %}
+{% endstepper %}
+
+For example, in the following code where a generic type is instantiated and used, the code
+
+```java
+Integer i = new Pair<String,Integer>("hello", 4).getSecond();
+```
+
+is transformed into,
+
+```java
+Integer i = (Integer) new Pair("hello", 4).getSecond();
+```
+
+### Some dangers of Type Erasure
+
+One big danger of type erasure is the **heap pollution**, this is also caused because generics and arrays can't mix. For example,
+
+```java
+// create a new array of pairs
+Pair<String,Integer>[] pairArray = new Pair<String,Integer>[2];
+
+// pass around the array of pairs as an array of object
+Object[] objArray = pairArray;
+
+// put a pair into the array -- no ArrayStoreException!
+objArray[0] = new Pair<Double,Boolean>(3.14, true);
+```
+
+After type erause, it will become
+
+```java
+// create a new array of pairs
+Pair[] pairArray = new Pair[2];
+
+// pass around the array of pairs as an array of object
+Object[] objArray = pairArray;
+
+// put a pair into the array -- no ArrayStoreException!
+objArray[0] = new Pair(3.14, true);
+```
+
+Seems that this code will generate no compile-time error and run-time error! But you are storing a pair `<Double, boolean>` into the pair array of `<String, Integer>`!
+
+But actually, the first code snippet **cannot compile** because generic array declaration is fine but generic array instantiation is **not**!
