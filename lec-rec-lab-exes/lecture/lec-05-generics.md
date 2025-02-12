@@ -194,6 +194,22 @@ class Pair<S extends Comparable<S>,T> implements Comparable<Pair<S,T>> {
 * We declared `Pair` to be a generic type of two type parameters: the first one `S` is bounded and must be a subtype of `Comparable<S>`. This bound is self-referential, but it is intuitive — we say that `S` must be comparable to itself, which is common in many use cases.
 * Since we want to compare two `Pair` instances, we make `Pair` implement the `Comparable` interface too, passing in `Pair<S,T>` as the type argument to `Comparable`. (So, actually here the type arguement is a generic type, which serves as a good example for our second case)
 
+Antother interesting way to think about / know what happens with the _generic type parameter_ is: that
+
+{% stepper %}
+{% step %}
+**Declaration**
+
+This is to take the first appearance of the _generic type parameter_ as the **declaration**. For example,  in the above generic type, we are **declaring/defining** two type parameters `S, T`, where `S extends Comparable<S>` (which basically means type `S` can be compared to itself).
+{% endstep %}
+
+{% step %}
+**Usage**
+
+Then we in our class or method parameters, we can use the type we have declared/defined at Step 1.
+{% endstep %}
+{% endstepper %}
+
 ## Type Erasure
 
 ### Implementing Generics
