@@ -30,7 +30,7 @@ Here, you may get a bit confused, but actually we are using the knowledge that i
 
 > Use our tradition, this generic class / interface can be called _generic type_ as well.
 
-A _generic type parameter_ can be defined for a class or interface.
+A / Some _generic type parameter(s)_ can be defined for a class or interface.
 
 #### Generic Type Declaration
 
@@ -79,6 +79,10 @@ Pair<String,Integer> pair = new Pair<String,Integer>("hello", 4);
 {% hint style="info" %}
 Type arguments must be _reference type_. You cannot replace a type parameter with a primitive type, like `int`, `double`, etc.
 {% endhint %}
+
+{% hint style="warning" %}
+Using raw types (e.g., `new Pair()` without type arguments) can lead to **unchecked conversion** warnings. Always use the diamond operator `<>` or provide explicit type arguments inside the `<>` to ensure type safety.
+{% endhint %}
 {% endstep %}
 
 {% step %}
@@ -87,6 +91,8 @@ Type arguments must be _reference type_. You cannot replace a type parameter wit
 ```java
 class Pair<S,T> implements Comparable<Pair<S,T>>
 ```
+
+The class `Pair` takes two type parameters `S` and `T`. It implements the `Comparable` interface with the type argument `Pair<S, T>`. This means the `compareTo` method expects another `Pair` with the same type parameters.
 
 For the explanation about this code, please go to [#an-interesting-example](./#an-interesting-example "mention") since it may invole some knowledge in the later parts of this lecture.
 {% endstep %}
@@ -100,7 +106,12 @@ class DictEntry<T> extends Pair<String,T> {
 }
 ```
 
-Here, we define a generic class called `DictEntry<T>` with a single type parameter `T`, that extends from `Pair<String,T>`. The type parameter `<T>` from `DictEntry<T>` is passed as the type argument for `T` of `Pair<String, T>`
+`DictEntry` is a generic class with one type parameter `T`. It extends `Pair<String, T>`, which means:
+
+* The first type parameter `S` in `Pair` is fixed as `String`.
+* The second type parameter `T` is passed along from `DictEntry`.
+
+This design is useful when you want to create a specialized version of a generic class where one of the type parameters is fixed.
 {% endstep %}
 {% endstepper %}
 
@@ -194,19 +205,23 @@ class Pair<S extends Comparable<S>,T> implements Comparable<Pair<S,T>> {
 * We declared `Pair` to be a generic type of two type parameters: the first one `S` is bounded and must be a subtype of `Comparable<S>`. This bound is self-referential, but it is intuitive — we say that `S` must be comparable to itself, which is common in many use cases.
 * Since we want to compare two `Pair` instances, we make `Pair` implement the `Comparable` interface too, passing in `Pair<S,T>` as the type argument to `Comparable`. (So, actually here the type arguement is a generic type, which serves as a good example for our second case)
 
-Antother interesting way to think about / know what happens with the _generic type parameter_ is: that
+{% hint style="info" %}
+A bound like `<S extends Comparable<S>>` is a common pattern called **self-referential boud.** It ensures a type can be compared to others of its own kind.
+{% endhint %}
+
+#### Declaration vs. Usage of Generic Parameters:
 
 {% stepper %}
 {% step %}
 **Declaration**
 
-This is to take the first appearance of the _generic type parameter_ as the **declaration**. For example,  in the above generic type, we are **declaring/defining** two type parameters `S, T`, where `S extends Comparable<S>` (which basically means type `S` can be compared to itself).
+The first appearance of the generic type parameters (`S` and `T`) in the class definition is where they are declared. In our example, this is in `<S extends Comparable<S>, T>`.
 {% endstep %}
 
 {% step %}
 **Usage**
 
-Then we in our class or method parameters, we can use the type we have declared/defined at Step 1.
+After declaring them, these type parameters can be used throughout the class. For instance, they are used in the type signature of the `Comparable` interface (`Comparable<Pair<S, T>>`), in method parameters, return types, or field declarations.
 {% endstep %}
 {% endstepper %}
 
@@ -223,13 +238,18 @@ Part of the reason that Java uses **code sharing** is because of the backward co
 
 ### Type Erasure process in Java
 
-Type Erasure is performed during **compile-time**.
+Type erasure is a **compile-time** process that removes generic type information to ensure backward compatibility with legacy Java code that doesn’t use generics. Here's what happens during type erasure:
 
 {% stepper %}
 {% step %}
-**Replace the type parameters**
+**Replacing Type Parameters:**
 
-The non-bounded type parameters are replaced with `Object`. The bounded type parameters are replaced by the bounds instead. (e.g., If `T extends GetAreable`, then `T` is replaced with `GetAreable`.)
+* **Non-Bounded Type Parameters:**\
+  If a type parameter is not bounded (e.g., `<T>`), it is replaced with `Object`.
+*   **Bounded Type Parameters:**\
+    If a type parameter has an upper bound (e.g., `<T extends GetAreable>`), it is replaced with the first bound (in this case, `GetAreable`).
+
+    > **Note:** If multiple bounds exist (e.g., `<T extends SomeClass & SomeInterface>`), only the first bound (which must be a class or `Object` if absent) is used during erasure.
 
 {% hint style="info" %}
 This step is done implicitly.
@@ -237,9 +257,10 @@ This step is done implicitly.
 {% endstep %}
 
 {% step %}
-**Do the necessary type casting**
+**Inserting Necessary Casts:**
 
-This is done after the compiler has done the type checking
+* After replacing type parameters, the compiler inserts casts where needed. This ensures that **type checking** (done at **compile time**) is still enforced at **runtime**.
+* For example, when retrieving an element from a generic collection, the compiler adds a cast to the expected type because, after erasure, the collection is treated as holding `Object` references (or the specific bound type).
 {% endstep %}
 {% endstepper %}
 
