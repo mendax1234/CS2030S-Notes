@@ -1,4 +1,4 @@
-# Exercise 1 - Simulation I
+# Exercise 1 - Simulation 1
 
 ## Background
 
@@ -142,7 +142,7 @@ Output:
 
 ### Class Relationship Diagram
 
-<figure><img src="../../.gitbook/assets/ex1-uml-diagram.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/ex1-uml.png" alt=""><figcaption></figcaption></figure>
 
 ### Tips
 
