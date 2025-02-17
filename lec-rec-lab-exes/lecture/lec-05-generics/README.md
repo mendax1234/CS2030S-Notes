@@ -310,8 +310,183 @@ But actually, the first code snippet **cannot compile** because generic array de
 
 ## Unchecked warnings
 
-In Java, generics are [**invariant**](../lec-04-exception-and-wrapper-classes/#variance-of-types)**.** This means there is no subtype relationship between for example, `ArrayList<Object>` and `ArrayList<Pair<String, Integer>>`.
+Basically, unchecked warnings will happen in the following **two** cases:
 
-***
+1. the type casting process when you create an array with type parameters. See [#create-arrays-with-type-parameters](./#create-arrays-with-type-parameters "mention")
+2. raw types are used. (This actually will cause a `rawtype` warning instead of an `unchecked` warning). See [#raw-types](./#raw-types "mention")
 
-An _unchecked warning_ is basically a message from the compiler that it has done what it can, but because of type erasures, there could be a run-time error that it cannot prevent.
+### Generics are invariant
+
+In Java, generics are [**invariant**](../lec-04-exception-and-wrapper-classes/#variance-of-types)**.** This means there is no subtype relationship between two generic types. For example,
+
+{% code lineNumbers="true" %}
+```java
+class A<T> {
+    ...
+}
+
+// S <: T
+// A<S> </: A<T>
+```
+{% endcode %}
+
+Even if $$S$$ <: $$T$$, we **cannot** say `A<S>` <: `A<T>`.
+
+### Create Arrays with Type parameters
+
+As we have seen earlier, Java arrays and generics **cannot** mix together! This means that,
+
+> we cannot instantiate a generic type parameter directly, e.g. `new T[]` is not allowed
+
+So, how can we create arrays with type parameters? To get around with this, we can:
+
+{% stepper %}
+{% step %}
+**create a Java array with the type that** `T` **has been replaced by after type erasure**
+
+For example,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class A<T> {
+    public A(int size) {
+        T[] a = new Object[size]; // Demo only, not correct till this step
+    }
+}
+
+class B<T extends Comparable<T>> {
+    public B(int size) {
+        T[] a = new Comparable[size]; // Demo only, not correct till this step
+    }
+}
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+**cast the Java array to type** `T`
+
+For example, the modification we should add is
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class A<T> {
+    public A(int size) {
+        T[] a = (T[]) new Object[size]; // Demo only, not correct till this step
+    }
+}
+
+class B<T extends Comparable<T>> {
+    public B(int size) {
+        T[] a = (T[]) new Comparable[size]; // Demo only, not correct till this step
+    }
+}
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+**suppress the warning after we check that everything is okay manually**
+
+Till now, we are still not done. We may still get a warning as follows,
+
+```bash
+Note: Seq.java uses unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+```
+
+This is called an [**unchecked warning**](#user-content-fn-1)[^1]. And it is caused because the compiler doesn't know whether we can do the casting safely. A.k.a, we are not sure whether the all the elements in the Java array **have a subtype relationship with** `T`, thus an explicit casting maybe dangerous!
+
+To suppress this warning, the first thing we need to do is
+
+> be 100% sure that all the elements in your array are of type `T` or at least have subtype relationship with `T`.
+
+Then ,we can use the code as follows to suppress the warning
+
+{% code lineNumbers="true" %}
+```java
+@SuppressWarnings("unchecked")
+```
+{% endcode %}
+
+Now, our final code should look like as follows,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class A<T> {
+    private T[] array;
+    
+    public A(int size) {
+        @SuppressWarnings("unchecked")
+        T[] a = (T[]) new Object[size]; // Demo only, not correct till this step
+        this.array = a;
+    }
+}
+
+class B<T extends Comparable<T>> {
+    private T[] array;
+    
+    public B(int size) {
+        @SuppressWarnings("unchecked")
+        T[] a = (T[]) new Comparable[size]; // Demo only, not correct till this step
+        this.array = a;
+    }
+}
+```
+{% endcode %}
+
+{% hint style="info" %}
+`@SuppressWarnings` cannot apply to an assignment but only to the declartion. That's why we must use it before Line 16 instead of before Line 17.
+{% endhint %}
+{% endstep %}
+{% endstepper %}
+
+### Raw Types
+
+A _raw type_ is a generic type used **without** type arguments. For example, we have a `Seq<T>`,
+
+{% code lineNumbers="true" %}
+```java
+Seq s = new Seq(4);
+```
+{% endcode %}
+
+The code **will compile**! But it's just that the compiler **cannot** help us to check the type-safety during the compile-time!
+
+> Raw type should never be used in your code! But till now, we have a small exception.
+
+In the following code snippet,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class B<T extends Comparable<T>> {
+    private T[] array;
+    
+    public B(int size) {
+        @SuppressWarnings("unchecked")
+        T[] a = (T[]) new Comparable[size]; // Demo only, not correct till this step
+        this.array = a;
+    }
+}
+```
+{% endcode %}
+
+In fact, merely doing so will still give us a warning! And that is a rawtype warning because Line 6 actually is using **rawtype**! But since we are sure `T` will be replaced by `Comparable` after type erausre, let's just allow this kind of stuff first.
+
+But to fully make this code warning-free. We need to suppress the rawtype warning. Thus, we need to modify our code as follows,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class B<T extends Comparable<T>> {
+    private T[] array;
+    
+    public B(int size) {
+        @SuppressWarnings({"rawtypes", "unchecked"})
+        T[] a = (T[]) new Comparable[size]; // Demo only, not correct till this step
+        this.array = a;
+    }
+}
+```
+{% endcode %}
+
+[^1]: An _unchecked warning_ is basically a message from the compiler that it has done what it can, but because of type erasures, there could be a run-time error that it cannot prevent.
