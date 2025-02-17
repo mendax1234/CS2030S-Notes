@@ -134,7 +134,7 @@ i = "5"; // error, cannot assign a string to an `int`
 The type that a variable is assigned when we declare the variable is also known as the _compile-time type_. During the compilation, this is the **only** type that the compiler is aware of. The compiler will check if the compile-time type matches **when it parses the variables, expressions, values, and function calls**, and [**throw an error if there is a type mismatch**](#user-content-fn-1)[^1]. This type-checking step helps to catch errors in the code early.
 
 {% hint style="info" %}
-An important distinction between dynamic and static type is where the type gets **attached** to. In static typing, the type is attached to the _variable_ such that the variable can only store values of that particular type (_or its subtype as you will see later_). In fact, in Java, the type that is attached to a variable is the _declared_ type (_i,e., the type written in the variable declaration also commonly known as compile-time type_).
+An important distinction between dynamic and static type is where the type gets **attached** to. In static typing, the type is attached to the _variable_ such that the variable can only store values of that particular type (_or its **subtype** as you will see later_). In fact, in Java, the type that is attached to a variable is the _declared_ type (_i,e., the type written in the variable declaration also commonly known as compile-time type_).
 
 On the other hand, in dynamically typed language, the type is attached to the _value_. In other words, a variable can store anything but we can know what the type is because the type can be queried from the value.
 {% endhint %}
@@ -143,7 +143,11 @@ On the other hand, in dynamically typed language, the type is attached to the _v
 
 A _type system_ of a programming language is a set of rules that governs how the types can interact with each other.
 
-Generally, a _strongly typed_ programming language enforces strict rules in its type system, to ensure _type safety_, i.e., to ensure that if there are any problems with the program, it is not due to the type. For instance, catching an attempt at multiplying two strings. One way to ensure type safety is to catch type errors **during compile time rather than leaving it to run time**.
+Generally, a _strongly typed_ programming language enforces strict rules in its type system, to ensure _type safety_, i.e., to ensure that if there are any problems with the program, it is not due to the type. For instance, catching an attempt at multiplying two **strings**. One way to ensure type safety is to catch type errors **during compile time rather than leaving it to run time**.
+
+{% hint style="info" %}
+This concept of type safety is very very important in Java! Catch error during **compile time** instead of **run time**!
+{% endhint %}
 
 On the other hand, a _weakly typed_ (or loosely typed) programming language is more permissive in terms of typing checking. C is an example of a **static, weakly typed** language. In C, the following is **possible**:
 
@@ -247,13 +251,13 @@ Fields that are declared but **not initialized** will be set to a reasonable def
 | String (or any object)   | null                       |
 | boolean                  | false                      |
 
-**Local variables** are slightly different; the compiler never assigns a default value to an uninitialized local variable. If you cannot initialize your local variable where it is declared, make sure to assign it a value before you attempt to use it. Accessing an uninitialized local variable will result in a compile-time error.
+**Local variables** are slightly different; the compiler never assigns a default value to an uninitialized local variable. If you cannot initialize your local variable where it is declared, make sure to assign it a value before you attempt to use it. Accessing an uninitialized local variable will result in a **compile-time error**.
 
 ### Subtypes
 
 Let $$S$$ and $$T$$ be two types. We say that $$T$$ is a _subtype_ of $$S$$ if _a piece of code written for variables of type_ $$S$$ _can also safely be_ [_used_](#user-content-fn-2)[^2] _on variables of type_ $$T$$.
 
-We use the notation $$T<:S$$ or $$S:>T$$ to denote that $$T$$ is $$T$$a subtype of $$S$$. The subtyping relationship in general must satisfy **two** properties:
+We use the notation $$T<:S$$ or $$S:>T$$ to denote that $$T$$ is a subtype of $$S$$. The subtyping relationship in general must satisfy **two** properties:
 
 1. **Reflexive**: For any type S, we have $$S<:S$$ (_i.e._, S is a subtype of itself).
 2. **Transitive**: If  $$S<:T$$ and $$T<:U,$$ then $$S<:U$$. In other words, if $$S$$ is a subtype of $$T$$ and $$T$$ is a subtype of $$U$$, then $$S$$ is a subtype of $$U$$.
@@ -268,7 +272,7 @@ Related to the subtype relationship,
 * In specific scenarios, we use the term _proper subtype_ (or $$<$$) to denote a stricter subtyping: if $$T<:S$$ and $$T\neq S$$, then $$T$$ is a proper subtype of $$S$$, denoted as $$T<S$$.
 
 {% hint style="info" %}
-**Subtype** is nothing but a **subtype**! For more information, see [here](../../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#inheritance).
+**Subtype** is nothing but a **subset**! For more information, see [here](../../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#inheritance).
 {% endhint %}
 
 #### Subtyping Between Java Primitive Types
@@ -308,7 +312,7 @@ Line 4 above would lead to an error:
 
 But Line 3 is OK.
 
-Using the terminology that you just learned, `double` is a supertype of `int`. And this conversion is known as a _narrow type conversion_ and since it is done **without explicit casting**, this is **not** allowed in Java. However, after we implement the **explicit casting** as follows, the code should be ok,
+Using the terminology that you just learned, `double` is a supertype of `int`. And this conversion is known as a _narrow type conversion._ Since it is done **without explicit casting**, this is **not** allowed in Java. However, after we implement the **explicit casting** as follows, the code should be ok,
 
 {% code lineNumbers="true" %}
 ```java
@@ -328,7 +332,7 @@ The reason is that the compiler **does not execute the code** (which is when ass
 
 > In Java, we treat Function as an **abstraction** over computation
 
-In this course, we'd better consider _functions_ as an _abstraction_. This abstraction allows programmers to group a set of instructions and give it a name. The named set of instructions may take one or more variables as input parameters, and return zero or one values.
+In this course, we'd better consider _functions_ as an _abstraction_. This abstraction allows programmers to group a set of **instructions** and give it a name. The named set of instructions may take one or more variables as input parameters, and return zero or one values.
 
 #### Defining a Function in Java
 
@@ -456,7 +460,7 @@ This idea of reference type in Java is similar to the idea of pointers in C, whi
 
 {% stepper %}
 {% step %}
-### Is it possible to instantiate an object twice?&#x20;
+**Is it possible to instantiate an object twice?**&#x20;
 
 The problem is that, in java, is the following code correct? What kind of error will we get?
 
