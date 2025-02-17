@@ -6,7 +6,7 @@ This exercise is built on [exercise-2-simulation-2.md](exercise-2-simulation-2.m
 
 {% stepper %}
 {% step %}
-#### Make `Queue` a generic class <a href="#id-1-make-queue-a-generic-class" id="id-1-make-queue-a-generic-class"></a>
+**Make** `Queue` **a generic class**
 
 This means that you should define your `Queue` with the generic type parameter, which means that the elements in the queue should be of type `T`.
 
@@ -36,7 +36,7 @@ Here, `Object` is used in Line 3 because after type-erasure, `T` will be replace
 {% endstep %}
 
 {% step %}
-#### Create a generic `Seq<T>` class <a href="#id-2-create-a-generic-seqt-class" id="id-2-create-a-generic-seqt-class"></a>
+**Create a generic** `Seq<T>` **class**
 
 Since in this exercise, we want to further make our code generalizable. That is, we don't want to use `Counter[] counters` in exercise 2 to explicitly state that bank has counters. Why not we define our own comparable "array" with a generic type parameter? To do so, we should define `Seq` as follows,
 
@@ -66,7 +66,7 @@ Here, the `Comparable` in Line 3 is used because after type-erasure, `T` will be
 {% endstep %}
 
 {% step %}
-#### Make `Counter` Comparable to Itself <a href="#id-3-make-your-bankcounter-comparable-to-itself" id="id-3-make-your-bankcounter-comparable-to-itself"></a>
+**Make** `Counter` **Comparable to Itself**
 
 As we want to use `Seq<T extends Comparable<T>>` to repalce the `Counter[]` in our bank, we type `T` we pass in must be comparable! That is to say, our `Counter` class must `implement` the `Comparable<Counter>`!
 
@@ -82,7 +82,7 @@ This is to make `Counter` **comparable**!
 {% endstep %}
 
 {% step %}
-#### Update Simulation <a href="#id-4-update-your-simulation" id="id-4-update-your-simulation"></a>
+**Update Simulation**
 
 The last step is to update the simulation workflow accordingly.&#x20;
 
