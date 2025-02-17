@@ -308,7 +308,7 @@ Seems that this code will generate no compile-time error and run-time error! But
 
 But actually, the first code snippet **cannot compile** because generic array declaration is fine but generic array instantiation is **not**!
 
-## Unchecked warnings
+## Unchecked Warnings
 
 Basically, unchecked warnings will happen in the following **two** cases:
 
@@ -336,37 +336,24 @@ Even if $$S$$ <: $$T$$, we **cannot** say `A<S>` <: `A<T>`.
 
 As we have seen earlier, Java arrays and generics **cannot** mix together! This means that,
 
-> we cannot instantiate a generic type parameter directly, e.g. `new T[]` is not allowed
+> we **cannot instantiate** a Java array using the type parameter, e.g. `new T[]` is **not** allowed. However, we **can declare** a Java array using the type parameter, e.g. `T[] a` is allowed.
 
-So, how can we create arrays with type parameters? To get around with this, we can:
+So, how can we create arrays with type parameters? To get around with this, we should
 
 {% stepper %}
 {% step %}
-**create a Java array with the type that** `T` **has been replaced by after type erasure**
+**Determine the type** `Q` **of the type parameter after type erasure**
 
-For example,
+Let's define the type as `Q`. For example,
 
-{% code overflow="wrap" lineNumbers="true" %}
-```java
-class A<T> {
-    public A(int size) {
-        T[] a = new Object[size]; // Demo only, not correct till this step
-    }
-}
-
-class B<T extends Comparable<T>> {
-    public B(int size) {
-        T[] a = new Comparable[size]; // Demo only, not correct till this step
-    }
-}
-```
-{% endcode %}
+1. If the type parameter is `T` only, then `Q` will be `Object`
+2. If the type parameter is bounded, e.g., `T extends Comparable<T>`, then `Q` will be the bound type, which is `Comparable` in our example.
 {% endstep %}
 
 {% step %}
-**cast the Java array to type** `T`
+**create a Java array with type** `Q[]` **cast it to type** `T[]`
 
-For example, the modification we should add is
+For example, we will have
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
