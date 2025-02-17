@@ -142,7 +142,7 @@ Output:
 
 ### Class Relationship Diagram
 
-<figure><img src="../../.gitbook/assets/ex1-uml.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/ex1-uml.svg" alt=""><figcaption><p>UML Design</p></figcaption></figure>
 
 ### Tips
 

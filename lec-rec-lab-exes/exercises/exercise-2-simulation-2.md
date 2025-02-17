@@ -12,6 +12,6 @@ This exercise is built on [exercise-1-simulation-1.md](exercise-1-simulation-1.m
 
 ### Class Relationship Diagram
 
-<figure><img src="../../.gitbook/assets/ex2-uml.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/ex2-uml.svg" alt=""><figcaption><p>UML Design</p></figcaption></figure>
 
 Basically, the UML is quite similar to the Ex1's. The "difficult" point lies in finding the correct logic to trigger each event.
