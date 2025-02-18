@@ -52,15 +52,15 @@ When doing the search, all the inherited methods from $$C$$'s supertypes/supercl
 {% step %}
 **Find the most specific method**
 
-We may have several matching methods, and how do we decide which one's descriptor to get? Here, we use the **principle of "the most specific one"**.
+We may have several matching methods, and how do we decide which one's descriptor to get? Here, we can use the **principle of "the most specific one"**.
 
-Basically, we should first **pass in the** [**arguments from our invocated method**](#user-content-fn-2)[^2] **to the method we found during step 1.** If the arguments [**cannot**](#user-content-fn-3)[^3] be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation-error).
+Basically, we should first **pass in the** [**arguments from our invocated method**](#user-content-fn-2)[^2] **to the method we found during step 1.** If the arguments [**cannot**](#user-content-fn-3)[^3] be passed into the method we found, we move to the next available option. (If no more option is left, we will generate a compilation error).
 
 {% hint style="info" %}
-Type casting is done durint the compilte-time. So it means for example, if we have an argument `(Circle) o2`, where `o2` 's CTT is `Object` . It will be considered as  `Circle` during the compile-time.
+Type casting is done during the compilte-time. So it means for example, if we have an argument `(Circle) o2`, where `o2` 's CTT is `Object` . It will be considered as  `Circle` during the compile-time.
 {% endhint %}
 
-After trying all the options, if there is **only one matching method**, then we have found!
+After trying all the options, if there is **only one matching method**, then we have found and we are done for the compile time!
 
 Otherwise, if there are **more than one methods** that satisfy our requirements, we can use the **principle of "the most specific one"** to return the method descriptor of the **most specific one**.
 
@@ -107,7 +107,7 @@ The information from the _method descriptor_ we get during compile-time includes
 
 Similar to the compile process, now we should find the **run-time type** of the target, let's say it's $$D$$ (If using the same example, $$D$$ should be the **subtype** of $$C$$. Otherwise, a compilation error will be generated because this is considered as a _narrowing type conversion without explicit casting_)
 
-This **run-time type** information tells us the class that we should start to search from. Basically, it is searching from this class all the way up to the root class `Object`.
+This **run-time type** information tells us the class that we should start to search from. Basically, it is to search from this class all the way up to the root class `Object`.
 {% endstep %}
 
 {% step %}
@@ -155,7 +155,7 @@ At Line 3, **depending on the run-time type** of `curr`, the corresponding, cust
 
 ## Liskov Substitution Principle
 
-**Goal**: To provide a way to decide when we misuse of _overriding_ and _inheritance_ (a.k.a _polymorphism_).
+**Goal**: To provide a way to decide when we misuse _overriding_ and _inheritance_ (a.k.a _polymorphism_).
 
 **Soul/Main content**: A _subclass **should not**_ break the expectations / specifications set by the _superclass_. In other words, the test cases that are passed in _superclass_ should also be **passed** in the _subclass_.
 
@@ -185,7 +185,7 @@ The `final` keyword can help prevent **a class to be inherited from** and **a me
 
 **Goal**: To fully take the advantage of _polymorphism_, we want to make our method (a.k.a a kind of [_abstraction_](../../../#four-pillars-of-oop)) as **general** as possible.
 
-One way to do so is to keep defining the object from the root class `Object`. For example, suppose we want to **generalise** `equals()` to check if two objects are equal or not (and extend it to all the other objects, like `Circle`, `Bicycle` etc), we can write the code as follows:
+One way to do so is to keep defining the object from the root class `Object`. For example, suppose we want to **generalize** `equals()` to check if two objects are equal or not (and extend it to all the other objects, like `Circle`, `Bicycle` etc), we can write the code as follows:
 
 {% code lineNumbers="true" %}
 ```java
@@ -200,7 +200,7 @@ boolean contains(Object[] array, Object obj) {
 ```
 {% endcode %}
 
-However, this style of code has a **prerequisite**: the `Object` class must have the method called `equals()`. So, what if we want to generalise other functions, like a function `getArea()` to get the area of a circle, or rectangle? Now the all-time `Object` method doesn't work because there is **no** such method called `getArea()` inside the root class `Object`!
+However, this style of code has a **prerequisite**: the `Object` class must have the method called `equals()`. So, what if we want to generalize other functions, like a function `getArea()` to get the area of a circle, or rectangle? Now the all-time `Object` method doesn't work because there is **no** such method called `getArea()` inside the root class `Object`!
 
 So, seems that now we want to create something more **specific** than `Object` that supports the function we want, yet more **general** than `Circle` or `Rectangle`. Here it comes the other way —  The use of _abstract class_ and _abstract methods_.&#x20;
 
@@ -229,7 +229,7 @@ An _abstract method_ **cannot** be implemented and therefore **should not have**
 ***
 
 {% hint style="info" %}
-A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^9] will be generated. On the other hand, an abstract class may have **no** abstract method.
+A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^8] will be generated. On the other hand, an abstract class may have **no** abstract method.
 {% endhint %}
 
 ### Concrete class
@@ -255,9 +255,8 @@ interface GetAreable {
 {% endcode %}
 
 {% hint style="info" %}
-All methods declared in an interface are `public abstract` by default, so we can omit these two keywords.
-
-Interface cannot have fields.
+1. All methods declared in an interface are `public abstract` by default, so we can omit these two keywords.
+2. Interface **cannot** have fields.
 {% endhint %}
 
 Now, for every class that we wish to be able call `getArea()` on, we tell Java that the class `implements` that particular interface.
@@ -307,7 +306,7 @@ In a concrete class, for it to implement an interface, it has to override **all*
 
 ### Interface as Supertype
 
-If a class $$C$$ implements an interface $$I$$, then $$C<:I$$. This definition implies that a type can have multiple supertypes because a type can implement multiple interfaces.
+If a class $$C$$ implements an interface $$I$$, then $$C<:I$$. This definition implies that a type can have multiple supertypes because a type can [implement multiple interfaces](#user-content-fn-9)[^9].
 
 {% hint style="info" %}
 So far, we have seen two ways to establish the **subtype relationship** between classes and interfaces:
@@ -395,10 +394,10 @@ However, if you actually declare class `A` with `final` keyword which prevents i
 
 [^6]: This is the _dynamic binding_ we have introduced above.
 
-[^7]: if you are not familiar with the idea that "type" is the synonym of "class", just take every type I have mentioned in this document as "class".
+[^7]: if you are not familiar with the idea that "type" is the synonym of "class", just take every "type" I have mentioned in this document as "class".
 
 [^8]: which kind of error? Ask
 
-[^9]: which kind of error? Ask
+[^9]: Here, essentially it is because to implement the interface, a concrete class must override the abstract method.
 
 [^10]: Both explicitly and implicitly are not allowed.

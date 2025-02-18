@@ -12,9 +12,9 @@ The _information hiding principle_ is about **hiding the internal from outsiders
 
 In the last lecture, we have introduced the idea of [_abstraction barrier_](../lec-01-compiler-types-classes-objects/#abstraction-barrier)_._ Above the abstraction barrier is the **client**, and as usual, the client shouldn't modify any content below the _abstraction barrier_ since it belongs to the **implementer** unless the implementer allows to do so.
 
-For example, we have a `Circle` class, an object `c` initialized from this class, and the **client** wants to set the `r` (one of the fields) to a certain number, let's say 10. (`c.r = 10`). But now, the **implementer** says the `r` field in the class will be changed to `d` (diameter). Then, bad things happen since calling `c.r = 10` will generate a **compilation error!** To fix it, the client have change every `c.r` to `c.d` ! This is tedious!
+For example, we have a `Circle` class, an object `c` initialized from this class, and the **client** wants to set the `r` (one of the fields) to a certain number, let's say 10 (`c.r = 10`). But now, the **implementer** says the `r` field in the class will be changed to `d` (diameter). Then, bad things will happen since calling `c.r = 10` will generate a **compilation error!** To fix it, the client have change every `c.r` to `c.d` ! This is tedious!
 
-This **problem** is caused exactly by the **client**'s breaking the _abstract barrier_ to access the field, which should belongs to the **implementer**.
+This **problem** is caused by the **client**'s breaking the _abstract barrier_ to access the field, which should belong to the **implementer**.
 
 ### `public` and `private`
 
@@ -25,15 +25,15 @@ To solve this problem, many Object-oriented languages allow programmers to **exp
 |  Inside the class |   Yes   |   Yes  |
 | Outside the class |    No   |   Yes  |
 
-Such a mechanism to protect the abstraction barrier from being broken is called _data hiding_ or _information hiding_. This protection is enforced by the _compiler_ at compile time.
+Such a mechanism to protect the **abstraction barrier** from being broken is called _data hiding_ or _information hiding_. This protection is enforced by the _compiler_ at compile time.
 
 {% hint style="info" %}
-Usually, we make fields as `private` becasue of the _information hidden_ principle, unless we have proper reason to make it `public` to the client, such as it is a constant, like `Math.PI`, which will we see more in [_class fields_](./#class-field).
+Usually, we make fields as `private` becasue of the _information hidden_ principle, unless we have proper reason to make it `public` to the client, such as it is a constant, like `Math.PI`, which will we see later in [_class fields_](./#class-field).
 {% endhint %}
 
 ### Constructor
 
-But now, a new problem emerges. If we define all our fields in the class to be `private`, then how we can initialize them? :joy: To solve this problem, it is common for a class to provide methods to **initialise these internal fields**.
+But now, a new problem emerges. If we define all our fields in the class to be `private`, then how we can initialize them? :joy: To solve this problem, it is common for a class to provide methods to **initialize these internal fields**.
 
 > A method that initializes an object is called a _**constructor**._
 
@@ -73,13 +73,13 @@ Notice that in the `getArea()`, we have replaced `r` with `this.r`. Usually, it 
 
 #### Default Constructor
 
-If have class has **no** explicit constructor, then a default constructor will be added automatically at **compile time**. The default constructor has no parameter and has no code written for the body.
+If have class has **no** explicit constructor, then a default constructor will be added automatically at **compile time**. The default constructor has **no parameter** and has **no code** written for the body.
 
 {% hint style="info" %}
-Note that in a class, there may exist many constructors, but:
+Note that in a class, there may exist many constructors, but
 
-1. They have the same method name, which is the same as the class name
-2. They have different number of parameters
+1. They have the **same method name**, which is the same as the class name
+2. They have **different number of parameters**
 {% endhint %}
 
 ## Tell, Don't Ask
@@ -128,13 +128,13 @@ public void setR(double r) {
 
 #### Disadvantage
 
-However, the use of _accessors_ and _mutators_ is **not** an error-free solution. For example, when the client is calling an _accessor_, the client should know the type that will be returned, a.k.a, the type of the certain field in the class. However, the client should **not** know this kind of information since it belongs to the implementer! So, here comes the first problem:
+However, the use of _accessors_ and _mutators_ is **not** an error-free solution. For example, when the client is calling an _accessor_, the client should know the type that will be returned, a.k.a, **the type of the certain field** in the class. However, the **client** should **not** know this kind of information since it belongs to the **implementer**! So, here comes the first problem:
 
 > 1. Information Leak
 
-The problem does not stop here. Let's say if the implementer wants to change the type of the field, which will also change the return type of the _accessors_, and the client doesn't know that! This is very dangerous because likely the code will generate a **compilation error**!
+The problem does not stop here. Let's say if the **implementer** wants to change the type of the field, which will also change the return type of the _accessors_, and the **client** doesn't know that! This is very dangerous because likely the original code will cause a **compilation error**!
 
-> 2. May genertae compilation error
+> 2. May cause compilation error
 
 For example, let's use the following code regarding our `Circle` class as an example:
 
@@ -155,13 +155,15 @@ So, the question comes, when should we use _accessors_ and _mutators_?
 
 ### The "Tell, Don't Ask" Principle
 
-One guiding principle to whether the implementer should provide and whether the client should call the _accessor_ and _mutator_ is the "**Tell, Don't Ask**" principle. This principle suggests that we should **tell an object what to do**, **instead of asking an object for its state and then performing the task on its behalf**.
+One guiding principle on whether the **implementer** should provide and whether the **client** should call the _accessor_ and _mutator_ is the "**Tell, Don't Ask**" principle. Here is the "Tell, Don't Ask" principle,
+
+> we should **tell an object what to do**, instead of asking an object for its state and then performing the task on its behalf.
 
 For example, in the example above, what we are trying to do is as follows:
 
 <figure><img src="../../../.gitbook/assets/lec02-tell-don&#x27;t-ask-previous.png" alt="" width="375"><figcaption></figcaption></figure>
 
-Applying the "Tell Don't Ask" principle, a better approach would be to add a new `boolean` method in the `Circle` class,
+By applying the "Tell Don't Ask" principle, a better approach would be to add a new `boolean` method in the `Circle` class,
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -171,7 +173,7 @@ boolean contains(double x, double y) {
 ```
 {% endcode %}
 
-and let the client _tell_ the `Circle` object to check if the point is within the circle.
+and let the **client** _tell_ the `Circle` object to check if the point is within the circle.
 
 {% code lineNumbers="true" %}
 ```java
@@ -184,7 +186,7 @@ boolean isInCircle = c.contains(x, y);
 Now, the `Circle` class can change its internal structure (e.g., the type of the fields) without affecting the client.
 
 {% hint style="info" %}
-1. In general, _a task that is performed only on the fields of a class should be implemented in the class itself._
+1. In general, a task that is **performed only on the fields of a class** should be implemented in the class itsel&#x66;_._
 2. For beginner OO programmers, it is better to **not define classes with any accessor and modifier** to the `private` fields and force yourselves to think in the OO way — to **tell an object what task to perform as a client, and then implement this task within the class as a method as the implementer**.
 {% endhint %}
 
@@ -244,14 +246,14 @@ public double getArea() {
 {% endstepper %}
 
 {% hint style="info" %}
-To access a _class field_. It is only allowed to use `class.FIELD_NAME`, we **cannot** use `object.FIELD_NAME` to access a `static` field inside an object!
+To access a _class field_. It is **only allowed** to use `class.FIELD_NAME`, we **cannot** use `object.FIELD_NAME` to access a `static` field inside an object!
 {% endhint %}
 
 ## Class Method
 
 Similar to a `static` field, a `static` method is **associated with a class**, **not with any instance of the class**. Such a method is called a _class method_.
 
-A class method is always invoked without being attached to an instance, so it **cannot access its instance fields or call other of its instance methods**. The reference `this` has no meaning within a class method. Furthermore, just like a class field, a class method should be accessed through the class. For example, in our `Circle` class, we wish to assign a unique integer identifier to every `Circle` object ever created:
+A class method is always invoked **without being attached to an instance**, so it **cannot access its instance fields or call other of its instance methods**. The reference `this` has no meaning within a class method. Furthermore, just like a class field, a class method should be accessed through the class. For example, in our `Circle` class, we wish to assign a unique integer identifier to every `Circle` object ever created:
 
 <pre class="language-java" data-line-numbers><code class="lang-java">class Circle {
   private double x;  // x-coordinate of the center
@@ -296,7 +298,7 @@ Recap that for static fields (i.e., class fields), we only have exactly **one in
 
 As we have seen `this` [first time](./#the-this-keyword) in the [constructor](./#constructor), let's talk more about `this` with `static` methods.
 
-As a follow up, if we have not instantiated a class, no instance of that class has been created. The keyword `this` is meant to refer to the _current instance_, and if there is no instance, the keyword `this` is not meaningful. Therefore, within the context of a `static` method, Java actually **prevents the use of** `this` **from any method with the** `static` **modifier**.
+As a follow up, if we have not instantiated a class, no instance of that class has been created. The keyword `this` is meant to refer to the _current instance_, and if there is no instance, the keyword `this` has no meaning! Therefore, within the context of a `static` method, Java actually **prevents the use of** `this` **from any method with the** `static` **modifier**.
 
 {% code lineNumbers="true" %}
 ```java
@@ -339,7 +341,7 @@ Till now, in our class, we only use the [primitive type](../lec-01-compiler-type
 Basically, the main **advantage** of using _composition_ is that it adds more **abstraction**. Recall that we wish to **hide the implementation details as much as possible**, protecting them with an abstraction barrier, so that **the client does not have to bother about the details and it is easy for the implementer to change the details**.
 
 {% hint style="info" %}
-As you will see later also, what _composition_ does it to implement a **"has-a"** relationship.
+As you will see later also, what _composition_ does is to implement a **"has-a"** relationship.
 {% endhint %}
 
 ## Heap and Stack
@@ -397,7 +399,7 @@ Its stack and heap diagram should look like as follows:
 <figure><img src="../../../.gitbook/assets/lec02-stack-heap-diagram-1.png" alt="" width="563"><figcaption></figcaption></figure>
 
 {% hint style="info" %}
-Note that after Line 6, the field `c` inside the `Circle` class is referenced to the `Point` object, not the `center` variable!
+Note that after Line 6, the field `c` (not the variable `c`) inside the `Circle` class is referenced to the `Point` object, not the `center` variable!
 {% endhint %}
 
 #### Example Two - Call Method
@@ -469,6 +471,8 @@ Circle c = new ColoredCircle(p, 0, blue); // OK
 {% endcode %}
 
 Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later in [Polymorphism](../lec-03-polymorphism/#polymorphism).
+
+Here, Java allows we assign a variable to store its subtype because this is considered as a **widening type conversion** and as we have seen earlier, ithappens automatically and is allowed.
 
 ## Overriding
 
@@ -565,7 +569,7 @@ Note that for the **parameters,** we are using their **type** instead of their *
 
 So, using the idea of _method siganature_ and _method descriptor,_ **overriding** basically happens when a subclass defines an instance method with the same _**method descriptor**_ as an instance method in the parent class.
 
-[^1]: This is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
+[^1]: It is because, usually, we use `this` keyword inside the methods. And usually, methods are called using `object.method()`, so here "**the calling object itself"** refers to the "object" in front of the `.`.
 
 [^2]: Alternatively, you can think of Java as always using _call by value_. It's just that the value of a reference is, in fact, just a reference.
 

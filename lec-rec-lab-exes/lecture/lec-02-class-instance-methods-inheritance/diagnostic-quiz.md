@@ -8,7 +8,7 @@
 
 The first two options are relatively easy to analyze, the problem lies in the third option `b.y=1` and this is valid because `foo` belongs to class `B`, and thus has access to `y` of any instance of `B`.
 
-Private fields are accessible to **all methods within the same class**, **regardless of which instance is being accessed.**
+> Private fields are accessible to **all methods within the same class**, **regardless of which instance is being accessed.**
 
 ### Q8. Subtype and Inheritance
 
@@ -74,6 +74,6 @@ I will leave it when I learn Overloading.
 ## Tips
 
 1. Private fields are accessible to **all methods within the same class**, **regardless of which instance is being accessed**.
-2. Suppose we have two classes $$P$$ and $$Q$$, if $$Q$$ inheritates from $$P$$, then we can say $$Q$$ is the **subtype** of $$P$$ or $$P:>Q$$.
+2. Suppose we have two classes $$P$$ and $$Q$$, if $$Q$$ inherits from $$P$$, then we can say $$Q$$ is the **subtype** of $$P$$ or $$P:>Q$$.
 3. A class method (method with the keyword `static`) **cannot** **access its instance fields or call other of its instance methods**, and one corollory of this is that the keyword `this` is also **not allowed** in a class method. Otherwise, a **compilation-error** will be generated.
 4. Include the _method signature_ and _method descriptor_ in the cheatsheet!

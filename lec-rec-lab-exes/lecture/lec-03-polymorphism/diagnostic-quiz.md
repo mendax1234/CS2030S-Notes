@@ -22,9 +22,9 @@ s = (S) t; // Line A
 ```
 {% endcode %}
 
-If, the run-time type of `t` is not a subtype of `s`$$T$$, then a **run-time error** will be generated.
+If, the RTT of `t` is not a subtype of `s`$$T$$, then a **run-time error** will be generated.
 
-If, the compile-time type of `t` is **not** a subtype of `s`, then a **compile-time error** will be generated.
+If, the CTT of `t` is **not** a subtype of `s`, then a **compile-time error** will be generated.
 
 ### Q11. Liskov Substitution Principle
 
