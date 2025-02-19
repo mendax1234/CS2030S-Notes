@@ -27,10 +27,10 @@ A _wrapper class_ is a class that encapsulates a _type_. For example, the wrappe
 | `char`    | `Character` |
 | `boolean` | `Boolean`   |
 
-In particular, the wrapper class is considered as _reference type_ and their instances can be created with `new` and stored on the heap.
+In particular, the wrapper class is considered as _reference type_ and their instances can be created with `new` and stored on the **heap**.
 
 {% hint style="info" %}
-All primitive wrapper class objects are _immutable —_ once you create an object, it cannot be changed.
+All primitive wrapper class objects are _immutable —_ once you create an object, it cannot be changed. This will result that if we want to change the value of a Wrapper class object, we need to create a new object.
 {% endhint %}
 
 ### Conversion between primitive types and its wrapper class
@@ -79,21 +79,25 @@ For the sake of general code and polymorphism, why don't we use _wrapper class_ 
 
 ## Run-Time Class Mismatch
 
-The main point of this part is about **when explicit casting will be successful**?
+The main point of this part is about **when to use the explicit casting**?
 
 ***
 
-**Explicit casting** is usually done during the _narrowing type conversion_ process, which is happened during the **run-time**, and as the name suggests, the type must be "narrowed down". So, for an **explicit casting** to be successful, the two types must have a **subtype relationship**.
+**Explicit casting** is usually done during the _narrowing type conversion_ process, this happens in **compile-time!** As the name suggests, the type must be "narrowed down". So, for an **explicit casting** to be successful, the two types must have a **subtype relationship**.
 
 ### Run-Time error or Compile-Time error?
 
-When doing type casting, if the **compile-time type** of the two objects have **no** subtype relationship, then a **compile-time error** will be generated.
+When doing assignment, if the **compile-time type** of the two objects have **no** subtype relationship, then a **compile-time error** will be generated.
 
 {% hint style="info" %}
-Explicit Type casting using `()` will happen during the compile-time.
+Explicit Type casting using `()` will happen during the **compile-time**.
 {% endhint %}
 
 On the other hand, a **run-time error** will be generated when there is **no** subtype relationship between the **run-time** **type** of the two objects you are operating on.
+
+{% hint style="info" %}
+During run-time, we should **ignore** the type casting and only look at the RTT! See more [#id-03.-type-casting-and-rum-time-error](diagnostic-quiz.md#id-03.-type-casting-and-rum-time-error "mention")
+{% endhint %}
 
 ## Variance
 
@@ -134,7 +138,7 @@ try {
 
 #### Compile-error in `catch` block
 
-In the `catch` block, the first catch block that has an exception type compatible with the type of the thrown exception (i.e. a subtype) is selected to handle the exception. So, if there are multiple avialable blocks, the compiler will generate a **compile-time error**.
+In the `catch` block, the first catch block that has an exception type compatible with the type of the thrown exception (i.e. a subtype) is selected to handle the exception. So, if there are **multiple avialable** blocks, the compiler will generate a **compile-time error**.
 
 ### Throwing Exceptions
 
@@ -157,15 +161,17 @@ For example, the complete Java code should be as follows:
 
 An _unchecked exception_ is an exception caused by a programmer's errors. They should not happen if perfect code is written. `IllegalArgumentException`, `NullPointerException`, `ClassCastException` are examples of unchecked exceptions. Generally, unchecked exceptions are **not** explicitly caught or thrown. They indicate that something is wrong with the program and cause **run-time errors**.
 
-A _checked exception_ is an exception that a programmer has **no control** over. Even if the code written is perfect, such an exception might still happen. The programmer should thus actively anticipate the exception and handle them. For instance, when we open a file, we should anticipate that in some cases, the file cannot be opened. `FileNotFoundException` and `InputMismatchException` are two examples of is an example of a checked exception. A checked exception must be either handled, or else the program **will not compile**.
+A _checked exception_ is an exception that a programmer has **no control** over. Even if the code written is perfect, such an exception might still happen. The programmer should thus actively anticipate the exception and handle them. For instance, when we open a file, we should anticipate that in some cases, the file cannot be opened. `FileNotFoundException` and `InputMismatchException` are two examples of is an example of a checked exception. A checked exception **must be** either **handled**, or else the program **will not compile**.
 
 {% hint style="info" %}
 In Java, unchecked exceptions are subclasses of the class `RuntimeException`.
 {% endhint %}
 
+#### Handle the exception
+
 An unchecked exception, if not caught[^2], will propagate automatically down the stack until either it is caught or if it is not caught at all, resulting in an error message displayed to the user.
 
-A checked exception, however, must be handled. And this is done by either handling it in the calling method, or handling it in the caller. Below is an example regarding handling the `FileNotFoundException`)
+A checked exception, however, **must be handled**. And this is done by either handling it in the calling method, or handling it in the caller. Below is an example regarding handling the `FileNotFoundException`)
 
 {% stepper %}
 {% step %}
@@ -290,6 +296,6 @@ public void m2() throws E2 {
 ```
 {% endcode %}
 
-[^1]: or "elements" if you are from CS1010, which uses C as the teaching language.
+[^1]: or "elements", which is basically the "element" in the complex type. If you are from CS1010, which uses C as the teaching language.
 
 [^2]: here "catch" means the exception being handled.
