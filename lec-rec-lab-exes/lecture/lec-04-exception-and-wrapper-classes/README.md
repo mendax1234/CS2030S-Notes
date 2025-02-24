@@ -83,7 +83,9 @@ The main point of this part is about **when to use the explicit casting**?
 
 ***
 
-**Explicit casting** is usually done during the _narrowing type conversion_ process, this happens in **compile-time!** As the name suggests, the type must be "narrowed down". So, for an **explicit casting** to be successful, the two types must have a **subtype relationship**.
+**Explicit casting** is usually done during the _narrowing type conversion_ process, this happens in **compile-time!** As the name suggests, the type must be "narrowed down". So,
+
+> for an **explicit casting** to be successful, the two types must have a **subtype relationship**.
 
 ### Run-Time error or Compile-Time error?
 

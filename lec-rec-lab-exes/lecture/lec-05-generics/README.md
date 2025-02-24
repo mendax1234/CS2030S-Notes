@@ -398,6 +398,10 @@ Then ,we can use the code as follows to suppress the warning
 ```
 {% endcode %}
 
+{% hint style="info" %}
+Using `@SuppressWarnings` actually means that we are more sure than the compiler that there will be no error with this piece of code!
+{% endhint %}
+
 Now, our final code should look like as follows,
 
 {% code overflow="wrap" lineNumbers="true" %}
