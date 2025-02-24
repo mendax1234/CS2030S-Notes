@@ -4,7 +4,7 @@
 
 In Java, **wildcards** (`?`) are used in generics to create more flexible and reusable code by allowing parameterized types to operate on **a range of types**, rather than a single specific one.
 
-**Motivation**: As we have seen in [lec-05-generics](lec-05-generics/ "mention"), Java Generics are **invariant**. But if we add wildcards (`?`) to Generics, it will have some **variance** relationship.
+**Motivation**: As we have seen in [lec-05-generics](../lec-05-generics/ "mention"), Java Generics are **invariant**. But if we add wildcards (`?`) to Generics, it will have some **variance** relationship.
 
 For example,
 
@@ -49,7 +49,7 @@ The upper-bounded wildcard has the following subtype relations:
 
 #### Explanation
 
-Let's use the knowledge we have seen in [Lab 01](../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#subtype-relation).
+Let's use the knowledge we have seen in [Lab 01](../../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#subtype-relation).
 
 > subtype is nothing but a subset
 
@@ -104,7 +104,7 @@ The lower-bounded wildcard has the following subtype relationship:
 
 #### Explanation
 
-Similarly as we have seen above, we can use the knowledge from [Lab 01](../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#subtype-relation) again
+Similarly as we have seen above, we can use the knowledge from [Lab 01](../../lab/lab-01-logistics-introduction-to-oop-exercise-0.md#subtype-relation) again
 
 > subtype is nothing but a subset
 
