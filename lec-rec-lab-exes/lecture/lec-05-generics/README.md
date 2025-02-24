@@ -152,12 +152,19 @@ class A {
 
 #### Invoke a generic method
 
-To invoke a generic method, you can **prefix** the method name with the actual type in angle brackets `<>`.
+* Syntax for specifying a method's type parameter: `ClassName.<Type>method()`.
+* Class type parameters (e.g., `<Integer>` in `A<Integer>`) are irrelevant for static methods and cannot be mixed with method type parameters in the call.
+
+For example,
 
 ```java
 String[] strArray = new String[] { "hello", "world" };
 A.<String>contains(strArray, 123); // type mismatch error; compilation error
 ```
+
+{% hint style="danger" %}
+If you pass type argument to class `A`, e.g. `A<String>`, you will get a compilation error!
+{% endhint %}
 
 #### Bounded Generic Type Parameter
 
@@ -238,11 +245,17 @@ Part of the reason that Java uses **code sharing** is because of the backward co
 
 ### Type Erasure process in Java
 
-Type erasure is a **compile-time** process that removes generic type information to ensure backward compatibility with legacy Java code that doesn’t use generics. Here's what happens during type erasure:
+Type erasure is a **compile-time** process that removes generic type information to ensure backward compatibility with legacy Java code that doesn’t use generics. Here's what happens before and during type erasure:
 
 {% stepper %}
 {% step %}
-**Replacing Type Parameters:**
+**Type checking (Before type erasure starts)**
+
+Java will do the type checking to make sure that the code compile! The following is some important rules on Java's type checking! (See more application from [Lab 03](../../lab/lab-03-exceptions-generics-exercises-2-3.md#classic-questions))
+{% endstep %}
+
+{% step %}
+**Replacing Type Parameters (Type erasure starts)**
 
 * **Non-Bounded Type Parameters:**\
   If a type parameter is not bounded (e.g., `<T>`), it is replaced with `Object`.
@@ -481,6 +494,10 @@ class B<T extends Comparable<T>> {
 }
 ```
 {% endcode %}
+
+## Classic Problems
+
+1. There are some classic problems related to type erasure and generics covered during [#generics](../../lab/lab-03-exceptions-generics-exercises-2-3.md#generics "mention"). Remember to take a look before exams!
 
 [^1]: sometimes it is called "instantiated"
 

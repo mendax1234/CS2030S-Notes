@@ -2,7 +2,7 @@
 
 ## Problems
 
-For questions 4,5,7,8,11, we are given three classes, `Gala`,  `Apple`, and `Fruit`, with `Gala` <: `Apple` <: `Fruit`, along with the class `Seq<T>` that we have developed in the lecture and notes.
+For questions 4, 5, 7, 8, 11, we are given three classes, `Gala`,  `Apple`, and `Fruit`, with `Gala` <: `Apple` <: `Fruit`, along with the class `Seq<T>` that we have developed in the lecture and notes.
 
 ### 04. CTT with Producer using upper-bounded wildcard
 
