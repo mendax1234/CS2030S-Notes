@@ -142,12 +142,16 @@ For the Contrariance Rule 2,
 
 1. **Transitivity:** If S <: T <: U, then A\<? super U> <: A\<? super T> <: A\<? super S>.
 
-### PECS rule
+### PECS Rule
 
 "PECS" stands for "Producer Extends; Consumer Super". Basically this rule states that:
 
 * **Producer** (provides data): Use upper-bounded wildcards `? extends T` to read[^1] from it. So `T` must encompass (`≥`) the producer’s type.
 * **Consumer** (accepts data): Use lower-bounded wildcards `? super T` to write[^2] to it. So `T` must fit inside (`≤`) the consumer’s type.
+
+{% hint style="info" %}
+You can think about it in this way: A _producer_ is allowed to produce something **more specific**, hence _extends_, a _consumer_ is allowed to accept something **more general**, hence _super_.
+{% endhint %}
 
 ### Unbounded Wildcards
 

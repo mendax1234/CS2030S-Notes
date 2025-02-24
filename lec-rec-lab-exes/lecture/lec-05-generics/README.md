@@ -245,15 +245,128 @@ Part of the reason that Java uses **code sharing** is because of the backward co
 
 ### Type Erasure process in Java
 
-Type erasure is a **compile-time** process that removes generic type information to ensure backward compatibility with legacy Java code that doesn’t use generics. Here's what happens before and during type erasure:
+Type erasure is a **compile-time** process that removes generic type information to ensure backward compatibility with legacy Java code that doesn’t use generics. And the whole process of type erasure can be divided into:
+
+1. Type checking (Before type erasure)
+2. Type erausre (During type erasure)
+
+#### Type Checking
+
+Java will do the type checking during the **compile time** to make sure that the code compile! The following is some important rules on Java's type checking! (See more application from [Lab 03](../../lab/lab-03-exceptions-generics-exercises-2-3.md#classic-questions))
 
 {% stepper %}
 {% step %}
-**Type checking (Before type erasure starts)**
+#### **Scope of Type Parameters**
 
-Java will do the type checking to make sure that the code compile! The following is some important rules on Java's type checking! (See more application from [Lab 03](../../lab/lab-03-exceptions-generics-exercises-2-3.md#classic-questions))
+* **Class-level generics**: Declared in a class/interface (e.g., `class Box<T> { ... }`).
+  * Available to **instance fields/methods** (e.g., `T data;`).
+  * **Not available to static methods**; static methods must declare their own type parameters.
+* **Method-level generics**: Declared in a method (e.g., `<S> S process(S input) { ... }`).
+  * Scoped to the method only.
+  * Independent of class-level parameters (unless shadowing occurs).
 {% endstep %}
 
+{% step %}
+#### **Shadowing**
+
+**Definition**: A method declares a type parameter with the same name as the class’s type parameter.
+
+For example,
+
+{% code lineNumbers="true" %}
+```java
+class Box<T> {  
+    public <T> T inspect() { ... } // Method’s <T> shadows class’s <T>  
+}  
+```
+{% endcode %}
+
+**Consequence**: Inside `inspect()`, `<T>` refers to the method’s type parameter, **not** the class’s `T`.
+
+* Compilation errors occur if the method uses the class’s `T` (e.g., returning a class field of type `T`).
+{% endstep %}
+
+{% step %}
+#### **Invoking Generic Methods**
+
+**Syntax**: Explicitly specify type arguments for generic methods:
+
+```java
+ClassName.<TypeArg>methodName();
+```
+
+For example,
+
+```java
+Box.<String>process("text"); // <String> sets method’s type parameter.
+```
+
+**Rules**:
+
+* Only **generic methods** (those with `<T>`, `<S>`, etc.) can have explicit type arguments.
+* Non-generic methods (e.g., `void print()`) **cannot** have type arguments.
+
+{% hint style="info" %}
+If one of the rules is broken, the code cannot pass type checking and thus will generate a compilation error.
+{% endhint %}
+{% endstep %}
+
+{% step %}
+#### **Return Type Compatibility**
+
+**Class-level return type**:
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class Box<T> {  
+    public T get() { ... } // Returns class’s T (e.g., `Box<Integer>` → returns `Integer`).  
+}  
+```
+{% endcode %}
+
+**Method-level return type**:
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+public <S> S convert() { ... } // Return type depends on method’s <S> (e.g., `<String>` → returns `String`).  
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+#### **Static Methods and Generics**
+
+**Rule**: Static methods **cannot use class-level type parameters**.
+
+{% code lineNumbers="true" %}
+```java
+class Box<T> {  
+    // Valid: static method declares its own type parameter.  
+    public static <S> S staticMethod(S input) { ... }  
+
+    // Invalid: static method uses class’s T. Generate a compilation error
+    public static T staticFail() { ... }  
+}  
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+#### **Type Erasure Preparation**
+
+Before erasing generics, Java ensures:
+
+* **Consistency**: All type parameters are correctly resolved and compatible.
+* **No Conflicts**: Shadowing or mismatches (e.g., method’s `<T>` vs. class’s `T`) are flagged as errors.
+* **Syntax Validity**: Explicit type arguments match the method’s declared type parameters.
+{% endstep %}
+{% endstepper %}
+
+#### Type Erasure
+
+This happens in the **compile-time** also, after the **type checking**.
+
+{% stepper %}
 {% step %}
 **Replacing Type Parameters (Type erasure starts)**
 
