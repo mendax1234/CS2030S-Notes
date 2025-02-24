@@ -7,9 +7,9 @@ The motivations, (a.k.a benefits) of using _generics_ are:
 1. enable you to detect errors at compile time rather than at runtime.
 2. make your code more generalizable.
 
-_Generics_ let yoru parameterize types. With this capability, you can define a class or a method with generic types that the compiler can replace with concrete types.
+_Generics_ let you parameterize[^1] types. With this capability, you can define a class or a method with generic types that the compiler can replace with concrete types.
 
-Here, to make it simple, let's use the _type parameter - type argument_ notation. Here the parameter and argument are the same one we use in the method. So, for example
+Here, to make it simple, let's use the _type parameter - type argument_ notation. Here the parameter and argument are the same one as we use in the method. So, for example
 
 {% code lineNumbers="true" %}
 ```java
@@ -60,7 +60,7 @@ class Pair<S,T> {
 
 Here, `<S>` and `<T>` represents the _formal generic type parameter_. And `Pair<S,T>` is a _generic type_.
 
-#### Instantiate a Generic Type
+#### Instantiate[^2] a Generic Type
 
 To use a generic type, we have to pass in _type arguments_, which itself can be
 
@@ -94,7 +94,7 @@ class Pair<S,T> implements Comparable<Pair<S,T>>
 
 The class `Pair` takes two type parameters `S` and `T`. It implements the `Comparable` interface with the type argument `Pair<S, T>`. This means the `compareTo` method expects another `Pair` with the same type parameters.
 
-For the explanation about this code, please go to [#an-interesting-example](./#an-interesting-example "mention") since it may invole some knowledge in the later parts of this lecture.
+For the explanation about this code, please go to [#an-interesting-example](./#an-interesting-example "mention") since it may involve some knowledge in the later parts of this lecture.
 {% endstep %}
 
 {% step %}
@@ -156,14 +156,14 @@ To invoke a generic method, you can **prefix** the method name with the actual t
 
 ```java
 String[] strArray = new String[] { "hello", "world" };
-A.<String>contains(strArray, 123); // type mismatch error
+A.<String>contains(strArray, 123); // type mismatch error; compilation error
 ```
 
 #### Bounded Generic Type Parameter
 
 A _generic type parameter_ can be specified as a **subtype** of another type. Such a _generic type parameter_ is called _bounded_.
 
-**Motivation**: Since during the compile time, generic type parameter have no method associated with it! So, to enabling us to call the methods associating with our generic type parameter, we can used _bounded type parameters_!
+**Motivation**: Since during the compile time, generic type parameter may not have the method you want associated with it! So, to enable us to call the methods associated with our generic type parameter, we can used _bounded type parameters_!
 
 For example, our `getArea()` can be generalized using the generics as follows
 
@@ -246,12 +246,14 @@ Type erasure is a **compile-time** process that removes generic type information
 
 * **Non-Bounded Type Parameters:**\
   If a type parameter is not bounded (e.g., `<T>`), it is replaced with `Object`.
-*   **Bounded Type Parameters:**\
-    If a type parameter has an upper bound (e.g., `<T extends GetAreable>`), it is replaced with the first bound (in this case, `GetAreable`).
-
-    > **Note:** If multiple bounds exist (e.g., `<T extends SomeClass & SomeInterface>`), only the first bound (which must be a class or `Object` if absent) is used during erasure.
+* **Bounded Type Parameters:**\
+  If a type parameter has an upper bound (e.g., `<T extends GetAreable>`), it is replaced with the first bound (in this case, `GetAreable`).
 
 {% hint style="info" %}
+If multiple bounds exist (e.g., `<T extends SomeClass & SomeInterface>`), only the first bound (which must be a class or `Object` if absent) is used during erasure.
+{% endhint %}
+
+{% hint style="success" %}
 This step is done implicitly.
 {% endhint %}
 {% endstep %}
@@ -306,7 +308,7 @@ objArray[0] = new Pair(3.14, true);
 
 Seems that this code will generate no compile-time error and run-time error! But you are storing a pair `<Double, boolean>` into the pair array of `<String, Integer>`!
 
-But actually, the first code snippet **cannot compile** because generic array declaration is fine but generic array instantiation is **not**!
+But actually, the first code snippet **cannot compile** because generic array **declaration is fine** but generic array **instantiation is** **not**!
 
 ## Unchecked Warnings
 
@@ -351,7 +353,7 @@ Let's define the type as `Q`. For example,
 {% endstep %}
 
 {% step %}
-**create a Java array with type** `Q[]` **cast it to type** `T[]`
+**Create a Java array with type** `Q[]` **cast it to type** `T[]`
 
 For example, we will have
 
@@ -373,7 +375,7 @@ class B<T extends Comparable<T>> {
 {% endstep %}
 
 {% step %}
-**suppress the warning after we check that everything is okay manually**
+**Suppress the warning after we check that everything is okay manually**
 
 Till now, we are still not done. We may still get a warning as follows,
 
@@ -382,7 +384,7 @@ Note: Seq.java uses unchecked or unsafe operations.
 Note: Recompile with -Xlint:unchecked for details.
 ```
 
-This is called an [**unchecked warning**](#user-content-fn-1)[^1]. And it is caused because the compiler doesn't know whether we can do the casting safely. A.k.a, we are not sure whether the all the elements in the Java array **have a subtype relationship with** `T`, thus an explicit casting maybe dangerous!
+This is called an [**unchecked warning**](#user-content-fn-3)[^3]. And it is caused because the compiler doesn't know whether we can do the casting safely. A.k.a, we are not sure whether the all the elements in the Java array **have a subtype relationship with** `T`, thus an explicit casting maybe dangerous!
 
 To suppress this warning, the first thing we need to do is
 
@@ -442,7 +444,7 @@ The code **will compile**! But it's just that the compiler **cannot** help us to
 
 > Raw type should never be used in your code! But till now, we have a small exception.
 
-In the following code snippet,
+For example, in the following code snippet, `new Comparable[size]` is actually a use of **raw types**.
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -458,7 +460,7 @@ class B<T extends Comparable<T>> {
 ```
 {% endcode %}
 
-In fact, merely doing so will still give us a warning! And that is a rawtype warning because Line 6 actually is using **rawtype**! But since we are sure `T` will be replaced by `Comparable` after type erausre, let's just allow this kind of stuff first.
+In fact, merely doing so will still give us a warning! And that is a rawtype warning because Line 6 actually is using **raw type**! But since we are sure `T` will be replaced by `Comparable` after type erausre, let's just allow this kind of stuff first.
 
 But to fully make this code warning-free. We need to suppress the rawtype warning. Thus, we need to modify our code as follows,
 
@@ -476,4 +478,8 @@ class B<T extends Comparable<T>> {
 ```
 {% endcode %}
 
-[^1]: An _unchecked warning_ is basically a message from the compiler that it has done what it can, but because of type erasures, there could be a run-time error that it cannot prevent.
+[^1]: sometimes it is called "instantiated"
+
+[^2]: sometimes it is called "parameterize", they can be used interchangeably.
+
+[^3]: An _unchecked warning_ is basically a message from the compiler that it has done what it can, but because of type erasures, there could be a run-time error that it cannot prevent.
