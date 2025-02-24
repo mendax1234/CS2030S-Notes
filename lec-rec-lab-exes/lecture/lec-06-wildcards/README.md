@@ -130,8 +130,8 @@ For the Contrariance Rule 2,
 
 "PECS" stands for "Producer Extends; Consumer Super". Basically this rule states that:
 
-* **Producer** (provides data): Use upper-bounded wildcards `? extends T` to read from it.
-* **Consumer** (accepts data): Use lower-bounded wildcards `? super T` to write to it.
+* **Producer** (provides data): Use upper-bounded wildcards `? extends T` to read from it. So `T` must encompass (`≥`) the producer’s type.
+* **Consumer** (accepts data): Use lower-bounded wildcards `? super T` to write to it. So `T` must fit inside (`≤`) the consumer’s type.
 
 ### Unbounded Wildcards
 

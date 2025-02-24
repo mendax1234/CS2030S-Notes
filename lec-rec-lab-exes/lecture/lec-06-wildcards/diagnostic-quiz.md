@@ -62,10 +62,29 @@ along with the `Seq<T>` class we developed in the lecture/notes.
 
 <figure><img src="../../../.gitbook/assets/lec06-quiz-13.png" alt=""><figcaption></figcaption></figure>
 
-Use the [#rule-of-thumb](./#rule-of-thumb "mention") of Type Inference we have leanred in Lec 06, the only one that is applicable here is the **Argument**. So, our constraint will be
+* **Wildcard bound**: `? super T` (the wildcard must be a supertype of `T`).
+* **Argument passed**: `Seq<G>`.
+* **Inference**: To satisfy `? super T`, `G` must be a supertype of `T` → **`T <: G`** (`T` is bounded above by `G`).
 
-1. `Seq<G>` <: `Seq<? super T>`
+#### **Takeaway**
+
+The "bound" we mention here is more like the "bound" in mathematical analysis:
+
+> * **`T <: G`** (`G` acts as an upper bound on `T`, `T` is "at most" `G`): `T` must be a **subtype** of `G`.
+> * **`G <: T`** (`G` acts as a lower bound on `T`, `T` is "at least" `G`): `T` must be a **supertype** of `G`.
+
+When using `Seq<? super T>` and `Seq<? extends T>`, the type of the argument you pass determines the **direction** of the constraint on `T`:
+
+1. **`Seq<? super T>`** (lower-bounded wildcards):
+   * The argument type acts as an **upper bound** for `T`.
+   * Example: Passing `Seq<G>` to `Seq<? super T>` implies **`T <: G`** (`T` must be a subtype of `G`).
+   * Intuition: `T` is "at most as specific as" the argument's type. (`T` is bounded above by `G`)
+2. **`Seq<? extends T>`** (upper-bounded wildcards):
+   * The argument type acts as a **lower bound** for `T`.
+   * Example: Passing `Seq<G>` to `Seq<? extends T>` implies **`G <: T`** (`T` must be a supertype of `G`).
+   * Intuition: `T` is "at least as general as" the argument's type. (`T` is bounded below by `G`)
 
 ## Tips
 
-1. Practice makes perfect!
+1. `? super T` (Lower-bounded wildcards) → Argument type sets an **upper bound** for `T` (`T` is a subtype of the argument type).
+2. `? extends T` (Upper-bounded wildcards) → Argument type sets a **lower bound** for `T` (`T` is a supertype of the argument type).
