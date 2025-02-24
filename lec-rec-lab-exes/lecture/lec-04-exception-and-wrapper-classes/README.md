@@ -190,6 +190,10 @@ A checked exception, however, **must be handled**. And this is done by either ha
   }
 }
 </code></pre>
+
+{% hint style="info" %}
+This means we will handle the exception in the method itself, thus it won't pass the exception to other methods, so we don't need to state that this method may throw an exception.
+{% endhint %}
 {% endstep %}
 
 {% step %}

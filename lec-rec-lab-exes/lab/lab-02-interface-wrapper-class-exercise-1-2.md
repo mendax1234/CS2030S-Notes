@@ -38,7 +38,7 @@ The use of the parent class, in this example, the `Event` class, is that:
 1. To allow all subclasses to be recognised as `Events`.
 2. To define a set of common properties / behaviors shared across all subclasses.
 
-Thus, one key observation we can find here is that: there's never a need to create an isntance of `Event`!
+Thus, one key observation we can find here is that: there's never a need to create an instance of `Event`!
 
 ***
 
