@@ -146,8 +146,8 @@ For the Contrariance Rule 2,
 
 "PECS" stands for "Producer Extends; Consumer Super". Basically this rule states that:
 
-* **Producer** (provides data): Use upper-bounded wildcards `? extends T` to read from it. So `T` must encompass (`≥`) the producer’s type.
-* **Consumer** (accepts data): Use lower-bounded wildcards `? super T` to write to it. So `T` must fit inside (`≤`) the consumer’s type.
+* **Producer** (provides data): Use upper-bounded wildcards `? extends T` to read[^1] from it. So `T` must encompass (`≥`) the producer’s type.
+* **Consumer** (accepts data): Use lower-bounded wildcards `? super T` to write[^2] to it. So `T` must fit inside (`≤`) the consumer’s type.
 
 ### Unbounded Wildcards
 
@@ -320,3 +320,7 @@ We now summarize the steps for type inference. First, we figure out all of the t
 * `T <: Type2`, then `T` is inferred as `Type2`
 
 where `Type1` and `Type2` are arbitary types.
+
+[^1]: sometimes it is called "get", any word that has similar meaning works.
+
+[^2]: sometimes it is called "set", any word that has similar meaning works.
