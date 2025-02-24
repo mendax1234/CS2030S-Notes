@@ -21,6 +21,14 @@ Don't worry, this is called the upper-bounded wildcards and it will be covered v
 
 An _upper-bounded wildcard_ allows a generic type to accept **any subtype** of a specified class or interface `T`. This is useful when you want to read data from a generic structure and ensure that you're working with a specific base type or its subclasses.
 
+<details>
+
+<summary>Why is it called upper-bounded?</summary>
+
+This is because the wildcard `?` is bounded above by `T`, which means that `?` <: `T`. (a.k.a `T` is an upper-bound of wildcard `?`)
+
+</details>
+
 For example,
 
 {% code lineNumbers="true" %}
@@ -75,6 +83,14 @@ For the Covariance Rule 2,
 ### **Lower-Bounded Wildcards**
 
 A _lower-bounded wildcard_ allows a generic type to accept any **supertype** of a specified class `T`. This is particularly useful when you want to **write** data to a generic structure and ensure that the structure can **accept** objects of a specific type or its subclasses.
+
+<details>
+
+<summary>Why is it called lower-bounded?</summary>
+
+This is because the wildcard `?` is bounded below by `T`, which means that `T` <: `?`. (a.k.a `T` is a lower-bound of wildcard `?`)
+
+</details>
 
 For example,
 
