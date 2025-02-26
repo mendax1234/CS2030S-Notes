@@ -28,7 +28,7 @@ Here, you may get a bit confused, but actually we are using the knowledge that i
 
 ### Generic Class / Interface
 
-> Use our tradition, this generic class / interface can be called _generic type_ as well.
+> Using our tradition, this generic class / interface can be called _generic type_ as well.
 
 A / Some _generic type parameter(s)_ can be defined for a class or interface.
 
@@ -109,7 +109,7 @@ class DictEntry<T> extends Pair<String,T> {
 `DictEntry` is a generic class with one type parameter `T`. It extends `Pair<String, T>`, which means:
 
 * The first type parameter `S` in `Pair` is fixed as `String`.
-* The second type parameter `T` is passed along from `DictEntry`.
+* The second type parameter `T` is passed along from `DictEntry` to `Pair<String, T>`
 
 This design is useful when you want to create a specialized version of a generic class where one of the type parameters is fixed.
 {% endstep %}
@@ -170,7 +170,7 @@ If you pass type argument to class `A`, e.g. `A<String>`, you will get a compila
 
 A _generic type parameter_ can be specified as a **subtype** of another type. Such a _generic type parameter_ is called _bounded_.
 
-**Motivation**: Since during the compile time, generic type parameter may not have the method you want associated with it! So, to enable us to call the methods associated with our generic type parameter, we can used _bounded type parameters_!
+**Motivation**: Since during the compile time, generic type parameter may not have the method that you want associated with it! So, to enable us to call the methods associated with our generic type parameter, we can used _bounded type parameters_!
 
 For example, our `getArea()` can be generalized using the generics as follows
 
@@ -213,7 +213,7 @@ class Pair<S extends Comparable<S>,T> implements Comparable<Pair<S,T>> {
 * Since we want to compare two `Pair` instances, we make `Pair` implement the `Comparable` interface too, passing in `Pair<S,T>` as the type argument to `Comparable`. (So, actually here the type arguement is a generic type, which serves as a good example for our second case)
 
 {% hint style="info" %}
-A bound like `<S extends Comparable<S>>` is a common pattern called **self-referential boud.** It ensures a type can be compared to others of its own kind.
+A bound like `<S extends Comparable<S>>` is a common pattern called **self-referential bound.** It ensures a type can be compared to others of its own kind.
 {% endhint %}
 
 #### Declaration vs. Usage of Generic Parameters:
@@ -256,7 +256,7 @@ Java will do the type checking during the **compile time** to make sure that the
 
 {% stepper %}
 {% step %}
-#### **Scope of Type Parameters**
+**Scope of Type Parameters**
 
 * **Class-level generics**: Declared in a class/interface (e.g., `class Box<T> { ... }`).
   * Available to **instance fields/methods** (e.g., `T data;`).
@@ -267,7 +267,7 @@ Java will do the type checking during the **compile time** to make sure that the
 {% endstep %}
 
 {% step %}
-#### **Shadowing**
+**Shadowing**
 
 **Definition**: A method declares a type parameter with the same name as the class’s type parameter.
 
@@ -287,7 +287,7 @@ class Box<T> {
 {% endstep %}
 
 {% step %}
-#### **Invoking Generic Methods**
+**Invoking Generic Methods**
 
 **Syntax**: Explicitly specify type arguments for generic methods:
 
@@ -312,7 +312,7 @@ If one of the rules is broken, the code cannot pass type checking and thus will 
 {% endstep %}
 
 {% step %}
-#### **Return Type Compatibility**
+**Return Type Compatibility**
 
 **Class-level return type**:
 
@@ -334,7 +334,7 @@ public <S> S convert() { ... } // Return type depends on method’s <S> (e.g., `
 {% endstep %}
 
 {% step %}
-#### **Static Methods and Generics**
+**Static Methods and Generics**
 
 **Rule**: Static methods **cannot use class-level type parameters**.
 
@@ -352,7 +352,7 @@ class Box<T> {
 {% endstep %}
 
 {% step %}
-#### **Type Erasure Preparation**
+**Type Erasure Preparation**
 
 Before erasing generics, Java ensures:
 
