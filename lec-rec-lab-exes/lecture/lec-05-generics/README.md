@@ -81,7 +81,7 @@ Type arguments must be _reference type_. You cannot replace a type parameter wit
 {% endhint %}
 
 {% hint style="warning" %}
-Using raw types (e.g., `new Pair()` without type arguments) can lead to **unchecked conversion** warnings. Always use the diamond operator `<>` or provide explicit type arguments inside the `<>` to ensure type safety.
+Using raw types (e.g., `new Pair()` without type arguments) can lead to **unchecked conversion** warnings. Always use the diamond operator `<>` (this will let the compiler do the type inference) or provide explicit type arguments inside the `<>` to ensure type safety.
 {% endhint %}
 {% endstep %}
 
@@ -382,6 +382,12 @@ If multiple bounds exist (e.g., `<T extends SomeClass & SomeInterface>`), only t
 {% hint style="success" %}
 This step is done implicitly.
 {% endhint %}
+{% endstep %}
+
+{% step %}
+**Replace generic type with its rawtype**
+
+The type parameters of the generic type will be discarded and replaced by its raw type during the type erasure. For example, `Pair<String, Integer>` will be erased to `Pair`.
 {% endstep %}
 
 {% step %}

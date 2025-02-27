@@ -33,6 +33,7 @@
   * [Exercise 1 - Simulation 1](lec-rec-lab-exes/exercises/exercise-1-simulation-1.md)
   * [Exercise 2 - Simulation 2](lec-rec-lab-exes/exercises/exercise-2-simulation-2.md)
   * [Exercise 3 - Simulation 3](lec-rec-lab-exes/exercises/exercise-3-simulation-3.md)
+  * [Exercise 4 - Box](lec-rec-lab-exes/exercises/exercise-4-box.md)
 
 ## Past Year Exam
 
