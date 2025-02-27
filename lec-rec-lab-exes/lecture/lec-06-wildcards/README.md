@@ -2,9 +2,9 @@
 
 ## Wildcards
 
-In Java, **wildcards** (`?`) are used in generics to create more flexible and reusable code by allowing parameterized types to operate on **a range of types**, rather than a single specific one.
+**Motivation:** In Java, **wildcards** (`?`) are used in generics to create more flexible and reusable code by allowing **parameterized types** to operate on **a range of types**, rather than a single specific one.
 
-**Motivation**: As we have seen in [lec-05-generics](../lec-05-generics/ "mention"), Java Generics are **invariant**. But if we add wildcards (`?`) to Generics, it will have some **variance** relationship.
+**Bonus**: As we have seen in [lec-05-generics](../lec-05-generics/ "mention"), Java Generics are **invariant**. But if we add wildcards (`?`) to Generics, it will have some **variance** relationship.
 
 For example,
 
@@ -33,12 +33,12 @@ For example,
 
 {% code lineNumbers="true" %}
 ```java
-  public void copyFrom(Seq<? extends T> src) {
-    int len = Math.min(this.array.length, src.array.length);
-    for (int i = 0; i < len; i++) {
-        this.set(i, src.get(i));
-    }
+public void copyFrom(Seq<? extends T> src) {
+  int len = Math.min(this.array.length, src.array.length);
+  for (int i = 0; i < len; i++) {
+      this.set(i, src.get(i));
   }
+}
 ```
 {% endcode %}
 
@@ -96,12 +96,12 @@ For example,
 
 {% code lineNumbers="true" %}
 ```java
-  public void copyTo(Seq<? super T> dest) {
-    int len = Math.min(this.array.length, dest.array.length);
-    for (int i = 0; i < len; i++) {
-        dest.set(i, this.get(i));
-    }
+public void copyTo(Seq<? super T> dest) {
+  int len = Math.min(this.array.length, dest.array.length);
+  for (int i = 0; i < len; i++) {
+      dest.set(i, this.get(i));
   }
+}
 ```
 {% endcode %}
 
@@ -140,7 +140,7 @@ For the Contrariance Rule 2,
 
 #### Corollary
 
-1. **Transitivity:** If S <: T <: U, then A\<? super U> <: A\<? super T> <: A\<? super S>.
+1. **Transitivity:** If `S` <: `T` <: `U`, then `A<? super U>` <: `A<? super T>` <: `A<? super S>`.
 
 ### PECS Rule
 
@@ -150,7 +150,12 @@ For the Contrariance Rule 2,
 * **Consumer** (accepts data): Use lower-bounded wildcards `? super T` to write[^2] to it. So `T` must fit inside (`≤`) the consumer’s type.
 
 {% hint style="info" %}
-You can think about it in this way: A _producer_ is allowed to produce something **more specific**, hence _extends_, a _consumer_ is allowed to accept something **more general**, hence _super_.
+PECS is usually used on **method parameter**. So, one easy way for you to think is that:
+
+1. Take the method parameter as your "studyObject"
+2. look at the `studyObject.method()`
+3. If `.method()` is something like `get(), read()`, then your studyObject is a **producer**, add **lower-bounded wildcard** to your method parameter.
+4. If `.method()` is something like `set(), write()`, then your studyObject is a **consumer**, add **upper-bounded wildcard** to your method parameter.
 {% endhint %}
 
 ### Unbounded Wildcards
@@ -178,12 +183,12 @@ So, for a `Seq<?>`, we have the following principles,
 * We **can read** from it, but the elements are treated as `Object`.
 
 {% hint style="warning" %}
-`Seq<?>` is different from `Seq<Object>`, where the latter is **not** the supertype of any parameterized type `Seq<T>`, `Seq<Object>` is just a parameterized type of `Seq<T>` where `T` is `Object`.
+`Seq<?>` is different from `Seq<Object>`, where the latter is **not** the supertype of any parameterized type `Seq<T>`, `Seq<Object>` is just a **parameterized type** of `Seq<T>` where `T` is `Object`.
 {% endhint %}
 
 #### Variance Relationship
 
-1. `A<?>` is the **supertype** of every **parameterized** type of `A<T>`, that is `A<T>` <: `A<?>`.
+1. `A<?>` is the **supertype** of every **parameterized type** of `A<T>`, that is `A<T>` <: `A<?>`.
 
 #### `Seq<?>`, `Seq<Object>` and `Seq`
 
@@ -245,6 +250,14 @@ Comparable<?>[] arr = new Comparable<?>[10];
 {% hint style="success" %}
 Always use `<?>` instead of raw types when you need to check generic types with `instanceof` or create arrays of generic classes.
 {% endhint %}
+
+### Revisit Type erasure
+
+> This is a continued discussion on [#type-erasure-process-in-java](../lec-05-generics/#type-erasure-process-in-java "mention")
+
+Since during the type erasure, all the generic type parameters information will be erased, the first step remains unchanged, that is **the generic type will be erased to its rawtype**.
+
+
 
 ## Type Inference
 
