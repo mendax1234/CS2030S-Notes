@@ -68,7 +68,7 @@ To use a generic type, we have to pass in _type arguments_, which itself can be
 {% step %}
 **A non-generic type**
 
-An example is to pass the reference type as the type argument.
+Here we want to instantiate the generic type `Pair<S, T>`, and we pass two **reference types** as the **type argument**.
 
 {% code lineNumbers="true" %}
 ```javascript
@@ -77,7 +77,7 @@ Pair<String,Integer> pair = new Pair<String,Integer>("hello", 4);
 {% endcode %}
 
 {% hint style="info" %}
-Type arguments must be _reference type_. You cannot replace a type parameter with a primitive type, like `int`, `double`, etc.
+In this way, the **type argument** must be _reference type_. You cannot replace a type parameter with a primitive type, like `int`, `double`, etc.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -92,9 +92,7 @@ Using raw types (e.g., `new Pair()` without type arguments) can lead to **unchec
 class Pair<S,T> implements Comparable<Pair<S,T>>
 ```
 
-The class `Pair` takes two type parameters `S` and `T`. It implements the `Comparable` interface with the type argument `Pair<S, T>`. This means the `compareTo` method expects another `Pair` with the same type parameters.
-
-For the explanation about this code, please go to [#an-interesting-example](./#an-interesting-example "mention") since it may involve some knowledge in the later parts of this lecture.
+Here the generic type that **needs** to be instantiated is `Comparable<T>`, and we are passing `Pair<S,T>` as the **type argument**.
 {% endstep %}
 
 {% step %}
@@ -106,34 +104,38 @@ class DictEntry<T> extends Pair<String,T> {
 }
 ```
 
-`DictEntry` is a generic class with one type parameter `T`. It extends `Pair<String, T>`, which means:
+Here the generic type that needs to be instantiated is `Pair<S,T>`, where&#x20;
 
-* The first type parameter `S` in `Pair` is fixed as `String`.
-* The second type parameter `T` is passed along from `DictEntry` to `Pair<String, T>`
-
-This design is useful when you want to create a specialized version of a generic class where one of the type parameters is fixed.
+* Its first type parameter `S`  is fixed as `String`.
+* Its second type parameter `T` uses the first type parameter `T` in `DictEntry` as the **type argument**.
 {% endstep %}
 {% endstepper %}
 
 Once a generic type is instantiated, it is called a _parameterized type_.
 
-#### Inheritance with Generics
-
-You can define a class or an interface as a subtype of a generic class or interface. For example,
-
-```java
-public class String implements Comparable<String>;
-```
-
-{% hint style="info" %}
-Notice that when you implement an interface or extend from a class, you are actually instantiating the generic type, so the three rules above must be followed!
+{% hint style="warning" %}
+Always make sure which generic type is the one you want to instantiate!
 {% endhint %}
 
 ### Generic Methods
 
-Similary, a _generic type parameter_ can be defined for a **static** method.
+Similary, a _generic type parameter_ can be defined for **any** method.
 
-#### Declare a generic method
+#### Declare a non-static generic method
+
+{% code lineNumbers="true" %}
+```java
+class Box<T> {
+  public T transform(T t) {
+    return t;
+  }
+}
+```
+{% endcode %}
+
+Here, the method `transform` uses the class-level type parameter `T`.
+
+#### Declare a static generic method
 
 To declare a generic method, you should put the _generic type parameter_ immediately after the keyword `static` and before the return type. For example,
 
@@ -150,7 +152,7 @@ class A {
 }
 ```
 
-#### Invoke a generic method
+#### Invoke a static generic method
 
 * Syntax for specifying a method's type parameter: `ClassName.<Type>method()`.
 * Class type parameters (e.g., `<Integer>` in `A<Integer>`) are irrelevant for static methods and cannot be mixed with method type parameters in the call.
@@ -209,8 +211,10 @@ class Pair<S extends Comparable<S>,T> implements Comparable<Pair<S,T>> {
 ```
 {% endcode %}
 
-* We declared `Pair` to be a generic type of two type parameters: the first one `S` is bounded and must be a subtype of `Comparable<S>`. This bound is self-referential, but it is intuitive — we say that `S` must be comparable to itself, which is common in many use cases.
-* Since we want to compare two `Pair` instances, we make `Pair` implement the `Comparable` interface too, passing in `Pair<S,T>` as the type argument to `Comparable`. (So, actually here the type arguement is a generic type, which serves as a good example for our second case)
+Here, we have two `Comparable<T>` that needs to be instantiated, a.k.a, we want to make two types **comaprable!**
+
+1. For the first type parameter `S` in `Pair<S,T>`
+2. For the generic type `Pair<S,T>`
 
 {% hint style="info" %}
 A bound like `<S extends Comparable<S>>` is a common pattern called **self-referential bound.** It ensures a type can be compared to others of its own kind.
@@ -254,119 +258,17 @@ Type erasure is a **compile-time** process that removes generic type information
 
 Java will do the type checking during the **compile time** to make sure that the code compile! The following is some important rules on Java's type checking! (See more application from [Lab 03](../../lab/lab-03-exceptions-generics-exercises-2-3.md#classic-questions))
 
-{% stepper %}
-{% step %}
-**Scope of Type Parameters**
-
-* **Class-level generics**: Declared in a class/interface (e.g., `class Box<T> { ... }`).
-  * Available to **instance fields/methods** (e.g., `T data;`).
-  * **Not available to static methods**; static methods must declare their own type parameters.
-* **Method-level generics**: Declared in a method (e.g., `<S> S process(S input) { ... }`).
-  * Scoped to the method only.
-  * Independent of class-level parameters (unless shadowing occurs).
-{% endstep %}
-
-{% step %}
-**Shadowing**
-
-**Definition**: A method declares a type parameter with the same name as the class’s type parameter.
-
-For example,
-
-{% code lineNumbers="true" %}
-```java
-class Box<T> {  
-    public <T> T inspect() { ... } // Method’s <T> shadows class’s <T>  
-}  
-```
-{% endcode %}
-
-**Consequence**: Inside `inspect()`, `<T>` refers to the method’s type parameter, **not** the class’s `T`.
-
-* Compilation errors occur if the method uses the class’s `T` (e.g., returning a class field of type `T`).
-{% endstep %}
-
-{% step %}
-**Invoking Generic Methods**
-
-**Syntax**: Explicitly specify type arguments for generic methods:
-
-```java
-ClassName.<TypeArg>methodName();
-```
-
-For example,
-
-```java
-Box.<String>process("text"); // <String> sets method’s type parameter.
-```
-
-**Rules**:
-
-* Only **generic methods** (those with `<T>`, `<S>`, etc.) can have explicit type arguments.
-* Non-generic methods (e.g., `void print()`) **cannot** have type arguments.
-
-{% hint style="info" %}
-If one of the rules is broken, the code cannot pass type checking and thus will generate a compilation error.
-{% endhint %}
-{% endstep %}
-
-{% step %}
-**Return Type Compatibility**
-
-**Class-level return type**:
-
-{% code overflow="wrap" lineNumbers="true" %}
-```java
-class Box<T> {  
-    public T get() { ... } // Returns class’s T (e.g., `Box<Integer>` → returns `Integer`).  
-}  
-```
-{% endcode %}
-
-**Method-level return type**:
-
-{% code overflow="wrap" lineNumbers="true" %}
-```java
-public <S> S convert() { ... } // Return type depends on method’s <S> (e.g., `<String>` → returns `String`).  
-```
-{% endcode %}
-{% endstep %}
-
-{% step %}
-**Static Methods and Generics**
-
-**Rule**: Static methods **cannot use class-level type parameters**.
-
-{% code lineNumbers="true" %}
-```java
-class Box<T> {  
-    // Valid: static method declares its own type parameter.  
-    public static <S> S staticMethod(S input) { ... }  
-
-    // Invalid: static method uses class’s T. Generate a compilation error
-    public static T staticFail() { ... }  
-}  
-```
-{% endcode %}
-{% endstep %}
-
-{% step %}
-**Type Erasure Preparation**
-
-Before erasing generics, Java ensures:
-
-* **Consistency**: All type parameters are correctly resolved and compatible.
-* **No Conflicts**: Shadowing or mismatches (e.g., method’s `<T>` vs. class’s `T`) are flagged as errors.
-* **Syntax Validity**: Explicit type arguments match the method’s declared type parameters.
-{% endstep %}
-{% endstepper %}
-
 #### Type Erasure
 
 This happens in the **compile-time** also, after the **type checking**.
 
 {% stepper %}
+{% step %}
+**Replace generic type with its rawtype**
+
+The type parameters of the generic type will be discarded and replaced by its raw type during the type erasure. For example, `Pair<String, Integer>` will be erased to `Pair`.
+{% endstep %}
+
 {% step %}
 **Replacing Type Parameters (Type erasure starts)**
 
@@ -385,16 +287,10 @@ This step is done implicitly.
 {% endstep %}
 
 {% step %}
-**Replace generic type with its rawtype**
-
-The type parameters of the generic type will be discarded and replaced by its raw type during the type erasure. For example, `Pair<String, Integer>` will be erased to `Pair`.
-{% endstep %}
-
-{% step %}
 **Inserting Necessary Casts:**
 
 * After replacing type parameters, the compiler inserts casts where needed. This ensures that **type checking** (done at **compile time**) is still enforced at **runtime**.
-* For example, when retrieving an element from a generic collection, the compiler adds a cast to the expected type because, after erasure, the collection is treated as holding `Object` references (or the specific bound type).
+* For example, when retrieving an element from a generic collection, the compiler adds a **cast** to the expected type because, after erasure, the collection is treated as holding `Object` references (or the specific bound type).
 {% endstep %}
 {% endstepper %}
 
@@ -480,8 +376,8 @@ So, how can we create arrays with type parameters? To get around with this, we s
 
 Let's define the type as `Q`. For example,
 
-1. If the type parameter is `T` only, then `Q` will be `Object`
-2. If the type parameter is bounded, e.g., `T extends Comparable<T>`, then `Q` will be the bound type, which is `Comparable` in our example.
+1. If the type parameter is **unbounded**, then `Q` will be `Object`
+2. If the type parameter is **bounded**, e.g., `T extends Comparable<T>`, then `Q` will be the bound type, which is `Comparable` in our example.
 {% endstep %}
 
 {% step %}
@@ -524,11 +420,9 @@ To suppress this warning, the first thing we need to do is
 
 Then ,we can use the code as follows to suppress the warning
 
-{% code lineNumbers="true" %}
 ```java
 @SuppressWarnings("unchecked")
 ```
-{% endcode %}
 
 {% hint style="info" %}
 Using `@SuppressWarnings` actually means that we are more sure than the compiler that there will be no error with this piece of code!

@@ -128,4 +128,4 @@ class BoxIt<T> implements Transformer<T, Box<T>> {
 ```
 {% endcode %}
 
-In this way, we pass the type parameter `T` from `BoxIt` to `Transformer<T, B<T>>`.
+In this way, we pass the type parameter `T` from `BoxIt` to `Transformer<T, B<T>>`, so in `Transformer<T, B<T>>` the `T` can be considered as the type argument!
