@@ -13,10 +13,6 @@ For example,
 // A<? extends Circle> <: A<? extends Shape>
 ```
 
-{% hint style="info" %}
-Don't worry, this is called the upper-bounded wildcards and it will be covered very soon in this lecture!
-{% endhint %}
-
 ### Upper-Bounded Wildcards
 
 An _upper-bounded wildcard_ allows a generic type to accept **any subtype** of a specified class or interface `T`. This is useful when you want to read data from a generic structure and ensure that you're working with a specific base type or its subclasses.
@@ -257,7 +253,55 @@ Always use `<?>` instead of raw types when you need to check generic types with 
 
 Since during the type erasure, all the generic type parameters information will be erased, the first step remains unchanged, that is **the generic type will be erased to its rawtype**.
 
+### Wildcard is not a type
 
+This means that any kind of wildcard **cannot** be used as [**type argument**](#user-content-fn-3)[^3]**!** So,
+
+{% stepper %}
+{% step %}
+**we cannot use wildcard when instantiating a generic type**
+
+For example, the following code **doesn't work**!
+
+```java
+private static final Box<?> emptyBox = new Box<?>(null);
+```
+
+Instead, we should write as follows,
+
+```java
+private static final Box<?> emptyBox = new Box<>(null);
+```
+
+In this case, the compiler will do the type inference and conclude that the type argument will be `Object`.
+{% endstep %}
+
+{% step %}
+**we cannot use wildcard in generic type declaration**
+
+For example, the following is **not allowed**!
+
+{% code lineNumbers="true" %}
+```java
+class A<?> {
+    :
+}
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+**we can use wildcard to instantiate** **an array of generics**
+
+As we have seen [#revisit-rawtype](./#revisit-rawtype "mention"), we can use **unbounded wildcards** to instantiate an array of generics. For example,
+
+```java
+Box<?>[] arr = new Box<?>[10];
+```
+
+This means that we tell the compiler, I want an array of boxes, but I don't care what I put inside those boxes.
+{% endstep %}
+{% endstepper %}
 
 ## Type Inference
 
@@ -341,3 +385,5 @@ where `Type1` and `Type2` are arbitary types.
 [^1]: sometimes it is called "get", any word that has similar meaning works.
 
 [^2]: sometimes it is called "set", any word that has similar meaning works.
+
+[^3]: this means that the following rules apply to the time when we try to instantiate something containing generics

@@ -55,8 +55,16 @@ As we have seen that in generics, we **cannot** use class-level type parameters 
 private static final Box<?> EMPTY_BOX = new Box<>(null);
 ```
 
+`Box<?>` means it is a Box of any type. But to create an instance of `Box`, Java needs to know what is the type you want to put inside the box.&#x20;
+
+Here, `new Box<>(null)` works because Java perform **type inference** to infer the type argument. `T` in `Box<T>` will be inferred to as `Object` based on the type inference process in class.
+
+{% hint style="warning" %}
+`private static final Box<?> emptyBox = new Box<?>(null);` **doesn't work** because **wildcard** (e.g. `<?>` here) **cannot** be used as a type arguement (a.k.a wildcard is **not** a **type!**)
+{% endhint %}
+
 {% hint style="info" %}
-Java doesn't have field-leve type parameter!
+Java doesn't have field-level type parameter!
 {% endhint %}
 
 ### PECS
