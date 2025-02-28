@@ -38,3 +38,5 @@
 ## Past Year Exam
 
 * [PE0 Review](past-year-exam/pe0-review.md)
+* [PE1 Review](past-year-exam/pe1-review/README.md)
+  * [PE1 (AY23/24)](past-year-exam/pe1-review/pe1-ay23-24.md)

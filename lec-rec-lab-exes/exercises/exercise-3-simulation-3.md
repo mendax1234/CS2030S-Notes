@@ -68,7 +68,7 @@ Here, the `Comparable` in Line 3 is used because after type-erasure, `T` will be
 {% step %}
 **Make** `Counter` **Comparable to Itself**
 
-As we want to use `Seq<T extends Comparable<T>>` to repalce the `Counter[]` in our bank, we type `T` we pass in must be comparable! That is to say, our `Counter` class must `implement` the `Comparable<Counter>`!
+As we want to use `Seq<T extends Comparable<T>>` to repalce the `Counter[]` in our bank, the type `T` we pass in must be comparable! That is to say, our `Counter` class must `implement` the `Comparable<Counter>`!
 
 {% code lineNumbers="true" %}
 ```java
@@ -96,7 +96,7 @@ The shortest but perhaps the most tedious part of this exercise. :joy:
 
 {% stepper %}
 {% step %}
-**Initialize the generic type**
+**Instantiate the generic type**
 
 In this exercise, one thing that may be confused is that, `Queue` and `Seq` actually **are not** arrays! So, to initialize them, we can simply use
 
