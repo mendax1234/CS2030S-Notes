@@ -192,7 +192,7 @@ So, for a `Seq<?>`, we have the following principles,
 * `Seq<Object>` is a sequence of `Object` instances, with type checking by the compiler;
 * `Seq` is a sequence of `Object` instances, without type checking.
 
-### Revisit Rawtype
+### Revisit Raw Type
 
 #### **The Problem with Raw Types and Generics**
 
@@ -305,9 +305,13 @@ This means that we tell the compiler, I want an array of boxes, but I don't care
 
 ## Type Inference
 
-Type inference in Java is the compiler's ability to _automatically determine_ (deduce) the type arguments for generic methods, constructors, or classes **based on the context** where they are used.&#x20;
+Type inference in Java is the compiler's ability to _automatically determine_ (deduce) the **type arguments** for generic methods, [generic types](#user-content-fn-4)[^4] **based on the context** where they are used.
 
-### Rule of Thumb
+{% hint style="info" %}
+**Type Inference** happens usually because when you are **parameterizing** the **generic methods** or **generic types**, you didn't provide the **type arguments**. Thus, it needs to deduce them using some rules.
+{% endhint %}
+
+### Rule to find the constraints
 
 When doing Type Inference, form your constraints in the following ways
 
@@ -372,9 +376,9 @@ Fruit f = max(fruits);
 
 By combing these three constraits, we can see that `T` will be inferred as `Fruit`.
 
-#### Rules of Type Inference
+### Rule to solve the constraints
 
-We now summarize the steps for type inference. First, we figure out all of the type constraints on our type parameters, and then we solve these constraints. If no type can satisfy all the constraints, we know that Java will fail to compile. If in resolving the type constraints for a given type parameter `T` we are left with:
+We now summarize the steps for type inference. First, we figure out all of the **type constraints** on our type parameters by using the [rule](./#rule-to-find-constraints) above, and then we **solve these constraints**. If no type can satisfy all the constraints, we know that Java will fail to compile. If in resolving the type constraints for a given type parameter `T` we are left with:
 
 * `Type1 <: T <: Type2`, then `T` is inferred as `Type1`
 * `Type1 <: T`, then `T` is inferred as `Type1`
@@ -387,3 +391,5 @@ where `Type1` and `Type2` are arbitary types.
 [^2]: sometimes it is called "set", any word that has similar meaning works.
 
 [^3]: this means that the following rules apply to the time when we try to instantiate something containing generics
+
+[^4]: this usually happens when we calle the **constructor** of a generic type.
