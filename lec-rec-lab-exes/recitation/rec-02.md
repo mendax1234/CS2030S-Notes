@@ -54,5 +54,5 @@ So, now what will happen if we call `C::foo`? By the knowledge of [#method-invoc
 
 ## Tips
 
-1. When using LSP, think about whether the properties / specifications between these two classes are violated or not.
+1. When using LSP, think about whether the properties/specifications between these two classes are violated or not.
 2. A class **cannot** inherit from multiple classes at the same time but a class **can** implement multiple interfaces at the same time.

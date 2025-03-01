@@ -182,6 +182,10 @@ A _generic type parameter_ can be specified as a **subtype** of another type. Su
 
 **Motivation**: Since during the compile time, generic type parameter may not have the method that you want associated with it! So, to enable us to call the methods associated with our generic type parameter, we can used _bounded type parameters_! (**Jump to** [#type-erasure-process-in-java](./#type-erasure-process-in-java "mention") **if you want to understand it in advance)**
 
+{% hint style="success" %}
+"Bounded" used to mean **adding restrictions**, but here it actually serves to **add more usages!** Interesting!
+{% endhint %}
+
 For example, our `getArea()` can be generalized using the generics as follows
 
 {% code lineNumbers="true" %}
@@ -204,6 +208,10 @@ class A {
 {% endcode %}
 
 We use the keyword `extends` here to indicate that `T` must be a **subtype** of `GetAreable`. It is unfortunate that Java decides to use the term `extends` for any type of subtyping when declaring a bounded type parameter, even if the supertype (such as `GetAreable`) is an interface.
+
+{% hint style="info" %}
+To speicify **more than one bound,** use `&` operator to link the **bounds**. But **the first bound** must be a **class**! It **cannot be** an `interface`, otherwise, a compile error will be generated.
+{% endhint %}
 
 ***
 
@@ -288,7 +296,9 @@ The type parameters of the generic type will be discarded and replaced by its ra
 * **Bounded Type Parameters:** If a type parameter has an upper bound (e.g., `<T extends GetAreable>`), it is replaced with the first bound (in this case, `GetAreable`).
 
 {% hint style="info" %}
-If multiple bounds exist (e.g., `<T extends SomeClass & SomeInterface>`), only the first bound (which must be a class or `Object` if absent) is used during erasure.
+If **multiple bounds** exist (e.g., `<T extends SomeClass & SomeInterface>`), `T` will be erased the first bound, and then it is **type casted** to the second bound. (You can find more in [Recitation 03](../../recitation/rec-03.md#id-02.-type-parameter-with-two-bounds))
+
+**Note** that the first bound must be a **class**! It cannot be an interface, otherwise, a **compile error** will be generated!
 {% endhint %}
 
 {% hint style="success" %}

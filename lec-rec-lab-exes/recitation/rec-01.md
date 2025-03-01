@@ -1,6 +1,6 @@
 # Rec 01
 
-Question (without comments):
+Question (without answers):
 
 {% file src="../../.gitbook/assets/ps1.pdf" %}
 
