@@ -19,6 +19,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-05-generics/diagnostic-quiz.md)
   * [Lec 06 - Wildcards](lec-rec-lab-exes/lecture/lec-06-wildcards/README.md)
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-06-wildcards/diagnostic-quiz.md)
+  * [Lec 07 - Immutability, Nested Classes, Lambdas](lec-rec-lab-exes/lecture/lec-07-immutability-nested-classes-lambdas.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
   * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)
