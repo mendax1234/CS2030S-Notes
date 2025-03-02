@@ -255,11 +255,11 @@ Since during the type erasure, all the generic type parameters information will 
 
 ### Wildcard is not a type
 
-This means that any kind of wildcard **cannot** be used as [**type argument**](#user-content-fn-3)[^3]**!** So,
+1. `?` (which is the wildcard notation) **cannot** be used as [**type argument**](#user-content-fn-3)[^3]**!**
 
 {% stepper %}
 {% step %}
-**we cannot use wildcard when instantiating a generic type**
+**we cannot use `?` when instantiating a generic type**
 
 For example, the following code **doesn't work**!
 
@@ -277,7 +277,7 @@ In this case, the compiler will do the type inference and conclude that the type
 {% endstep %}
 
 {% step %}
-**we cannot use wildcard in generic type declaration**
+**we cannot use `?` in generic type declaration**
 
 For example, the following is **not allowed**!
 
@@ -291,7 +291,7 @@ class A<?> {
 {% endstep %}
 
 {% step %}
-**we can use wildcard to instantiate** **an array of generics**
+**we can use `?` to instantiate** **an array of generics**
 
 As we have seen [#revisit-rawtype](./#revisit-rawtype "mention"), we can use **unbounded wildcards** to instantiate an array of generics. For example,
 

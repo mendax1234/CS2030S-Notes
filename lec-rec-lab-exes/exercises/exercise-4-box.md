@@ -121,7 +121,7 @@ Similarly, the `transformer` here is a **consumer**! And to return a `Box<U>`, w
 
 ## Box in a Box
 
-### `extends` or `implement` a generic type - 1h
+### `extends` or `implement` a generic type - 2
 
 This actually practices the [**third way**](../lecture/lec-05-generics/#instantiate-a-generic-type) to **parameterize** a generic type.
 
@@ -136,4 +136,4 @@ class BoxIt<T> implements Transformer<T, Box<T>> {
 ```
 {% endcode %}
 
-In this way, we pass the type parameter `T` from `BoxIt` to `Transformer<T, B<T>>`, so in `Transformer<T, B<T>>` the `T` can be considered as the type argument!
+In this way, we pass the type parameter `T` from `BoxIt` to `Transformer<T, Box<T>>`, so in `Transformer<T, B<T>>` the `T` can be considered as the type argument!

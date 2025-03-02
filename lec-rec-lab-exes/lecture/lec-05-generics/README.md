@@ -213,8 +213,6 @@ We use the keyword `extends` here to indicate that `T` must be a **subtype** of 
 To speicify **more than one bound,** use `&` operator to link the **bounds**. But **the first bound** must be a **class**! It **cannot be** an `interface`, otherwise, a compile error will be generated.
 {% endhint %}
 
-***
-
 ### An interesting example
 
 Let's say we want to compare two `Pair` instances, by comparing the first element in the pair, we can define our class as follows:
