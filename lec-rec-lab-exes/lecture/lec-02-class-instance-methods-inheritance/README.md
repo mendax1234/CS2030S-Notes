@@ -375,7 +375,7 @@ When a **class** method is called, the _stack frame_ does not contain the `this`
 
 ### Heap
 
-The heap stores dynamically allocated objects. To put it simply, **whenever you use the keyword `new`, a new object is created in the heap**.
+The heap stores dynamically allocated objects. To put it simply, **whenever you use the keyword `new`, a new object is created in the heap**, but the **reference varaible** will be stored on the **stack**.
 
 An object in the _heap_ contains the following information:
 
