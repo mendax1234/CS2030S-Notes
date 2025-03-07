@@ -73,13 +73,15 @@ Notice that in the `getArea()`, we have replaced `r` with `this.r`. Usually, it 
 
 #### Default Constructor
 
-If have class has **no** explicit constructor, then a default constructor will be added automatically at **compile time**. The default constructor has **no parameter** and has **no code** written for the body.
+If we have class has **no** explicit constructor, then a default constructor will be added automatically at **compile time**. The default constructor has **no parameter** and has **no code** written for the body.
 
 {% hint style="info" %}
 Note that in a class, there may exist many constructors, but
 
 1. They have the **same method name**, which is the same as the class name
 2. They have **different number of parameters**
+
+Later you will learn that this is kind of like **method overloadding**.
 {% endhint %}
 
 ## Tell, Don't Ask
@@ -195,6 +197,10 @@ Now, the `Circle` class can change its internal structure (e.g., the type of the
 In our `Circle` class, we have a constant $$\pi$$ and this constant $$\pi$$ is universal and **does not really belong to any object** (The value of $$\pi$$ is same for every circle!). In C, we have the solution to define a global constant using the `define` keyword.
 
 In Java, we can associate these _global_ values and functions with a _class_ instead of with an _object_. For instance. Java predefines a [`java.lang.Math`](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Math.html) class that is populated with constants `PI` and `E` (for Euler's number $$e$$), along with a long list of mathematical functions.
+
+{% hint style="success" %}
+Define a **class field** is also the way we should use to define **a constant** in Java!
+{% endhint %}
 
 To associate a method or a field with a class in Java, we declare them with the `static` keyword. We can additionally add the keyword `final` to indicate that the value of the field will not change and `public` to indicate that the field is accessible from outside the class. In short, the combination of `public static final` modifiers is used for constant values in Java.
 
