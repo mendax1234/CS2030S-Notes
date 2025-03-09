@@ -434,7 +434,20 @@ Note: Seq.java uses unchecked or unsafe operations.
 Note: Recompile with -Xlint:unchecked for details.
 ```
 
-This is called an [**unchecked warning**](#user-content-fn-4)[^4]. And it is caused because the compiler doesn't know whether we can do the casting safely. A.k.a, we are not sure whether the all the elements in the Java array **have a subtype relationship with** `T`, thus an explicit casting maybe dangerous!
+This is called an [**unchecked warning**](#user-content-fn-4)[^4]. And it is caused because the compiler doesn't know whether we can do the casting safely. a.k.a, we are not sure whether the all the elements in the Java array **have a subtype relationship with** `T`, thus an explicit casting maybe dangerous!
+
+For example, the following code will generate a **ClassCastException**, which is a **runtime error.**
+
+{% code lineNumbers="true" %}
+```java
+Seq<String> seq = new Seq<String>(4);
+Object[] objArray = seq.getArray(); // return this.a
+objArray[0] = 4;
+seq.get(0);  // ClassCastException
+```
+{% endcode %}
+
+***
 
 To suppress this warning, the first thing we need to do is
 

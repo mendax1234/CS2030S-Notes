@@ -63,7 +63,7 @@ Line 7 to 9 is called **the Bridge Method**.
 > 1. a type `extends`/`implement`s a **parameterized type** and
 > 2. **type erasure** changes the **signature of one or more inherited method**.
 
-So, actually, this code is neiter overriding nor overloading.
+So, actually, this code is neither overriding nor overloading.
 
 ***
 

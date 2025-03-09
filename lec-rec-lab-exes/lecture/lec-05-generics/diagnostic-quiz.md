@@ -27,7 +27,7 @@ The `int` 1 will be converted to `Integer` 1 automatically. Thus, the function c
 
 ### 07. `compareTo()` method
 
-> When implementing `Comparable<T>`, the `compareTo` method **must have exactly the same parameter type as `T`**. For example:
+> When implementing `Comparable<T>`, the `compareTo` method **must have exactly the same parameter type as** `T`. For example:
 >
 > * If `class C implements Comparable<String>`, the method **must** be `compareTo(String s)`.
 > * Using the wrong type (e.g., `Object`, a generic `T`, or an unrelated class like `C`) results in a compilation error.
@@ -70,6 +70,8 @@ class A<T> {        // Line A
 > * **Explicit Casts Required:** You must manually cast the returned `Object` to the expected type.
 > * **Potential Runtime Errors:** Incorrect casts may compile (with warnings) but can lead to `ClassCastException` at runtime.
 
+<figure><img src="../../../.gitbook/assets/lec05-quiz-15.png" alt="" width="563"><figcaption></figcaption></figure>
+
 | Option | Code                             | Return Type from a.get() | Explicit Cast? | Compile Outcome                  |                                                                                                   |
 | ------ | -------------------------------- | ------------------------ | -------------- | -------------------------------- | ------------------------------------------------------------------------------------------------- |
 | 1      | `a.get().length();`              | `Object`                 | No             | Error                            | Cannot call `length()` on an `Object` (only defined for `String`).                                |
@@ -80,10 +82,10 @@ class A<T> {        // Line A
 ## Tips
 
 1. Java automatically converts a primitive type (e.g., `int`, `char`, etc.) into its corresponding wrapper class (e.g., `Integer`, `Character`, etc.) when a reference type is expected (This is called auto-boxing).
-2. When implementing `Comparable<T>`, the `compareTo` method **must have exactly the same parameter type as `T`**. For example:
+2. When implementing `Comparable<T>`, the `compareTo` method **must have exactly the same parameter type as** `T`. For example:
    * If `class C implements Comparable<String>`, the method **must** be `compareTo(String s)`.
    * Using the wrong type (e.g., `Object`, a generic `T`, or an unrelated class like `C`) results in a compilation error.
-3. When a method declares its own generic type parameter with the same name as the class-level type parameter, the method-level type parameter will **shadow** the class-level type parameter within the method's scope.&#x20;
+3. When a method declares its own generic type parameter with the **same name** as the class-level type parameter, the method-level type parameter will **shadow** the class-level type parameter within the method's scope.&#x20;
 4. When you use a generic class as a raw type (without specifying its type parameter), Java **erases** the type parameter, and methods that depend on the generic type is replaced by `Object`. This behavior will have the following **implications**:
    * **Type Safety Loss:** Without a type parameter, you lose compile-time type checking.
    * **Explicit Casts Required:** You must manually cast the returned `Object` to the expected type.
