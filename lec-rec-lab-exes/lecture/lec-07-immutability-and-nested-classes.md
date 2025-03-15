@@ -1,4 +1,4 @@
-# Lec 07 - Immutability, Nested Classes, Lambdas
+# Lec 07 - Immutability and Nested Classes
 
 So far in this course, we have been focusing on **three ways of dealing with software complexity**:
 
@@ -31,7 +31,7 @@ This is to prevent subclass of **immutable** class to override some methods to m
 This can be done by many ways:
 
 1. For fields of primitive types, simply declare them as `final`. For other fields, make sure they are of **immutable type**! (a.k.a we can then create other larger immutable classes by **only** using **immutable classes as fields**.)
-2. Have a class that prevents any and all kinds of sharing by **copying all the parameters before assigning them to the fields** and **copying all return values**. (See [#another-way-to-make-internal-fields-immutable](lec-07-immutability-nested-classes-lambdas.md#another-way-to-make-internal-fields-immutable "mention"))
+2. Have a class that prevents any and all kinds of sharing by **copying all the parameters before assigning them to the fields** and **copying all return values**. (See [#another-way-to-make-internal-fields-immutable](lec-07-immutability-and-nested-classes.md#another-way-to-make-internal-fields-immutable "mention"))
 {% endstep %}
 {% endstepper %}
 
@@ -147,3 +147,146 @@ This advantage also utilizes the fact the the internal fields of an instance fro
 #### Enabling Safe Concurrent Execution <a href="#enabling-safe-concurrent-execution" id="enabling-safe-concurrent-execution"></a>
 
 This won't be discussed for now. But imagine having code where we have to ensure its correctness regardless of how the execution interleaves! That's interesting right?
+
+## Nested Class
+
+**Definition**: A _nested class_ is a class defined within another containing class. For example,
+
+{% code lineNumbers="true" %}
+```java
+class A {
+    private class B {
+        :
+    }
+}
+```
+{% endcode %}
+
+{% hint style="info" %}
+class `A` is a containing class and class `B` is a nested class.
+{% endhint %}
+
+**Use**: It usage is to **encapsulate information within a container class**.
+
+**Property**: A _nested class_ is a **field** of the containing class and can access **fields** and **methods** of the _container class_, including those declared as `private`.&#x20;
+
+A _nested class_ can be classified into the following four types
+
+1. Inner class
+2. Static nested class
+3. Local class
+4. Anonymous class
+
+### Inner class <a href="#static-nested-classes" id="static-nested-classes"></a>
+
+It is a **non-static** _nested class_, thus it can access **all** fields and methods of the containing class.
+
+{% hint style="warning" %}
+In the Inner class, we should be extremely careful with the use of `this`. For example, the following is wrong!
+
+{% code lineNumbers="true" %}
+```java
+class A {
+ private int x;
+
+ private class B {
+   void foo() {
+     this.x = 1; // error
+   }
+ }
+}
+```
+{% endcode %}
+{% endhint %}
+
+#### Qualified `this`
+
+This is to resolve the issue above. A _qualified `this`_ reference is prefixed with the **containing class name**, to differentiate between the `this` of the inner class and the `this` of the containing class. In the example above, we can access `x` from `A` through the `A.this` reference.
+
+```java
+class A {
+  private int x;
+
+  private class B {
+    void foo() {
+      A.this.x = 1; // ok
+    }
+  }
+}
+```
+
+### Static nested class
+
+It is a **static** _nested class_, thus it is associated with the containing class, NOT an instance. So, it can only access **static fields** and **static methods** of the containing class.
+
+***
+
+#### Hiding nested class
+
+> The [notes](https://nus-cs2030s.github.io/2425-s2/29-nested-classes.html#hiding-nested-classes) is very detailed. Please go back and refer to it if needed.
+
+To put it simply, the _nested class_ should be defined as `private` for the sake of not breaking the abstract barrier. This makes calling the nested class **explicitly not allowed**. However, calling a public method from the **containing class** that returns an **instance** of the `private` _nested class_ is still allowed. For example,
+
+{% code lineNumbers="true" %}
+```java
+class A {
+  private class B {
+    public void buz() { 
+    }
+  }
+  B foo() {
+    return new B();
+  }
+}
+
+
+A a = new A();
+a.foo();         // return an instance of A.B is OK
+A.B b = a.foo(); // still not allowed since the type A.B is private
+a.foo().buz();  // error since `buz` is defined in a private nested class
+```
+{% endcode %}
+
+{% hint style="info" %}
+Since the type `A.B` is private to within `A`, we **cannot** call methods of `B` outside of `A` as well.
+{% endhint %}
+
+### Local class
+
+It is a _nested class_ **declared within a function**, just like a local variable. The local class has access to all the local variables from **within** the method[^1] it is declared, as well as the fields of its **containing class**.
+
+{% hint style="info" %}
+The **declaration** and the **instantiation** of a local class is usually seperated.
+{% endhint %}
+
+#### Variable Capture
+
+It is a behavior that the **local class** will [make a copy of](#user-content-fn-2)[^2] the **local variables in the enclosing method**.
+
+#### Effectively `final`
+
+Effectively `final` means that an **implicitly** `final` variable **cannot be re-assigned** after initialization.
+
+The use of this rule is because variable capture can sometimes be confusing, thus Java enforces a rule that **only** `final` **or effectively** `final` local variables can be **captured**. If the variables captured are neither `final` nor effectively `final`, then a **compile error** will be generated!
+
+{% hint style="info" %}
+Note, this "re-assignment" is usually associated with **primitive type**. If we use the reference type, we can **mutate** the value of the instance **instead of** re-assigning. Thus, the second one with mutation is **allowed** in Java.
+{% endhint %}
+
+### Anonymous Class
+
+An **anonymous class** is one where you **declare** a **local class** and **instantiate** it in a single statement.
+
+It has the following format: `new X (arguments) { body }`, where:
+
+1. `X` is a class that the anonymous class **extends** or an interface that the anonymous class **implements**.
+2. `arguments` are the arguments that you want to pass into the constructor of the anonymous class.
+3. `body` is the body of the class as per normal, except that we **cannot** have a **constructor** for an anonymous class.
+
+{% hint style="success" %}
+Like a local class, an anonymous class captures the variables of the enclosing scope as well — the same rules to variable access as local classes apply.
+{% endhint %}
+
+[^1]: This method is called the "enclosing" method.
+
+[^2]: this is called "capture"
