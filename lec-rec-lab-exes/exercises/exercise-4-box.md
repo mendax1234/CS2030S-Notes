@@ -108,7 +108,7 @@ class DivisibleBy implements BooleanCondition<Integer> {
 
 {% code lineNumbers="true" %}
 ```java
-public <U> Box<U> map(Transformer<? super T, U> transformer) {
+public <U> Box<U> map(Transformer<? super T, ? extends U> transformer) {
   if (this.isPresent()) {
     return Box.of(transformer.transform(this.content));
   }
