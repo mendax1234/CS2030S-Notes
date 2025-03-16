@@ -40,3 +40,6 @@ class B {
 
 1. Make fields/class `final`
 2. The class which extends from the immutable class **may not be an immutable** class.
+3. In the [#static-nested-class](../lecture/lec-07-immutability-and-nested-classes.md#static-nested-class "mention"), `this` is **as long as it is used in a non-static method.**
+4. When accessing the **captured variables**, don't need any `this` or what.
+5. Variable capture will also capture the **instance that invokes the method where the local class comes from**.

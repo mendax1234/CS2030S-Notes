@@ -327,9 +327,13 @@ The **declaration** and the **instantiation** of a local class is usually sepera
 
 It is a behavior that the **local class** will [make a copy of](#user-content-fn-2)[^2] the **local variables in the enclosing method**.
 
+{% hint style="info" %}
+Variable capture will also capture the **instance that invokes the method where the local class comes from**. See more from [rec-05.md](../recitation/rec-05.md "mention").
+{% endhint %}
+
 #### Effectively `final`
 
-Effectively `final` means that an **implicitly** `final` variable **cannot be re-assigned** after initialization.
+Effectively `final` means that an **implicitly** `final` variable **cannot be re-assigned** after **they are captured**.
 
 The use of this rule is because variable capture can sometimes be confusing, thus Java enforces a rule that **only** `final` **or effectively** `final` local variables can be **captured**. If the variables captured are neither `final` nor effectively `final`, then a **compile error** will be generated!
 
