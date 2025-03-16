@@ -31,7 +31,7 @@ This is to prevent subclass of **immutable** class to override some methods to m
 This can be done by many ways:
 
 1. For fields of primitive types, simply declare them as `final`. For other fields, make sure they are of **immutable type**! (a.k.a we can then create other larger immutable classes by **only** using **immutable classes as fields**.)
-2. Have a class that prevents any and all kinds of sharing by **copying all the parameters before assigning them to the fields** and **copying all return values**. (See [#another-way-to-make-internal-fields-immutable](lec-07-immutability-and-nested-classes.md#another-way-to-make-internal-fields-immutable "mention"))
+2. Have a class that prevents any and all kinds of sharing by **copying all the parameters before assigning them to the fields** and **copying all return values**. (See [#another-way-to-make-internal-fields-immutable](./#another-way-to-make-internal-fields-immutable "mention"))
 {% endstep %}
 {% endstepper %}
 
@@ -325,11 +325,10 @@ The **declaration** and the **instantiation** of a local class is usually sepera
 
 #### Variable Capture
 
-It is a behavior that the **local class** will [make a copy of](#user-content-fn-2)[^2] the **local variables in the enclosing method**.
+It is a behavior that the **local class** will capture the following variables
 
-{% hint style="info" %}
-Variable capture will also capture the **instance that invokes the method where the local class comes from**. See more from [rec-05.md](../recitation/rec-05.md "mention").
-{% endhint %}
+1. The **local variables** of the method where the local class comes from (including the arguments, see more in [Diagnostic Quiz Q13](diagnostic-quiz.md#id-13.-variable-capture))
+2. The **instance** that invokes the method where the local class comes from. (See more in [Rec 05](../../recitation/rec-05.md#id-01.-stack-and-heap-with-nested-class))
 
 #### Effectively `final`
 
@@ -338,7 +337,8 @@ Effectively `final` means that an **implicitly** `final` variable **cannot be re
 The use of this rule is because variable capture can sometimes be confusing, thus Java enforces a rule that **only** `final` **or effectively** `final` local variables can be **captured**. If the variables captured are neither `final` nor effectively `final`, then a **compile error** will be generated!
 
 {% hint style="info" %}
-Note, this "re-assignment" is usually associated with **primitive type**. If we use the reference type, we can **mutate** the value of the instance **instead of** re-assigning. Thus, the second one with mutation is **allowed** in Java.
+1. Note, this "re-assignment" is usually associated with **primitive type**. If we use the reference type, we can **mutate** the value of the instance **instead of** re-assigning. Thus, the second one with mutation is **allowed** in Java.
+2. The "effectively final" rule applies to _reading_ the variable’s value, not to enabling assignments. See more from [Diagnostic Quiz Q12](diagnostic-quiz.md#id-12.-inner-class-and-effectively-final).
 {% endhint %}
 
 ### Anonymous Class
@@ -356,5 +356,3 @@ Like a local class, an anonymous class captures the variables of the enclosing s
 {% endhint %}
 
 [^1]: This method is called the "enclosing" method.
-
-[^2]: this is called "capture"
