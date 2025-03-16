@@ -181,6 +181,10 @@ A _nested class_ can be classified into the following four types
 
 It is a **non-static** _nested class_, thus it can access **all** fields and methods of the containing class.
 
+{% hint style="success" %}
+This means that when instantiating the inner class, you **need** an instance of the containing class and the position of new should be behind the `.` operator.
+{% endhint %}
+
 {% hint style="warning" %}
 In the Inner class, we should be extremely careful with the use of `this`. For example, the following is wrong!
 
@@ -203,6 +207,7 @@ class A {
 
 This is to resolve the issue above. A _qualified `this`_ reference is prefixed with the **containing class name**, to differentiate between the `this` of the inner class and the `this` of the containing class. In the example above, we can access `x` from `A` through the `A.this` reference.
 
+{% code lineNumbers="true" %}
 ```java
 class A {
   private int x;
@@ -214,10 +219,69 @@ class A {
   }
 }
 ```
+{% endcode %}
+
+***
+
+To create an instance of the inner class, we can see the following code
+
+{% code lineNumbers="true" %}
+```java
+class A {
+  public class B {
+    public void buz() { 
+    }
+  }
+  public static class C {
+  }
+  
+  public static void main(String[] args) {
+  A a = new A();
+  A.B b = a.new B(); // new a.B() is not allowed!
+}
+```
+{% endcode %}
 
 ### Static nested class
 
-It is a **static** _nested class_, thus it is associated with the containing class, NOT an instance. So, it can only access **static fields** and **static methods** of the containing class.
+It is a **static** _nested class_, thus it is associated with the containing class, NOT an instance.
+
+{% hint style="success" %}
+This means when instantiating the static nested class, you don't need an instance of the containing class.
+{% endhint %}
+
+So, it can only access **static fields** and **static methods** of the containing class. If you want to access the fields of the containing class, you can do so by using object reference.
+
+{% code lineNumbers="true" %}
+```java
+class B {
+    static int x = 0;
+    
+    void foo() {
+        A a = new A();
+    }
+    
+    static class A {
+        int y = 0;
+    
+        A() {
+            this.y = B.x + 1;
+        }
+    }
+    
+    public static void main(String[] args) {
+        A a = new A(); // B.A = new B.A() is allowed! B.new A() is not allowed
+        System.out.println(String.format("A.y: %d", a.y));
+    }
+}
+```
+{% endcode %}
+
+1. When you instantiate a static nested class, you can ignore the containing class.
+
+{% hint style="info" %}
+`static` only restricts that the nested class is associated with the **containing class**, NOT an instance. But inside the static nested class, if&#x20;
+{% endhint %}
 
 ***
 
