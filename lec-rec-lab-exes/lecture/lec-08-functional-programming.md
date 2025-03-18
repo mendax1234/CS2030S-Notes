@@ -1,4 +1,4 @@
-# Lec 08 - Lazy Evaluation
+# Lec 08 - Functional Programming
 
 ## Mathematical Functions
 
@@ -137,3 +137,28 @@ Mathematically, a **function** takes in only **one value** and returns **one val
 {% hint style="success" %}
 This utilizes the fact from the first-class citizen principle that **functions can be returned from a function**!
 {% endhint %}
+
+## Lazy Evaluation
+
+The Lazy evaluation means that we only **invoke** the function when we truly needs to do so. This can be done in two ways:
+
+1. Use Lambda as Delayed Data
+2. Memoization
+
+### Lambda as Delayed Data
+
+Recall that when we write a lambda expression as follows:
+
+{% code lineNumbers="true" %}
+```java
+Transformer<Integer, Integer> f = x -> x + 1;
+```
+{% endcode %}
+
+We are just **defining function** $$f$$. To invoke the function $$f$$, we need an argument for `x`. So, nothing will happen here because we are just defining the function.
+
+So, we can pass in the **lambda expression** to procrastinate our computation until we really need the data. For the example, please see from the [lecture notes](https://nus-cs2030s.github.io/2425-s2/32-lazy.html#lambda-as-delayed-data).
+
+### Memoization
+
+This is the same as what we haved encountered in CS1010 or some other data structures. So, the basic idea here is that if we have computed the value of a function before, we can cache (or memoize) the value, and keep it somewhere, so that we don't need to compute it again.
