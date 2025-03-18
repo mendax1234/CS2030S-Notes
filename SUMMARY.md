@@ -21,6 +21,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-06-wildcards/diagnostic-quiz.md)
   * [Lec 07 - Immutability and Nested Classes](lec-rec-lab-exes/lecture/lec-07-immutability-and-nested-classes/README.md)
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-07-immutability-and-nested-classes/diagnostic-quiz.md)
+  * [Lec 08 - Lazy Evaluation](lec-rec-lab-exes/lecture/lec-08-lazy-evaluation.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
   * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)

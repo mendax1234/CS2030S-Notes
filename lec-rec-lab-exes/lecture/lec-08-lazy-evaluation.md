@@ -1,0 +1,139 @@
+# Lec 08 - Lazy Evaluation
+
+## Mathematical Functions
+
+In maths, we have learned that **function** refers to a **mapping** from domain to codomain. Every input in the domain must map to exactly one output but multiple inputs can map to the same output.
+
+Basically, mathematical functions have the following two advantages:
+
+1. **No side effects**: This means given a function $$f$$, applying it on $$x$$, a.k.a $$f(x)$$ doesn't change the value of $$x$$ or any other unknowns $$y,z$$ etc.It simply computes and returns the value.
+2. **Referential transparency**: This means if we let $$f(x)=a$$, then in every formula that $$f(x)$$ appears in, we can safely replace occurances of $$f(x)$$ with $$a$$. We can be guaranteed that teh resulting formulas are still equivalent.
+
+## Pure Functions
+
+Ideally, functions in our program should behave the same as functions in mathematics. This requires us to treat **functions** as **first-class citizen** in our program, which means we can _assign functions to a variable, pass it as arguments, return a function from another function_, etc, **just like any other variable**.
+
+{% hint style="info" %}
+Now, in our program, our **first class citizen** is changed from **variable** to **function**.
+{% endhint %}
+
+Such a counterpart of mathematical functions in our program is called **pure functions**. This means that the pure functions also have the following two properties:
+
+1. **No side effects**: This means our function **does not**
+   1. print to the screen
+   2. write to files
+   3. throw exceptions
+   4. change other variables
+   5. modify the values of the arguments
+2. **Deterministic**: This means that given the same input, the function must produce the same output, _every single time_. This deterministic property ensures **referential transparency**.
+
+## Functional Programming
+
+We refer to the style of programming where we build a program from **pure functions** as _functional programming (FP)_.
+
+### Functions as First-class Citizen
+
+We have already seen what this means from above. Now, let's recap an example **where we pass a function as an argument**.
+
+{% code lineNumbers="true" %}
+```java
+void sortNames(List<String> names) {
+  Comparator<String> cmp = new Comparator<String>() {
+    public int compare(String s1, String s2) {
+    return s1.length() - s2.length();
+    }
+  };
+  names.sort(cmp);
+}
+```
+{% endcode %}
+
+In this code, the comparison function `cmp` here is implemented as a _method in an anonymous class_ that _implements an interface_. We can think of **an instance of this anonymous class** as the **function**. Since a function is now just an instance of an object in Java, we can pass it around, return it from a function, and assign it to a variable, just like any other reference type.
+
+## Lambda Expression
+
+While we have achieved functions as first-class citizens in Java, the code is verbose and ugly. Fortunately, there is a much cleaner syntax to write functions that applies to **interfaces with a single abstract method.**
+
+{% hint style="success" %}
+Such an interface with **exactly one abstract method** is called a **functional interface**. And a key advantage for a functional interface is that there is **no ambiguity about which method is being overridden** by an implementing subclass.
+{% endhint %}
+
+An example is as follows, notice that the Lambda Writing can be achieved by **removing the unnecessary part from** the anonymous class writing!
+
+{% tabs %}
+{% tab title="Anonymous Class Writing" %}
+{% code lineNumbers="true" %}
+```java
+Transformer<Integer, Integer> square = new Transformer<>() {
+  @Override
+  public Integer transform(Integer x) {
+    return x * x;
+  }
+};
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Lambda Writing" %}
+{% code lineNumbers="true" %}
+```java
+Transformer<Integer, Integer> square = x -> x * x;
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+So, the expression above `x -> x * x` is called **lambda expression**.
+
+1. The LHS lists the **parameters** (use `()` if there is no parameter)
+2. The RHS is the **computation**.
+
+### Method Referencing
+
+A lambda expression is useful for specifying a **new anonymous method**. Sometimes, we want to use an **existing method** as a first-class citizen instead. That is why it comes **method referencing**.
+
+An example using the `distanceTo(Point p)` is shown as follows,
+
+{% tabs %}
+{% tab title="Lambda Expression Style" %}
+{% code lineNumbers="true" %}
+```java
+Point origin = new Point(0, 0);
+Transformer<Point, Double> dist = p -> origin.distanceTo(p);
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Method Referencing Style" %}
+{% code lineNumbers="true" %}
+```java
+Point origin = new Point(0, 0);
+Transformer<Point, Double> dist = origin::distanceTo;
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+The double-colon notation `::` is used to **specify a method reference**. We can use method references to refer to:
+
+1. static methods in a class `Box::of`
+2. instance method of a class or interface `x::compareTo`
+3. constructor of a class `Box::new`
+
+<pre class="language-java" data-line-numbers><code class="lang-java">Box::of            // x -> Box.of(x)
+Box::new           // x -> new Box(x)
+x::compareTo       // y -> x.compareTo(y)
+<strong>A::foo             // (x, y) -> x.foo(y) or (x, y) -> A.foo(x,y)
+</strong></code></pre>
+
+However, in Line 4, we should be extremely careful because if there are multiple matches or if there is ambiguity in which method matches, the Java compiler will generate a **compile error**!
+
+## Curried Functions
+
+Mathematically, a **function** takes in only **one value** and returns **one value**. In programming, however, we may write functions that take in more than one value. In FP, this can be achieved by using **curried functions.**
+
+> **Currying** is the technique that translates a general _n-ary_ function to a sequence of _n_ **unary** functions.
+
+{% hint style="success" %}
+This utilizes the fact from the first-class citizen principle that **functions can be returned from a function**!
+{% endhint %}
