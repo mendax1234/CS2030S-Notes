@@ -351,8 +351,11 @@ return Maybe.of(map.get(student))
 {% endcode %}
 
 1. Line 1, `Maybe.of` is actually creating the argument that will be passed all the way down.
-2. Line 2, `.flatMap()` takes in a lambda as an expression and itself (`.flatMap()`) is a function that we are going to apply on the target[^2]. This function will return another "mutatbed" instance for further operation. The return type of the function is defined in the declaration.
+2. Line 2, `.flatMap()` takes in a lambda as an expression and itself (`.flatMap()`) is a function that we are going to apply on the target[^2]. This function will return another "mutated" instance for further operation. The return type of the function is defined in the declaration.
+   1. Inside the lambda expression, it defines how the `Transformer t` works.
 3. Line 3 and 4 is similar.
+
+You can think the Line 1 as creating a naked man and Line 2,3,4 are actually adding layers to the man (From my tutor :joy:)
 
 [^1]: 
 
