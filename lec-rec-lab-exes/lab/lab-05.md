@@ -78,6 +78,43 @@ String foo(Maybe<Object> m) {
 ```
 {% endcode %}
 
-Use steps 1 and 2, we want to return a `String.valueOf()` if the wrapper contains a value, otherwise return a String "?"
+The code after modifying is:
+
+{% code lineNumbers="true" %}
+```java
+Maybe<Integer> update(Maybe<Integer> x) {
+  return Maybe.some(x.orElse(4));
+}
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+Q5
+
+{% code lineNumbers="true" %}
+```java
+Maybe<String> foo(Maybe<String> s1, Maybe<String> s2) {
+  if (s1.equals(Maybe.none()) || s2.equals(Maybe.none())) {
+    return Maybe.none();
+  }
+  return Maybe.of(s1.get() + s2.get());
+}
+```
+{% endcode %}
+
+The code after modifying is:
+
+{% code lineNumbers="true" %}
+```java
+Maybe<String> foo(Maybe<String> s1, Maybe<String> s2) {  
+   return s1.flatMap(s -> s2.map(t -> s + t));
+}
+```
+{% endcode %}
 {% endstep %}
 {% endstepper %}
+
+### Tips
+
+1. When doing flatMap and Map questions, always think about the situations when your arguments are Maybe.none(), will your final return only Maybe.NONE as expected?

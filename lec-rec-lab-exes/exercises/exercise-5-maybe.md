@@ -147,7 +147,7 @@ public abstract <U> Maybe<U> flatMap(Transformer<? super T, ? extends Maybe<? ex
 ```
 {% endcode %}
 
-Implementation in each case
+#### Implementation
 
 {% tabs %}
 {% tab title="None" %}
@@ -174,6 +174,10 @@ public <U> Maybe<U> flatMap(Transformer<? super Object, ? extends Maybe<? extend
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+#### Application
+
+1. `flatMap()` can technically achieve everything that `map()` can achieve. But the reverse is not true because map always add **Wrapper** after transforming.
 
 ### orElse
 
@@ -337,7 +341,7 @@ public static <T> Maybe<T> some(T t) {
 
 ## Single return statement
 
-The major purpose of using functional programming in this course is to let you rewrite methods into one single statment. So, how are we using the basic idea of FP to understand / read a single return statement?
+The major purpose of using functional programming in this course is to let you rewrite methods into one single statment. So, how we can use the basic idea of FP to understand / read a single return statement?
 
 > The fundamental idea of FP: In FP, **functions** are treated as the **first-class citizen**.
 
@@ -345,17 +349,22 @@ The major purpose of using functional programming in this course is to let you r
 ```java
 return Maybe.of(map.get(student))
     .flatMap(m -> Maybe.of(m.get(module)))
-    .flatMap(a -> Maybe.of(m.get(assement)))
+    .flatMap(a -> Maybe.of(a.get(assement)))
     .orElse("No such entry");
 ```
 {% endcode %}
 
 1. Line 1, `Maybe.of` is actually creating the argument that will be passed all the way down.
 2. Line 2, `.flatMap()` takes in a lambda as an expression and itself (`.flatMap()`) is a function that we are going to apply on the target[^2]. This function will return another "mutated" instance for further operation. The return type of the function is defined in the declaration.
-   1. Inside the lambda expression, it defines how the `Transformer t` works.
+   1. Inside the lambda expression, it explicitly sets the `Transformer t` .
+   2. How the transformer or a.k.a the parameter works is that the **input** is the L.H.S, whose type is the **type argument** X from the previous returned `Maybe<X>`, which in CS2030S's Maybe should be the value in the wrapper. The **output** is the R.H.S
 3. Line 3 and 4 is similar.
 
 You can think the Line 1 as creating a naked man and Line 2,3,4 are actually adding layers to the man (From my tutor :joy:)
+
+## Tips
+
+1. In 2030s's Maybe, for every lambda expression passed into the API of maybe, the L.H.S is always the value of the previous Maybe
 
 [^1]: 
 
