@@ -52,7 +52,9 @@ In this code, the comparison function `cmp` here is implemented as a _method in 
 
 ## Lambda Expression
 
-While we have achieved functions as first-class citizens in Java, the code is verbose and ugly. Fortunately, there is a much cleaner syntax to write functions that applies to **interfaces with a single abstract method.**
+While we have achieved functions as first-class citizens in Java, the code is verbose and ugly. Fortunately, there is a much cleaner syntax to write functions that applies to **interfaces with a single abstract method —** that's **lambda expression**.
+
+A **lambda expression** is a shorthand syntax for implementing a **functional interface** (an interface with a single abstract method) in Java. It defines a function inline, specifying its parameters and body, without requiring a full method declaration or class definition.
 
 {% hint style="success" %}
 Such an interface with **exactly one abstract method** is called a **functional interface**. And a key advantage for a functional interface is that there is **no ambiguity about which method is being overridden** by an implementing subclass.

@@ -37,3 +37,47 @@ Maybe\<T> is a wrapper for an item that may not may not exist.
 
 ### Option and Result
 
+## Lab Sheet
+
+{% stepper %}
+{% step %}
+Q2
+
+{% code lineNumbers="true" %}
+```java
+void bar(String s) {
+  if (s != null) {
+    System.out.println(s);
+  }
+}
+```
+{% endcode %}
+
+After rewriting
+
+{% code lineNumbers="true" %}
+```java
+void bar(String s) {
+  Maybe.of(s).ifPresent(x -> System.out.println(x));
+}
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+Q3
+
+{% code lineNumbers="true" %}
+```java
+String foo(Maybe<Object> m) {
+  if (m.equals(Maybe.none()) { 
+    return "?";
+  } 
+  return String.valueOf(m.get());
+}
+```
+{% endcode %}
+
+Use steps 1 and 2, we want to return a `String.valueOf()` if the wrapper contains a value, otherwise return a String "?"
+{% endstep %}
+{% endstepper %}

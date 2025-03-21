@@ -186,7 +186,7 @@ public abstract T orElse(T t);
 ```
 {% endcode %}
 
-Implementation in each case
+#### Implementation
 
 {% tabs %}
 {% tab title="None" %}
@@ -212,7 +212,10 @@ public T orElse(T t) {
 {% endtab %}
 {% endtabs %}
 
-This is usually used at the last of your function chain because its return type may not be a Maybe, so we cannot chain anymore!
+#### Application
+
+1. Remember that this method will always give you the either [**content**](#user-content-fn-1)[^1] of the wrapper (See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q3) or the parameter. No wrapper is returned!
+2. This is usually used at the last of your function chain because its return type may not be a Maybe, so we cannot chain anymore!
 
 ### orElseGet
 
@@ -262,10 +265,10 @@ public abstract void ifPresent(Consumer<? super T> c);
 ```
 {% endcode %}
 
-Implementation in each case
+#### Implementation
 
 {% tabs %}
-{% tab title="First Tab" %}
+{% tab title="None" %}
 {% code lineNumbers="true" %}
 ```java
 @Override
@@ -276,7 +279,7 @@ public void ifPresent(Consumer<? super Object> c) {
 {% endcode %}
 {% endtab %}
 
-{% tab title="Second Tab" %}
+{% tab title="Some<T>" %}
 {% code lineNumbers="true" %}
 ```java
 @Override
@@ -287,6 +290,10 @@ public void ifPresent(Consumer<? super T> c) {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+#### Application
+
+1. This is usually used to replace the `(... ≠ null)` check. See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q2.
 
 ### of
 
@@ -327,3 +334,26 @@ public static <T> Maybe<T> some(T t) {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+## Single return statement
+
+The major purpose of using functional programming in this course is to let you rewrite methods into one single statment. So, how are we using the basic idea of FP to understand / read a single return statement?
+
+> The fundamental idea of FP: In FP, **functions** are treated as the **first-class citizen**.
+
+{% code lineNumbers="true" %}
+```java
+return Maybe.of(map.get(student))
+    .flatMap(m -> Maybe.of(m.get(module)))
+    .flatMap(a -> Maybe.of(m.get(assement)))
+    .orElse("No such entry");
+```
+{% endcode %}
+
+1. Line 1, `Maybe.of` is actually creating the argument that will be passed all the way down.
+2. Line 2, `.flatMap()` takes in a lambda as an expression and itself (`.flatMap()`) is a function that we are going to apply on the target[^2]. This function will return another "mutatbed" instance for further operation. The return type of the function is defined in the declaration.
+3. Line 3 and 4 is similar.
+
+[^1]: 
+
+[^2]: the calling object, the object before `.`
