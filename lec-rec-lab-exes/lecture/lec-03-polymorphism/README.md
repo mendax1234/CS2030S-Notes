@@ -206,7 +206,7 @@ So, seems that now we want to create something more **specific** than `Object` t
 
 ***
 
-> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, errors[^8] will be generated!
+> An _abstract class_ in Java is a class that has been made into something so **general** that it **cannot and should not be instantiated**! Otherwise, a **compile error** will be generated!
 
 In our example, we may want to create an _abstract class_ called `Shape`. To do so, we can use the keyword `abstract`.
 
@@ -229,7 +229,7 @@ An _abstract method_ **cannot** be implemented and therefore **should not have**
 ***
 
 {% hint style="info" %}
-A class with **at least** one abstract method must be declared as `abstract`. Otherwise, an error[^8] will be generated. On the other hand, an abstract class may have **no** abstract method.
+A class with **at least** one abstract method must be declared as `abstract`. Otherwise, a **compile error** will be generated. On the other hand, an abstract class may have **no** abstract method.
 {% endhint %}
 
 ### Concrete class
@@ -306,7 +306,7 @@ In a concrete class, for it to implement an interface, it has to override **all*
 
 ### Interface as Supertype
 
-If a class $$C$$ implements an interface $$I$$, then $$C<:I$$. This definition implies that a type can have multiple supertypes because a type can [implement multiple interfaces](#user-content-fn-9)[^9].
+If a class $$C$$ implements an interface $$I$$, then $$C<:I$$. This definition implies that a type can have multiple supertypes because a type can [implement multiple interfaces](#user-content-fn-8)[^8].
 
 {% hint style="info" %}
 So far, we have seen two ways to establish the **subtype relationship** between classes and interfaces:
@@ -321,7 +321,7 @@ So far, we have seen two ways to establish the **subtype relationship** between 
 This is a knowledge point that almost all students in the past cohort fail, so it must be very valuable! See more [here](https://edstem.org/us/courses/72783/discussion/6079061?answer=14080449).
 {% endhint %}
 
-As we have seen in the previous lecture, in Java, two types without a _subtype_ relationship [cannot be casted](#user-content-fn-10)[^10]. However, let's consider the code as follows,
+As we have seen in the previous lecture, in Java, two types without a _subtype_ relationship [cannot be casted](#user-content-fn-9)[^9]. However, let's consider the code as follows,
 
 <pre class="language-java" data-line-numbers><code class="lang-java">interface I {
   :
@@ -396,8 +396,6 @@ However, if you actually declare class `A` with `final` keyword which prevents i
 
 [^7]: if you are not familiar with the idea that "type" is the synonym of "class", just take every "type" I have mentioned in this document as "class".
 
-[^8]: which kind of error? Ask
+[^8]: Here, essentially it is because to implement the interface, a concrete class must override the abstract method.
 
-[^9]: Here, essentially it is because to implement the interface, a concrete class must override the abstract method.
-
-[^10]: Both explicitly and implicitly are not allowed.
+[^9]: Both explicitly and implicitly are not allowed.

@@ -109,11 +109,11 @@ Till now, we have seen the **subtype relationship** on classes and interefaces, 
 
 ### Variance of types
 
-Let $$C(S)$$ correspond to some **complex type** based on type $$S$$, which means $$C(S)$$ is the type of the array and $$S$$ is the type of each element/component in the array. We say a complex type is:
+Let $$C(S)$$ correspond to some **complex type** based on type $$S$$, which means $$C(S)$$ is the type of the "array" and $$S$$ is the type of each element/component in the "array". We say a complex type is:
 
 * _covariant:_ which means if $$S<:T$$, then $$C(S)<:C(T)$$
 * _contravariant:_ which means if $$S<:T$$, then $$C(T)<:C(S)$$
-* _invariant_: if it is neither covariant nor contravariant
+* _invariant_: t is neither covariant nor contravariant
 
 {% hint style="info" %}
 Java Array is **covariant**.
@@ -140,7 +140,49 @@ try {
 
 #### Compile-error in `catch` block
 
-In the `catch` block, the first catch block that has an exception type compatible with the type of the thrown exception (i.e. a subtype) is selected to handle the exception. So, if there are **multiple avialable** blocks, the compiler will generate a **compile-time error**.
+In the `catch` block, the first catch block that has an exception type compatible with the type of the thrown exception (i.e. a subtype) is selected to handle the exception. So, if there are **blocks that are unreachable,** a **compile error** will be generated! For example, the following code **will generate a compile error** (the second exception is the subclass of the first exception)
+
+{% code lineNumbers="true" %}
+```java
+try {
+    int result = 10 / 0; // Throws ArithmeticException
+} catch (Exception e) {
+    System.out.println("General exception: " + e);
+} catch (ArithmeticException e) {
+    System.out.println("Arithmetic error: " + e);
+}
+```
+{% endcode %}
+
+However, if we write the following code, it works fine,
+
+{% code lineNumbers="true" %}
+```java
+try {
+    // Code that might throw exceptions
+    int[] arr = new int[2];
+    arr[5] = 10; // ArrayIndexOutOfBoundsException
+    int x = 10 / 0; // ArithmeticException
+} catch (ArithmeticException e) {
+    System.out.println("Arithmetic error");
+} catch (ArrayIndexOutOfBoundsException e) {
+    System.out.println("Array error");
+}
+```
+{% endcode %}
+
+{% hint style="warning" %}
+Exceptions are **always** triggered at **run-time**.
+
+For example, the following code **won't generate a compile error**, **but will generate a runtime error!**
+
+{% code lineNumbers="true" %}
+```java
+int[] arr = new int[3]; // Array of size 3, valid indices: 0, 1, 2
+arr[5] = 10; // Throws ArrayIndexOutOfBoundsException at runtime
+```
+{% endcode %}
+{% endhint %}
 
 ### Throwing Exceptions
 
@@ -302,6 +344,6 @@ public void m2() throws E2 {
 ```
 {% endcode %}
 
-[^1]: or "elements", which is basically the "element" in the complex type. If you are from CS1010, which uses C as the teaching language.
+[^1]: or "elements", which is basically the "element" in the complex type. If you are from CS1010, which uses C as the teaching language, you should be fimilar with this notation of "element" :relaxed:.
 
 [^2]: here "catch" means the exception being handled.

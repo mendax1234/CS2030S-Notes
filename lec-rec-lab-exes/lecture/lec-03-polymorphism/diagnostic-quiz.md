@@ -22,7 +22,7 @@ s = (S) t; // Line A
 ```
 {% endcode %}
 
-If, the RTT of `t` is not a subtype of `s`$$T$$, then a **run-time error** will be generated.
+If, the RTT of `t` is **not** a subtype of `s`$$T$$, then a **run-time error** will be generated.
 
 If, the CTT of `t` is **not** a subtype of `s`, then a **compile-time error** will be generated.
 
