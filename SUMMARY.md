@@ -34,6 +34,7 @@
   * [Lab 02 - Interface,Wrapper Class, Exercise 1,2](lec-rec-lab-exes/lab/lab-02-interface-wrapper-class-exercise-1-2.md)
   * [Lab 03 - Exceptions, Generics,Exercises 2,3](lec-rec-lab-exes/lab/lab-03-exceptions-generics-exercises-2-3.md)
   * [Lab 04 - Wildcard,Nested Class, Java package](lec-rec-lab-exes/lab/lab-04-wildcard-nested-class-java-package.md)
+  * [Lab 05](lec-rec-lab-exes/lab/lab-05.md)
 * [Exercises](lec-rec-lab-exes/exercises/README.md)
   * [Exercise 0 - Circle and Point](lec-rec-lab-exes/exercises/exercise-0-circle-and-point.md)
   * [Exercise 1 - Simulation 1](lec-rec-lab-exes/exercises/exercise-1-simulation-1.md)
