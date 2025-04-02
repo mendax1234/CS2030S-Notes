@@ -276,3 +276,174 @@ Simiarly, you will get the final graph shown like below
 <figure><img src="../../.gitbook/assets/lec09-stack-heap-2.png" alt=""><figcaption></figcaption></figure>
 
 For more information, please see from the [lecture notes](https://nus-cs2030s.github.io/2425-s2/33-infinitelist.html#under-the-hood).
+
+## Streams
+
+Our Infinite List has its counterpart in the Java implementation, which is called `Stream`, but with more functionalities.
+
+### Building a Stream
+
+We can build a stream by using
+
+{% stepper %}
+{% step %}
+`of`
+
+We can use the **static factory** method `of` (e.g., `Stream.of(1, 2, 3)`)
+
+{% code lineNumbers="true" %}
+```java
+// 1. Using static factory method Stream.of()
+Stream<Integer> streamOf = Stream.of(1, 2, 3, 4, 5);
+streamOf.forEach(System.out::println);
+// Expected output:
+// 1
+// 2
+// 3
+// 4
+// 5
+```
+{% endcode %}
+{% endstep %}
+
+{% step %}
+`generate()` and `iterate()`
+
+We can use the `generate` and `iterate` methods (similar to our `InfiniteList`)
+
+{% tabs %}
+{% tab title="generate()" %}
+```java
+// 2. Using Stream.generate() - creates an infinite stream
+Stream<Integer> streamGenerate = Stream.generate(() -> 7).limit(5);
+streamGenerate.forEach(i -> System.out.print(i + " "));
+// Expected output: 7 7 7 7 7
+```
+{% endtab %}
+
+{% tab title="Iterate()" %}
+{% code overflow="wrap" %}
+```java
+// 3. Using Stream.iterate() - creates an infinite stream with defined progression
+Stream<Integer> streamIterate = Stream.iterate(1, n -> n + 2).limit(5);
+streamIterate.forEach(System.out::println);
+// Expected output:
+// 1
+// 3
+// 5
+// 7
+// 9
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+{% endstep %}
+
+{% step %}
+`Arrays::stream`
+
+We can convert an array into a `Stream` using `Arrays::stream`
+
+```java
+// 4. Converting an array to a Stream using Arrays.stream()
+Integer[] array = {6, 7, 8, 9, 10};
+Stream<Integer> streamFromArray = Arrays.stream(array);
+streamFromArray.forEach(System.out::println);
+// Expected output:
+// 6
+// 7
+// 8
+// 9
+// 10
+```
+{% endstep %}
+
+{% step %}
+`List::stream`
+
+We can convert a `List` instance (or any `Collection` instance) into a `Stream` using `List::stream`
+
+```java
+// 5. Converting a Collection (List) to a Stream using List.stream()
+List<String> list = List.of("apple", "banana", "cherry", "date");
+Stream<String> streamFromList = list.stream();
+streamFromList.forEach(System.out::println);
+// Expected output:
+// apple
+// banana
+// cherry
+// date
+```
+{% endstep %}
+{% endstepper %}
+
+### Terminal Operations
+
+A terminal operation is an operation on the stream that triggers the **evaluation** of the stream. A typical way of writing code that operates on streams is to **chain a series of intermediate operations together**, ending with a **terminal operation**.
+
+{% stepper %}
+{% step %}
+`forEach`
+
+The `forEach` method is a terminal operation that takes in a stream and applies a lambda expression to each element.
+
+The lambda expression to apply does not return any value. Java provides the [`Consumer<T>`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html) functional interface for this. We have already seen pretty much examples from [#building-a-stream](lecture-09-infinitelist-and-stream.md#building-a-stream "mention").
+
+```java
+// Example of forEach terminal operation in Stream
+List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+System.out.print("Processing each element: ");
+numbers.stream()
+       .forEach(num -> System.out.print(num + " "));
+// Expected output: Processing each element: 1 2 3 4 5
+```
+{% endstep %}
+{% endstepper %}
+
+### Intermdeiate Stream Operations
+
+An _intermediate_ operation on stream returns another `Stream`. Intermediate operations are **lazy** and **do not** cause the stream to be **evaluated**.
+
+{% stepper %}
+{% step %}
+`map()`
+
+The `map` operation transforms **each element in the stream** by **applying a function to it**, producing a **new stream of the transformed elements** with a one-to-one relationship.
+
+```java
+// map example
+List<String> words = List.of("Java", "Stream", "API");
+words.stream()
+     .map(String::length)
+     .forEach(length -> System.out.print(length + " "));
+// Expected output: 4 6 3
+```
+{% endstep %}
+
+{% step %}
+`flatMap()`
+
+The `flatMap` operation transforms **each element into a stream** and then [**flattens**](#user-content-fn-1)[^1] **all resulting streams into a single stream**, useful for working with nested collections or when one element should produce multiple output elements.
+
+```java
+// flatMap example
+List<List<Integer>> nestedLists = List.of(
+    List.of(1, 2), 
+    List.of(3, 4, 5), 
+    List.of(6)
+);
+nestedLists.stream()
+           .flatMap(Collection::stream)
+           .forEach(num -> System.out.print(num + " "));
+// Expected output: 1 2 3 4 5 6
+```
+
+`flatMap` takes each element in the stream (each inner list) and transforms it into a new stream of its own elements. Then, it "flattens" all these streams into one single stream.
+
+{% hint style="info" %}
+Why `Collection` not `List` here? It is because `Collection` is a broader concept that includes `List`. It’s a way to write **flexible code** that could work with other collection types (like `Set`) if needed. Here, since the inner elements are `List`s, it works perfectly.
+{% endhint %}
+{% endstep %}
+{% endstepper %}
+
+[^1]: "flatten" means taking multiple streams (or collections) produced by transforming each input element and combining them into a single, unified stream. Instead of having a stream of streams (a nested structure), flatMap merges all the inner streams into one continuous sequence of elements.
