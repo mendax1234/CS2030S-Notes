@@ -61,7 +61,11 @@ public interface Producer<T> {
 
 #### Explanation
 
-No parameter and return type is `T`
+No parameter and return type is `T`.
+
+#### Lambda Example
+
+
 
 ### `Consumer<T>::consume`
 
@@ -90,7 +94,9 @@ public interface Consumer<T> {
 
 #### Explanation
 
-Parameter type is `T` return type is `void`
+Parameter type is `T` return type is `void`&#x20;
+
+#### Lambda example
 
 ### `Transformer<U, T>::transform`
 
@@ -122,6 +128,8 @@ public interface Transformer<U, T> {
 #### Explanation
 
 Parameter type is `U`, return type is `T`. Can think it as transforming one value of type `U` into another value of type `T`.
+
+#### Lambda Example
 
 ### `Combiner<S, T, R>::combine`
 
@@ -157,3 +165,5 @@ public interface Combiner<S, T, R> {
 #### Explanation
 
 Two parameters of type `S, T` respectively, return type is `R`.
+
+#### Lambda Example

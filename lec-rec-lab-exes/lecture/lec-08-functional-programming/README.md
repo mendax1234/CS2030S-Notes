@@ -90,6 +90,10 @@ So, the expression above `x -> x * x` is called **lambda expression**.
 1. The LHS lists the **parameters** (use `()` if there is no parameter)
 2. The RHS is the **computation**.
 
+{% hint style="success" %}
+A **lambda expression** is essentially **syntactic sugar** for writing an **anonymous class** that implements a functional interface.
+{% endhint %}
+
 ### Method Referencing
 
 A lambda expression is useful for specifying a **new anonymous method**. Sometimes, we want to use an **existing method** as a first-class citizen instead. That is why it comes **method referencing**.

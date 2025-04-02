@@ -23,6 +23,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-07-immutability-and-nested-classes/diagnostic-quiz.md)
   * [Lec 08 - Functional Programming](lec-rec-lab-exes/lecture/lec-08-functional-programming/README.md)
     * [Functional Interface](lec-rec-lab-exes/lecture/lec-08-functional-programming/functional-interface.md)
+  * [Lecture 09 - InfiniteList and Stream](lec-rec-lab-exes/lecture/lecture-09-infinitelist-and-stream.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
   * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)
