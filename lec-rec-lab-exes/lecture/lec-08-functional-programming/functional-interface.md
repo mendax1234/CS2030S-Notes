@@ -4,7 +4,9 @@
 
 In CS2030s, we have implemented a bunch of functional interfaces. I feel they are very important for the future topics, so I document them down here.
 
-### `BooleanCondition<T>::test`
+{% stepper %}
+{% step %}
+`BooleanCondition<T>::test`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -30,19 +32,21 @@ public interface BooleanCondition<T> {
 ```
 {% endcode %}
 
-#### Explanation
+**Explanation**
 
 Parameter Type is `T` and return type is `boolean`.
 
-#### Lambda Example
+**Lambda Example**
 
 This means whenever the method parameter is a `BooleanCondition<T>`, we can pass the following lambda expression as the method argument.
 
 ```java
 BooleanCondition<Integer> isPositive = x -> x > 0;
 ```
+{% endstep %}
 
-### `Producer<T>::produce`
+{% step %}
+`Producer<T>::produce`
 
 {% code lineNumbers="true" %}
 ```java
@@ -67,19 +71,21 @@ public interface Producer<T> {
 ```
 {% endcode %}
 
-#### Explanation
+**Explanation**
 
 No parameter and return type is `T`.
 
-#### Lambda Example
+**Lambda Example**
 
 This means whenever the method parameter is a `Producer<T>`, we can pass the following lambda expression as the method argument.
 
 ```java
 Producer<Double> randomValue = () -> Math.random();
 ```
+{% endstep %}
 
-### `Consumer<T>::consume`
+{% step %}
+`Consumer<T>::consume`
 
 {% code lineNumbers="true" %}
 ```java
@@ -104,19 +110,21 @@ public interface Consumer<T> {
 ```
 {% endcode %}
 
-#### Explanation
+**Explanation**
 
 Parameter type is `T` return type is `void`&#x20;
 
-#### Lambda example
+**Lambda example**
 
 This means whenever the method parameter is a `Consumer<T>`, we can pass the following lambda expression as the method argument.
 
 ```java
 Consumer<String> printUpperCase = s -> System.out.println(s.toUpperCase());
 ```
+{% endstep %}
 
-### `Transformer<U, T>::transform`
+{% step %}
+`Transformer<U, T>::transform`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -143,19 +151,21 @@ public interface Transformer<U, T> {
 ```
 {% endcode %}
 
-#### Explanation
+**Explanation**
 
 Parameter type is `U`, return type is `T`. Can think it as transforming one value of type `U` into another value of type `T`.
 
-#### Lambda Example
+**Lambda Example**
 
 This means whenever the method parameter is a `Transformer<T>`, we can pass the following lambda expression as the method argument.
 
 ```java
 Transfomer<String, Integer> stringLength = s -> s.length();
 ```
+{% endstep %}
 
-### `Combiner<S, T, R>::combine`
+{% step %}
+`Combiner<S, T, R>::combine`
 
 {% code lineNumbers="true" %}
 ```java
@@ -186,17 +196,19 @@ public interface Combiner<S, T, R> {
 ```
 {% endcode %}
 
-#### Explanation
+**Explanation**
 
 Two parameters of type `S, T` respectively, return type is `R`.
 
-#### Lambda Example
+**Lambda Example**
 
 This means whenever the method parameter is a `Transformer<T>`, we can pass the following lambda expression as the method argument.
 
 ```java
 Combiner<Integer, Integer, Integer> multiply = (a, b) -> a * b;
 ```
+{% endstep %}
+{% endstepper %}
 
 ## Java
 
