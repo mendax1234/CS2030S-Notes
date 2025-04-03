@@ -235,7 +235,7 @@ public InfiniteList<T> filter(BooleanCondition<? super T> cond) {
 
 In summary, here are some tips
 
-1. A lambda can only be passed to a method if the method's parameter is a [functional-interface.md](lec-08-functional-programming/functional-interface.md "mention")
+1. A lambda can only be passed to a method if the method's parameter is a [functional-interface.md](../lec-08-functional-programming/functional-interface.md "mention")
 2. The lambda passed in defines how the functional interface works!
 3. For the InifiniteList, the element will only be evaluated when we call either `get()` (indirectly calling `head()`) or `head()` directly.
 
@@ -243,7 +243,7 @@ In summary, here are some tips
 
 <summary>Revisit Lazy Evaluation</summary>
 
-Lazy evaluation means we can delay a computation using the [`Producer`](lec-08-functional-programming/functional-interface.md#producer-less-than-t-greater-than-produce) functional interface. So, instead of doing `compute()` which is immediately evaluated when executed, we replace it with a `Producer` `() -> compute()`, which "stores" the computation in an instance of `Producer`, and we only call it when we invoke the `produce` method. (In Infinite List, invoking the `produce` method is done by calling `head()` directly or indirectly).
+Lazy evaluation means we can delay a computation using the [`Producer`](../lec-08-functional-programming/functional-interface.md#producer-less-than-t-greater-than-produce) functional interface. So, instead of doing `compute()` which is immediately evaluated when executed, we replace it with a `Producer` `() -> compute()`, which "stores" the computation in an instance of `Producer`, and we only call it when we invoke the `produce` method. (In Infinite List, invoking the `produce` method is done by calling `head()` directly or indirectly).
 
 </details>
 
@@ -272,13 +272,13 @@ InfiniteList<Integer> evens = InfiniteList.iterate(0, x -> x + 2); // 0, 2, 4, 6
 
 The heap should look as follow,
 
-<figure><img src="../../.gitbook/assets/lec09-stack-heap-1.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec09-stack-heap-1.png" alt=""><figcaption></figcaption></figure>
 
-`evens` is an object which has two fields, `head` and `tail`, and each points to an instance of the `Producer` functional interface (a.k.a, a lambda expression shown in the figure). As we have seen [before](lec-08-functional-programming/#anonymous-class-writing),
+`evens` is an object which has two fields, `head` and `tail`, and each points to an instance of the `Producer` functional interface (a.k.a, a lambda expression shown in the figure). As we have seen [before](../lec-08-functional-programming/#anonymous-class-writing),
 
 > a **lambda expression** is essentially **syntactic sugar** for writing an **anonymous class** that implements a functional interface.
 
-so, here inside these two lambdas, it will follow the exact rules of [variable capture](lec-07-immutability-and-nested-classes/#variable-capture), which are
+so, here inside these two lambdas, it will follow the exact rules of [variable capture](../lec-07-immutability-and-nested-classes/#variable-capture), which are
 
 > the **local class** (including the anonymous class) will capture the following variables
 >
@@ -291,7 +291,7 @@ So, the two lambdas capture the variable `init`. The `tail` additionally capture
 
 Simiarly, you will get the final graph shown like below
 
-<figure><img src="../../.gitbook/assets/lec09-stack-heap-2.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec09-stack-heap-2.png" alt=""><figcaption></figcaption></figure>
 
 For more information, please see from the [lecture notes](https://nus-cs2030s.github.io/2425-s2/33-infinitelist.html#under-the-hood).
 
@@ -445,7 +445,7 @@ A terminal operation is an operation on the stream that triggers the **evaluatio
 
 The `forEach` method is a terminal operation that takes in a stream and applies a lambda expression to each element.
 
-The lambda expression to apply does not return any value. Java provides the [`Consumer<T>`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html) functional interface for this. We have already seen pretty much examples from [#building-a-stream](lecture-09-infinitelist-and-stream.md#building-a-stream "mention").
+The lambda expression to apply does not return any value. Java provides the [`Consumer<T>`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html) functional interface for this. We have already seen pretty much examples from [#building-a-stream](./#building-a-stream "mention").
 
 **Method Declaration**
 
@@ -465,6 +465,21 @@ numbers.stream()
        .forEach(num -> System.out.print(num + " "));
 // Expected output: Processing each element: 1 2 3 4 5
 ```
+{% endstep %}
+
+{% step %}
+`count()`
+
+The `count()` method in Java Streams is a terminal operation that returns the number of elements in the stream.
+
+```java
+long count = Stream.of("apple", "banana", "cherry").count();
+System.out.println(count); // Output: 3
+```
+
+{% hint style="info" %}
+`count` processes the entire stream, so calling it on an **infinite stream** will cause an infinite loop.
+{% endhint %}
 {% endstep %}
 
 {% step %}
