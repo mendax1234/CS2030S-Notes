@@ -11,7 +11,9 @@ Always use this recursive thinking — A list is made up of its **head element**
 
 ### Method Implementations
 
-#### `head()`
+{% stepper %}
+{% step %}
+`head()`
 
 {% tabs %}
 {% tab title="EagerList" %}
@@ -34,10 +36,10 @@ public T head() {
 {% endtabs %}
 
 **Difference**: EagerList directly returns the stored value, while InfiniteList produces the value on demand and handles null by recursively checking the tail.
+{% endstep %}
 
-#### `tail()`
-
-#### `tail()`
+{% step %}
+`tail()`
 
 **Purpose**: Returns the list without its first element.
 
@@ -62,8 +64,10 @@ public InfiniteList<T> tail() {
 {% endtabs %}
 
 **Difference**: EagerList directly returns the stored tail list, while InfiniteList produces the tail only when needed and handles null values.
+{% endstep %}
 
-#### `get(int n)`
+{% step %}
+`get(int n)`
 
 **Purpose**: Retrieves the element at position `n` in the list.
 
@@ -92,8 +96,10 @@ public T get(int n) {
 {% endtabs %}
 
 **Difference**: Both implementations use the same recursive approach, but InfiniteList's implementation inherently evaluates lazily due to its structure.
+{% endstep %}
 
-#### generate()
+{% step %}
+`generate()`
 
 **Purpose**: Creates a list with **repeated** values.
 
@@ -122,8 +128,10 @@ public static <T> InfiniteList<T> generate(Producer<T> t) {
 {% endtabs %}
 
 **Difference**: EagerList creates a fixed-size list with a repeated value, while InfiniteList creates a potentially infinite list using a producer function (so there is no need for `size` parameter)
+{% endstep %}
 
-#### iterate()
+{% step %}
+`iterate()`
 
 **Purpose**: Creates a sequence by **repeatedly applying a transformation**.
 
@@ -156,22 +164,27 @@ public static <T> InfiniteList<T> iterate(T init, Transformer<T, T> next) {
 {% endtabs %}
 
 **Difference**: EagerList requires a condition to terminate the iteration, while InfiniteList can continue indefinitely, creating a potentially infinite sequence.
+{% endstep %}
 
-#### map()
+{% step %}
+`map()`
 
 **Purpose**: Transforms each element in the list using a provided function.
 
 {% tabs %}
 {% tab title="EagerList" %}
+{% code overflow="wrap" %}
 ```java
 // (1 2 3 4).map(x -> x * x) gives us (1, 4, 9, 16)
 public <R> EagerList<R> map(Transformer<? super T, ? extends R> mapper) {
   return new EagerList<>(mapper.transform(this.head()), this.tail.map(mapper));
 }
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="InfiniteList" %}
+{% code overflow="wrap" %}
 ```java
 // (1 1 1 1 ...).map(x -> x * 2) gives us (2 2 2 2 ...)
 public <R> InfiniteList<R> map(Transformer<? super T, ? extends R> mapper) {
@@ -179,12 +192,15 @@ public <R> InfiniteList<R> map(Transformer<? super T, ? extends R> mapper) {
       () -> this.tail().map(mapper));
 }
 ```
+{% endcode %}
 {% endtab %}
 {% endtabs %}
 
 **Difference**: EagerList immediately applies the transformation to each element, while InfiniteList creates a new list with transformation functions that will execute only when the values are needed.
+{% endstep %}
 
-#### filter()
+{% step %}
+`filter()`
 
 **Purpose**: Creates a new list containing only elements that satisfy a condition.
 
@@ -212,6 +228,8 @@ public InfiniteList<T> filter(BooleanCondition<? super T> cond) {
 {% endtabs %}
 
 **Difference**: EagerList immediately evaluates conditions and creates a new list with only matching elements. InfiniteList creates a producer that will check the condition only when the element is accessed, returning `null` for elements that don't match.
+{% endstep %}
+{% endstepper %}
 
 ### Tips
 
