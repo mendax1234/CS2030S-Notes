@@ -398,9 +398,78 @@ numbers.stream()
 // Expected output: Processing each element: 1 2 3 4 5
 ```
 {% endstep %}
+
+{% step %}
+`reduce()`
+
+The `reduce` operation applies a binary function (or a.k.a, a lambda expression) to each element in the stream to reduce them to a single result.
+
+```java
+// reduce example
+List<Integer> numbers = List.of(1, 2, 3, 4, 5);
+int sum = numbers.stream()
+                .reduce(0, (a, b) -> a + b);
+System.out.println("Sum: " + sum);
+// Expected output: Sum: 15
+```
+
+Here, `0` is called the **identity value**, `(a,b) -> a + b` is called an **accumulation function**. This process is equivalent to the following pseudocode:
+
+```
+result = identity
+for each element in the stream
+     result = accumulator.apply(result, element)
+return result
+```
+{% endstep %}
+
+{% step %}
+`noneMatch()`
+
+The `noneMatch` operation returns true if **no** elements in the stream match the given predicate, short-circuiting (stopping early) if any **matching** element is found.
+
+```java
+// noneMatch example
+List<Integer> numbers = List.of(1, 3, 5, 7, 9);
+boolean hasNoEvens = numbers.stream()
+                           .noneMatch(n -> n % 2 == 0);
+System.out.println("No even numbers: " + hasNoEvens);
+// Expected output: No even numbers: true
+```
+{% endstep %}
+
+{% step %}
+`allMatch()`
+
+The `allMatch` operation returns true if **all** elements in the stream match the given predicate, short-circuiting if any **non-matching** element is found.
+
+```java
+// allMatch example
+List<Integer> numbers = List.of(1, 3, 5, 7, 9);
+boolean allPositive = numbers.stream()
+                            .allMatch(n -> n > 0);
+System.out.println("All positive numbers: " + allPositive);
+// Expected output: All positive numbers: true
+```
+{% endstep %}
+
+{% step %}
+`anyMatch()`
+
+The `anyMatch` operation returns true if at least one element in the stream matches the given predicate, short-circuiting once a **matching** element is found.
+
+```java
+// anyMatch example
+List<Integer> numbers = List.of(1, 3, 5, 7, 9);
+boolean hasDigitGreaterThan5 = numbers.stream()
+                                     .anyMatch(n -> n > 5);
+System.out.println("Has number greater than 5: " + hasDigitGreaterThan5);
+// Expected output: Has number greater than 5: true
+```
+{% endstep %}
 {% endstepper %}
 
-### Intermdeiate Stream Operations
+### Intermediate Stream Operations
 
 An _intermediate_ operation on stream returns another `Stream`. Intermediate operations are **lazy** and **do not** cause the stream to be **evaluated**.
 
@@ -444,6 +513,211 @@ nestedLists.stream()
 Why `Collection` not `List` here? It is because `Collection` is a broader concept that includes `List`. It’s a way to write **flexible code** that could work with other collection types (like `Set`) if needed. Here, since the inner elements are `List`s, it works perfectly.
 {% endhint %}
 {% endstep %}
+
+{% step %}
+`filter()`
+
+The `filter` operation selects elements from the stream that satisfy a given predicate (boolean condition), creating a new stream that contains only the elements that passed the test.
+
+```java
+// filter example
+List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+numbers.stream()
+       .filter(n -> n % 2 == 0)  // Keep only even numbers
+       .forEach(n -> System.out.print(n + " "));
+// Expected output: 2 4 6 8 10
+```
+{% endstep %}
+
+{% step %}
+`sorted()`&#x20;
+
+The `sorted` operation arranges elements according to natural order or a provided comparator, requiring the entire stream to be processed before producing any results.
+
+```java
+// sorted example
+List<Integer> numbers = List.of(5, 3, 8, 1, 4);
+numbers.stream()
+       .sorted()
+       .forEach(n -> System.out.print(n + " "));
+// Expected output: 1 3 4 5 8
+```
+{% endstep %}
+
+{% step %}
+`distinct()`
+
+The `distinct` operation filters out duplicate elements based on their `equals()` method, returning a stream with only unique elements.
+
+```java
+// distinct example
+List<Integer> duplicates = List.of(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
+duplicates.stream()
+          .distinct()
+          .forEach(n -> System.out.print(n + " "));
+```
+
+{% hint style="success" %}
+Both `sorted()` and `distinct()` operations are **stateful** (they maintain internal state about previously seen elements) and bounded (they need to process all elements before producing results, a.k.a, they should **only** be called on a finite stream), which impacts performance especially with large datasets.
+{% endhint %}
+{% endstep %}
+
+{% step %}
+`limit()`
+
+The `limit` operation restricts the stream to process only a maximum number of elements, which can improve performance for large or infinite streams.
+
+```java
+// limit example
+List<Integer> numbers = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+numbers.stream()
+       .limit(5)
+       .forEach(n -> System.out.print(n + " "));
+// Expected output: 1 2 3 4 5
+```
+{% endstep %}
+
+{% step %}
+`takeWhile()`
+
+The `takeWhile` operation (introduced in Java 9) takes elements from the stream as long as the predicate returns true, stopping at the first element that fails the condition.
+
+```java
+// takeWhile example (Java 9+)
+List<Integer> numbers2 = List.of(2, 4, 6, 7, 8, 10);
+numbers2.stream()
+        .takeWhile(n -> n % 2 == 0)
+        .forEach(n -> System.out.print(n + " "));
+// Expected output: 2 4 6
+```
+
+{% hint style="success" %}
+`limit()` and `takeWhile()` are intermediate opeartions that convert from infinite stream to finite stream. (Although finite, but still lazy evaluated)
+{% endhint %}
+{% endstep %}
+
+{% step %}
+`peek()`
+
+The `peek` operation creates a "fork" in the stream pipeline, allowing us to perform side effects (like debugging) without modifying the elements flowing through the stream. It takes a `Consumer` function that can view or process each element while letting the original elements continue unchanged through the pipeline.
+
+```java
+// peek example
+List<String> names = List.of("Alice", "Bob", "Charlie");
+names.stream()
+     .peek(name -> System.out.print("Processing: " + name + " -> "))
+     .map(String::toUpperCase)
+     .forEach(name -> System.out.println(name));
+// Expected output:
+// Processing: Alice -> ALICE
+// Processing: Bob -> BOB
+// Processing: Charlie -> CHARLIE
+```
+{% endstep %}
 {% endstepper %}
+
+### Consumed Once
+
+One of the greatest limitations of `Stream`, which does not apply to our `InfiniteList`, is that a stream can only be operated once.
+
+```java
+Stream<Integer> s = Stream.of(1,2,3);
+s.count();
+s.count(); // <- error
+```
+
+### Specialized Stream
+
+Java provides specialized streams (`IntStream`, `LongStream`, and `DoubleStream`) to work efficiently with primitive types, these streams have the following advantages
+
+{% stepper %}
+{% step %}
+**Avoid the boxing/unboxing overhead of wrapper classes**
+
+```java
+// IntStream example - Avoiding boxing/unboxing overhead
+List<Integer> boxedInts = List.of(1, 2, 3, 4, 5);
+
+// Using specialized methods after converting from regular stream
+int sum = boxedInts.stream()
+                  .mapToInt(Integer::intValue)  // Convert to IntStream
+                  .sum();  // Specialized IntStream method
+System.out.println("Sum: " + sum);
+// Expected output: Sum: 15
+```
+
+This can be simplified to as follows:
+
+```java
+// IntStream example - Creating and using IntStream
+IntStream intStream = IntStream.range(1, 6);  // 1 to 5
+int sum = intStream.sum();
+System.out.println("Sum: " + sum);
+// Expected output: Sum: 15
+```
+{% endstep %}
+
+{% step %}
+**Offer specialized methods like `sum()` and `average()` for numerical operations**
+
+```java
+// DoubleStream example - Numeric operations
+double[] values = {1.1, 2.2, 3.3, 4.4, 5.5};
+DoubleStream doubleStream = Arrays.stream(values);
+DoubleStream.of(1.1, 2.2, 3.3, 4.4, 5.5)
+           .average()
+           .ifPresent(avg -> System.out.println("Average: " + avg));
+// Expected output: Average: 3.3
+```
+{% endstep %}
+
+{% step %}
+**Can be created through factory methods like `range()`, `rangeClosed()`, or by converting from regular streams using `mapToInt()`, `mapToLong()`, or `mapToDouble()`**
+
+{% code overflow="wrap" %}
+```java
+// LongStream example - Using factory methods
+LongStream longRange = LongStream.range(1L, 6L);  // Creates 1 to 5
+LongStream longRangeClosed = LongStream.rangeClosed(1L, 5L);  // Creates 1 to 5 (same result)
+System.out.println("Count from range: " + longRange.count());
+System.out.println("Max from rangeClosed: " + longRangeClosed.max().orElse(0));
+// Expected output: 
+// Count from range: 5
+// Max from rangeClosed: 5
+```
+{% endcode %}
+{% endstep %}
+{% endstepper %}
+
+These specialized streams maintain the same pipeline pattern as regular streams while providing better performance for numeric computations.
+
+### Elegance of Stream
+
+This can be vividly shown by using an example to count the first 500 primes. Initially, our code looks like,
+
+```java
+void fiveHundredPrime() {
+  int count = 0;
+  int i = 2;
+  while (count < 500) {
+    if (isPrime(i)) {
+      System.out.println(i);
+      count++;
+    }
+    i++;
+  }
+}
+```
+
+By using Java Streams, this can be simplified to
+
+```java
+IntStream.iterate(2, x -> x+1)
+    .filter(x -> isPrime(x))
+    .limit(500)
+    .forEach(System.out::println);
+```
+
+
 
 [^1]: "flatten" means taking multiple streams (or collections) produced by transforming each input element and combining them into a single, unified stream. Instead of having a stream of streams (a nested structure), flatMap merges all the inner streams into one continuous sequence of elements.
