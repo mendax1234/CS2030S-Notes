@@ -307,7 +307,17 @@ We can build a stream by using
 {% step %}
 `of`
 
-We can use the **static factory** method `of` (e.g., `Stream.of(1, 2, 3)`)
+We can use the **static factory** method `of` (e.g., `Stream.of(1, 2, 3)`).
+
+**Method Declaration**
+
+`t` is the element of the Stream.
+
+```java
+static <T> Stream<T> of(T t)
+```
+
+**Example**
 
 {% code lineNumbers="true" %}
 ```java
@@ -329,14 +339,44 @@ streamOf.forEach(System.out::println);
 
 We can use the `generate` and `iterate` methods (similar to our `InfiniteList`)
 
+**Method Declaration**
+
 {% tabs %}
 {% tab title="generate()" %}
+`Supplier` is the same as `Producer` in CS2030S.
+
+```java
+static <T> Stream<T> generate(Supplier<? extends T> s)
+```
+{% endtab %}
+
+{% tab title="Iterate()" %}
+`seed` is the initial element, `hasNext` is an optional ending condition, which is a `Predicate` which is equivalent to `BooleanCondition` in CS2030S. `next` is a `UnaryOperator<T>` which is equivalent to `Transformer<T, T>` in CS2030S.
+
+```java
+static <T> Stream<T> iterate(T seed,
+ Predicate<? super T> hasNext,
+ UnaryOperator<T> next)
+
+// or
+static <T> Stream<T> iterate(T seed,
+ UnaryOperator<T> f)
+```
+{% endtab %}
+{% endtabs %}
+
+**Example**
+
+{% tabs %}
+{% tab title="generate()" %}
+{% code overflow="wrap" %}
 ```java
 // 2. Using Stream.generate() - creates an infinite stream
 Stream<Integer> streamGenerate = Stream.generate(() -> 7).limit(5);
 streamGenerate.forEach(i -> System.out.print(i + " "));
 // Expected output: 7 7 7 7 7
 ```
+{% endcode %}
 {% endtab %}
 
 {% tab title="Iterate()" %}
@@ -407,6 +447,16 @@ The `forEach` method is a terminal operation that takes in a stream and applies 
 
 The lambda expression to apply does not return any value. Java provides the [`Consumer<T>`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html) functional interface for this. We have already seen pretty much examples from [#building-a-stream](lecture-09-infinitelist-and-stream.md#building-a-stream "mention").
 
+**Method Declaration**
+
+`action` is a `Consumer`, which is equivalent to `Consumer` in CS2030S.
+
+```java
+void forEach(Consumer<? super T> action)
+```
+
+**Example**
+
 ```java
 // Example of forEach terminal operation in Stream
 List<Integer> numbers = List.of(1, 2, 3, 4, 5);
@@ -420,7 +470,17 @@ numbers.stream()
 {% step %}
 `reduce()`
 
-The `reduce` operation applies a binary function (or a.k.a, a lambda expression) to each element in the stream to reduce them to a single result.
+The `reduce` operation applies a binary function (or a.k.a, a `Combiner` in CS2030S) to each element in the stream to reduce them to a single result.
+
+**Method Declaration**
+
+The `BinaryOperator` is equivalent to `Combiner` in CS2030S.
+
+```java
+T reduce(T identity, BinaryOperator<T> accumulator)
+```
+
+**Example**
 
 ```java
 // reduce example
@@ -446,6 +506,16 @@ return result
 
 The `noneMatch` operation returns true if **no** elements in the stream match the given predicate, short-circuiting (stopping early) if any **matching** element is found.
 
+**Method Declaration**
+
+`Predicate` is equivalent to `BooleanCondition` in CS2030S.
+
+```java
+boolean noneMatch(Predicate<? super T> predicate)
+```
+
+**Example**
+
 ```java
 // noneMatch example
 List<Integer> numbers = List.of(1, 3, 5, 7, 9);
@@ -461,6 +531,16 @@ System.out.println("No even numbers: " + hasNoEvens);
 
 The `allMatch` operation returns true if **all** elements in the stream match the given predicate, short-circuiting if any **non-matching** element is found.
 
+**Method Declaration**
+
+`Predicate` is equivalent to `BooleanCondition` in CS2030S.
+
+```java
+boolean allMatch(Predicate<? super T> predicate)
+```
+
+**Example**
+
 ```java
 // allMatch example
 List<Integer> numbers = List.of(1, 3, 5, 7, 9);
@@ -475,6 +555,16 @@ System.out.println("All positive numbers: " + allPositive);
 `anyMatch()`
 
 The `anyMatch` operation returns true if at least one element in the stream matches the given predicate, short-circuiting once a **matching** element is found.
+
+**Method Declaration**
+
+`Predicate` is equivalent to `BooleanCondition` in CS2030S.
+
+```java
+boolean anyMatch(Predicate<? super T> predicate)
+```
+
+**Example**
 
 ```java
 // anyMatch example
@@ -497,6 +587,16 @@ An _intermediate_ operation on stream returns another `Stream`. Intermediate ope
 
 The `map` operation transforms **each element in the stream** by **applying a function to it**, producing a **new stream of the transformed elements** with a one-to-one relationship.
 
+**Method Declaration**
+
+`Function` is equivalent to `Transformer<T,R>` in CS2030S.
+
+```java
+<R> Stream<R> map(Function<? super T,? extends R> mapper)
+```
+
+**Example**
+
 ```java
 // map example
 List<String> words = List.of("Java", "Stream", "API");
@@ -510,7 +610,17 @@ words.stream()
 {% step %}
 `flatMap()`
 
-The `flatMap` operation transforms **each element into a stream** and then [**flattens**](#user-content-fn-1)[^1] **all resulting streams into a single stream**, useful for working with nested collections or when one element should produce multiple output elements.
+The `flatMap` operation transforms **each element into a stream** and then [**flattens**](#user-content-fn-1)[^1] **all resulting streams into a single stream**, useful for working with nested collections or when one element should produce multiple output elements
+
+**Method Declaration**
+
+`Function` is equivalent to `Transformer<T,R>` in CS2030S.
+
+```java
+<R> Stream<R> flatMap(Function<? super T,? extends Stream<? extends R>> mapper)
+```
+
+**Example**
 
 ```java
 // flatMap example
@@ -535,7 +645,17 @@ Why `Collection` not `List` here? It is because `Collection` is a broader concep
 {% step %}
 `filter()`
 
-The `filter` operation selects elements from the stream that satisfy a given predicate (boolean condition), creating a new stream that contains only the elements that passed the test.
+The `filter` operation selects elements from the stream that satisfy a given **predicate** (boolean condition), creating a new stream that contains only the elements that passed the test.
+
+**Method Declaration**
+
+`Predicate` is equivalent to `BooleanCondition` in CS2030S.
+
+```java
+Stream<T> filter(Predicate<? super T> predicate)
+```
+
+**Example**
 
 ```java
 // filter example
@@ -600,6 +720,16 @@ numbers.stream()
 
 The `takeWhile` operation (introduced in Java 9) takes elements from the stream as long as the predicate returns true, stopping at the first element that fails the condition.
 
+**Method Declaration**
+
+`Predicate` is equivalent to `BooleanCondition` in CS2030S.
+
+```java
+default Stream<T> takeWhile(Predicate<? super T> predicate)
+```
+
+**Example**
+
 ```java
 // takeWhile example (Java 9+)
 List<Integer> numbers2 = List.of(2, 4, 6, 7, 8, 10);
@@ -618,6 +748,16 @@ numbers2.stream()
 `peek()`
 
 The `peek` operation creates a "fork" in the stream pipeline, allowing us to perform side effects (like debugging) without modifying the elements flowing through the stream. It takes a `Consumer` function that can view or process each element while letting the original elements continue unchanged through the pipeline.
+
+**Method Declaration**
+
+`Consumer` is equivalent to `Consumer` in CS2030S.
+
+```java
+Stream<T> peek(Consumer<? super T> action)
+```
+
+**Example**
 
 ```java
 // peek example
@@ -735,7 +875,5 @@ IntStream.iterate(2, x -> x+1)
     .limit(500)
     .forEach(System.out::println);
 ```
-
-
 
 [^1]: "flatten" means taking multiple streams (or collections) produced by transforming each input element and combining them into a single, unified stream. Instead of having a stream of streams (a nested structure), flatMap merges all the inner streams into one continuous sequence of elements.
