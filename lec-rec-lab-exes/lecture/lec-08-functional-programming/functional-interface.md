@@ -65,7 +65,9 @@ No parameter and return type is `T`.
 
 #### Lambda Example
 
-
+```
+// Some code
+```
 
 ### `Consumer<T>::consume`
 
@@ -167,3 +169,16 @@ public interface Combiner<S, T, R> {
 Two parameters of type `S, T` respectively, return type is `R`.
 
 #### Lambda Example
+
+## Java
+
+Java provides its own version of functional interfaces that are comparable to ours, in the `java.util.function` package. The table below shows some commonly used ones:
+
+| CS2030S                        | java.util.function                                                                                                                           |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `BooleanCondition<T>::test`    | [`Predicate<T>::test`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Predicate.html#test\(T\))             |
+| `Producer<T>::produce`         | [`Supplier<T>::get`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Supplier.html#get\(\))                  |
+| `Consumer<T>::consume`         | [`Consumer<T>::accept`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Consumer.html#accept\(T\))           |
+| `Transformer<T, R>::transform` | [`Function<T, R>::apply`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/Function.html#apply\(T\))          |
+| `Transformer<T, T>::transform` | [`UnaryOp<T>::apply`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/UnaryOperator.html)                    |
+| `Combiner<S, T, R>::combine`   | [`BiFunction<S, T, R>::apply`](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/function/BiFunction.html#apply\(T,U\)) |
