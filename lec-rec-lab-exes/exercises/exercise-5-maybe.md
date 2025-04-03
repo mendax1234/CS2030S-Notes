@@ -25,9 +25,9 @@ These two cases are the class internals and are invisible to the users!
 
 ## Main methods explanation
 
-Main operations provided:
-
-### get
+{% stepper %}
+{% step %}
+`get()`
 
 <pre class="language-java" data-line-numbers><code class="lang-java"><strong>// Return the wrapped value
 </strong><strong>// Or Maybe.NONE if
@@ -35,7 +35,7 @@ Main operations provided:
 </strong><strong>protected abstract T get();
 </strong></code></pre>
 
-Implementation in each case
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -60,8 +60,10 @@ protected T get() {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+{% endstep %}
 
-### filter
+{% step %}
+`filter()`
 
 {% code lineNumbers="true" %}
 ```java
@@ -74,7 +76,7 @@ public abstract Maybe<T> filter(BooleanCondition<? super T> c);
 ```
 {% endcode %}
 
-Implementation in each case
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -98,8 +100,10 @@ public Maybe<Object> filter(BooleanCondition<? super Object> c) {
 ```
 {% endtab %}
 {% endtabs %}
+{% endstep %}
 
-### map
+{% step %}
+`map()`
 
 {% code lineNumbers="true" %}
 ```java
@@ -110,7 +114,7 @@ public abstract <U> Maybe<U> map(Transformer<? super T, ? extends U> t);
 ```
 {% endcode %}
 
-Implementation in each case
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -135,8 +139,10 @@ public <U> Maybe<U> map(Transformer<? super T, ? extends U> t) {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+{% endstep %}
 
-### flatmap
+{% step %}
+`flatMap()`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -147,7 +153,7 @@ public abstract <U> Maybe<U> flatMap(Transformer<? super T, ? extends Maybe<? ex
 ```
 {% endcode %}
 
-#### Implementation
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -175,11 +181,13 @@ public <U> Maybe<U> flatMap(Transformer<? super Object, ? extends Maybe<? extend
 {% endtab %}
 {% endtabs %}
 
-#### Application
+**Application**
 
 1. `flatMap()` can technically achieve everything that `map()` can achieve. But the reverse is not true because map always add **Wrapper** after transforming.
+{% endstep %}
 
-### orElse
+{% step %}
+`orElse()`
 
 {% code lineNumbers="true" %}
 ```java
@@ -190,7 +198,7 @@ public abstract T orElse(T t);
 ```
 {% endcode %}
 
-#### Implementation
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -216,14 +224,16 @@ public T orElse(T t) {
 {% endtab %}
 {% endtabs %}
 
-#### Application
+**Application**
 
 1. Remember that this method will always give you the either [**content**](#user-content-fn-1)[^1] of the wrapper (See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q3) or the parameter. No wrapper is returned!
 2. This is usually used at the last of your function chain because its return type may not be a Maybe, so we cannot chain anymore!
+{% endstep %}
 
-### orElseGet
+{% step %}
+`orElseGet()`
 
-{% code lineNumbers="true" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 // Return the value produced by calling produce() on the provided Producer, if
 //   1. It is invoked from Maybe.NONE
@@ -232,7 +242,7 @@ public abstract T orElseGet(Producer<? extends T> p);
 ```
 {% endcode %}
 
-Implementation in each case
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -257,8 +267,10 @@ public T orElseGet(Producer<? extends T> p) {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+{% endstep %}
 
-### ifPresent
+{% step %}
+`ifPresent()`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -269,7 +281,7 @@ public abstract void ifPresent(Consumer<? super T> c);
 ```
 {% endcode %}
 
-#### Implementation
+**Implementation in each case**
 
 {% tabs %}
 {% tab title="None" %}
@@ -295,11 +307,13 @@ public void ifPresent(Consumer<? super T> c) {
 {% endtab %}
 {% endtabs %}
 
-#### Application
+**Application**
 
 1. This is usually used to replace the `(... ≠ null)` check. See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q2.
+{% endstep %}
 
-### of
+{% step %}
+`of()`
 
 {% code lineNumbers="true" %}
 ```java
@@ -313,7 +327,9 @@ public static <T> Maybe<T> of(T t) {
 ```
 {% endcode %}
 
-This method will call the factory method of None and Some\<T>
+**Implementation in each case**
+
+This method will call the factory method of `None` and `Some<T>`
 
 {% tabs %}
 {% tab title="None" %}
@@ -338,6 +354,8 @@ public static <T> Maybe<T> some(T t) {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+{% endstep %}
+{% endstepper %}
 
 ## Single return statement
 
