@@ -47,6 +47,7 @@
   * [Exercise 3 - Simulation 3](lec-rec-lab-exes/exercises/exercise-3-simulation-3.md)
   * [Exercise 4 - Box](lec-rec-lab-exes/exercises/exercise-4-box.md)
   * [Exercise 5 - Maybe](lec-rec-lab-exes/exercises/exercise-5-maybe.md)
+  * [Exercise 6 - Lazy](lec-rec-lab-exes/exercises/exercise-6-lazy.md)
 
 ## Past Year Exam
 

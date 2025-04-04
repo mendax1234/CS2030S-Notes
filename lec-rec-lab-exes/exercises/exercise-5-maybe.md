@@ -226,7 +226,7 @@ public T orElse(T t) {
 
 **Application**
 
-1. Remember that this method will always give you the either [**content**](#user-content-fn-1)[^1] of the wrapper (See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q3) or the parameter. No wrapper is returned!
+1. Remember that this method will always give you the either **content** of the wrapper (See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q3) or the parameter. No wrapper is returned!
 2. This is usually used at the last of your function chain because its return type may not be a Maybe, so we cannot chain anymore!
 {% endstep %}
 
@@ -373,7 +373,7 @@ return Maybe.of(map.get(student))
 {% endcode %}
 
 1. Line 1, `Maybe.of` is actually creating the argument that will be passed all the way down.
-2. Line 2, `.flatMap()` takes in a lambda as an expression and itself (`.flatMap()`) is a function that we are going to apply on the target[^2]. This function will return another "mutated" instance for further operation. The return type of the function is defined in the declaration.
+2. Line 2, `.flatMap()` takes in a lambda as an expression and itself (`.flatMap()`) is a function that we are going to apply on the target[^1]. This function will return another "mutated" instance for further operation. The return type of the function is defined in the declaration.
    1. Inside the lambda expression, it explicitly sets the `Transformer t` .
    2. How the transformer or a.k.a the parameter works is that the **input** is the L.H.S, which in CS2030S's Maybe should be the **value** in the previous wrapper. The **output** of the lambda is the R.H.S
    3. And how the **output** is being processed is dependent on the **outter method**, e.g. `flatMap()` will just return the **output**, `map()` will add a wrapper around the output. `filter()` will use the output to implement the checking, etc.
@@ -383,9 +383,6 @@ You can think the Line 1 as creating a naked man and Line 2,3,4 are actually add
 
 ## Tips
 
-1. In 2030s's Maybe, for every lambda expression passed into the API of maybe, the L.H.S is always the value of the previous Maybe
-2. After deciding the output of the lambda, just use it to replace the like `.transform()`, `.consume()`.
+1. In 2030s's Maybe, for every lambda expression passed into the API of maybe, the L.H.S is always the content of the previous Maybe
 
-[^1]: 
-
-[^2]: the calling object, the object before `.`
+[^1]: the calling object, the object before `.`
