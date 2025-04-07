@@ -26,6 +26,7 @@
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lec-08-functional-programming/diagnostic-quiz.md)
   * [Lecture 09 - InfiniteList and Stream](lec-rec-lab-exes/lecture/lecture-09-infinitelist-and-stream/README.md)
     * [Diagnostic Quiz](lec-rec-lab-exes/lecture/lecture-09-infinitelist-and-stream/diagnostic-quiz.md)
+  * [Lec 10 - Monad and Parallel Stream](lec-rec-lab-exes/lecture/lec-10-monad-and-parallel-stream.md)
 * [Recitation](lec-rec-lab-exes/recitation/README.md)
   * [Rec 01](lec-rec-lab-exes/recitation/rec-01.md)
   * [Rec 02](lec-rec-lab-exes/recitation/rec-02.md)

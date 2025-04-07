@@ -184,6 +184,7 @@ public <U> Maybe<U> flatMap(Transformer<? super Object, ? extends Maybe<? extend
 **Application**
 
 1. `flatMap()` can technically achieve everything that `map()` can achieve. But the reverse is not true because map always add **Wrapper** after transforming.
+2. In `flatMap()`, the transformer will always output a `Maybe` or `Lazy` or whatever class it is under. (See [Optional::flatMap](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/util/Optional.html#flatMap\(java.util.function.Function\)) in Java)
 {% endstep %}
 
 {% step %}
