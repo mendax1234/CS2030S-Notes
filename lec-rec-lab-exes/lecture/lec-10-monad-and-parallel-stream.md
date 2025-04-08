@@ -109,3 +109,34 @@ Our classes from `cs2030s.fp`, `Lazy<T>`, `Maybe<T>`, and `InfiniteList<T>` are 
 4. Every **Monad is a Functor**, But not every **Functor is a Monad**.
 
 </details>
+
+## Parallel Stream
+
+### Prallel and Concurrent Programming
+
+{% tabs %}
+{% tab title="Sequencity" %}
+<figure><img src="../../.gitbook/assets/lec10-sequencity.png" alt=""><figcaption></figcaption></figure>
+
+**Sequencity** means that at any one time, there is only one instruction of the program running on a processor.
+{% endtab %}
+
+{% tab title="Concurrency" %}
+<figure><img src="../../.gitbook/assets/lec10-concurrency.png" alt=""><figcaption></figcaption></figure>
+
+**Concurrency** refers to the ability of a program to manage multiple tasks at the same time. Even on a single-core processor—where only one instruction can be executed at any moment (this is **sequencity**)—concurrency allows the program to switch between tasks quickly, giving the illusion that they are running simultaneously.
+
+This is often achieved using **threads**, which are smaller units of a process. By dividing a program into multiple threads (e.g., one for handling user input, another for doing background work), the system can switch between them as needed. This improves responsiveness and efficiency, especially when some threads are waiting (like for I/O), allowing others to make progress in the meantime.
+{% endtab %}
+
+{% tab title="Parallelism" %}
+<figure><img src="../../.gitbook/assets/lec10-parallelism.png" alt=""><figcaption></figcaption></figure>
+
+While concurrency gives the illusion of subtasks running at the same time, parallel computing refers to the scenario where multiple subtasks are truly running at the same time — either we have a processor that is capable of running multiple instructions at the same time, or we have multiple cores/processors and dispatch the instructions to the cores/processors so that they are executed at the same time.
+{% endtab %}
+{% endtabs %}
+
+{% hint style="info" %}
+1. All parallel programs are concurrent, but not all concurrent programs are parallel.
+2. Modern computers have more than one core/processor. As such, the line between parallelism and concurrency is blurred.
+{% endhint %}
