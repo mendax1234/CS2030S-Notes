@@ -35,6 +35,7 @@
   * [Rec 05](lec-rec-lab-exes/recitation/rec-05.md)
   * [Rec 06](lec-rec-lab-exes/recitation/rec-06.md)
   * [Rec 07](lec-rec-lab-exes/recitation/rec-07.md)
+  * [Rec 08](lec-rec-lab-exes/recitation/rec-08.md)
 * [Lab](lec-rec-lab-exes/lab/README.md)
   * [Lab 01 - Logistics, Introduction to OOP, Exercise 0](lec-rec-lab-exes/lab/lab-01-logistics-introduction-to-oop-exercise-0.md)
   * [Lab 02 - Interface,Wrapper Class, Exercise 1,2](lec-rec-lab-exes/lab/lab-02-interface-wrapper-class-exercise-1-2.md)
