@@ -350,7 +350,7 @@ static <T> Stream<T> generate(Supplier<? extends T> s)
 ```
 {% endtab %}
 
-{% tab title="Iterate()" %}
+{% tab title="iterate()" %}
 `seed` is the initial element, `hasNext` is an optional ending condition, which is a `Predicate` which is equivalent to `BooleanCondition` in CS2030S. `next` is a `UnaryOperator<T>` which is equivalent to `Transformer<T, T>` in CS2030S.
 
 ```java

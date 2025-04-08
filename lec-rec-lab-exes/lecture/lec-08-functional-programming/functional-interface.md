@@ -202,7 +202,7 @@ Two parameters of type `S, T` respectively, return type is `R`.
 
 **Lambda Example**
 
-This means whenever the method parameter is a `Transformer<T>`, we can pass the following lambda expression as the method argument.
+This means whenever the method parameter is a `Combiner<T>`, we can pass the following lambda expression as the method argument.
 
 ```java
 Combiner<Integer, Integer, Integer> multiply = (a, b) -> a * b;
