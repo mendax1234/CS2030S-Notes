@@ -289,7 +289,7 @@ So, the two lambdas capture the variable `init`. The `tail` additionally capture
 
 ***
 
-Simiarly, you will get the final graph shown like below
+Similarly, you will get the final graph shown like below
 
 <figure><img src="../../../.gitbook/assets/lec09-stack-heap-2.png" alt=""><figcaption></figcaption></figure>
 
