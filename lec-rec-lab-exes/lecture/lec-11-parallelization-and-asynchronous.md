@@ -117,7 +117,7 @@ CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> {
 });
 ```
 
-The calling of `anyOf()` and `allOf()` is shown as follows
+The example of calling `anyOf()` and `allOf()` is shown as follows
 
 {% tabs %}
 {% tab title="allOf()" %}
@@ -156,41 +156,126 @@ The usefulness of `CompletableFuture` comes from the ability to chain them up an
 
 {% stepper %}
 {% step %}
-`thenApply` which analogous to `map`
+`thenApply`, which is analogous to `map`
 
+Transforms the result of a `CompletableFuture` using the provided function.
 
+**Example**
+
+```java
+CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> 10);
+CompletableFuture<String> result = future.thenApply(i -> "Result: " + i);
+```
+
+This is similar to `map` in FP[^3]. The `thenApply` method takes the result of the original future (10) and applies a function to transform it into a new value ("Result: 10"). The transformation happens in the same thread that completed the original future.
 {% endstep %}
 
 {% step %}
 `thenCompose`, which is analogous to `flatMap`
 
+Chains two `CompletableFuture` operations where the second operation depends on the result of the first.
 
+**Example**
+
+```java
+CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> 10);
+CompletableFuture<String> result = future.thenCompose(i -> 
+    CompletableFuture.supplyAsync(() -> "Result: " + i));
+```
+
+This is similar to `flatMap` in FP. Unlike `thenApply`, which returns a simple value wrapped in a `CompletableFuture`, `thenCompose` expects a function that returns another `CompletableFuture`. This is useful when you have operations that depend on previous results and also need to be performed asynchronously.
 {% endstep %}
 
 {% step %}
 `thenCombine`, which is analogous to `combine`
 
-The above three methods have their asynchronous version also.
+Combines the results of two independent `CompletableFuture` operations.
+
+**Example**
+
+```java
+CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 10);
+CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> 20);
+CompletableFuture<String> combined = future1.thenCombine(future2, 
+    (result1, result2) -> "Sum: " + (result1 + result2));
+```
+
+This waits for both futures to complete and then applies a function to their results. The function receives the results of both futures as parameters. In this example, it calculates the sum of the two results (10 + 20) and creates a string with the result ("Sum: 30").
 {% endstep %}
 
 {% step %}
 `thenRun`
 
+Executes an action after the CompletableFuture completes, without using its result.
 
+**Example**
+
+```java
+CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
+    System.out.println("Calculating...");
+    return 42;
+});
+CompletableFuture<Void> result = future.thenRun(() -> 
+    System.out.println("Computation finished!"));
+```
+
+The `thenRun` method executes a Runnable after the current CompletableFuture completes, ignoring its result. This is useful for performing side effects like logging or notifications after an operation completes. In this example, it prints "Computation finished!" after the original future completes.
 {% endstep %}
 
 {% step %}
 `runAfterBoth`
 
+Executes an action after both the current CompletableFuture and another specified CompletableFuture complete.
 
+**Example**
+
+```java
+CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> {
+    sleep(1000);
+    System.out.println("First task completed");
+    return 10;
+});
+CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> {
+    sleep(2000);
+    System.out.println("Second task completed");
+    return "Result";
+});
+CompletableFuture<Void> result = future1.runAfterBoth(future2, () -> 
+    System.out.println("Both tasks finished!"));
+```
+
+This method waits for both the original future and another future to complete before running a specified action. The action doesn't use the results of either future. In this example, "Both tasks finished!" is printed only after both future1 and future2 have completed.
 {% endstep %}
 
 {% step %}
 `runAfterEither`
 
+Executes an action after either the current CompletableFuture or another specified CompletableFuture completes.
 
+**Example**
+
+```java
+CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> {
+    sleep(2000);
+    System.out.println("Slow task completed");
+    return 10;
+});
+CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> {
+    sleep(1000);
+    System.out.println("Fast task completed");
+    return 20;
+});
+CompletableFuture<Void> result = future1.runAfterEither(future2, () -> 
+    System.out.println("At least one task is done!"));
+```
+
+This method runs an action as soon as either the original future or another specified future completes. In this example, since future2 completes faster (1 second vs 2 seconds), "At least one task is done!" will print after "Fast task completed" and before "Slow task completed".
 {% endstep %}
 {% endstepper %}
+
+{% hint style="info" %}
+All these methods have asynchronous versions (`thenApplyAsync`, `thenComposeAsync`, `thenCombineAsync`, `thenRunAsync`, `runAfterBothAsync`, `runAfterEitherAsync`) that execute the provided functions or actions in a different thread, potentially increasing concurrency.
+{% endhint %}
 
 After we chain our `CompletableFuture`, we are more interested in getting the result right! Till now, the process is also called **set-up** the tasks to run asynchronously.
 
@@ -310,3 +395,5 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 [^1]: For the sake of this course, just treat it as "a lot of" LOL
 
 [^2]: This means that the value is **not yet available**, but it **will be computed and available in the future**—once some asynchronous computation completes.
+
+[^3]: "FP" stands for **F**unctional **P**rogramming.
