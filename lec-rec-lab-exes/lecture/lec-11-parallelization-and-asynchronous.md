@@ -156,7 +156,7 @@ The usefulness of `CompletableFuture` comes from the ability to chain them up an
 
 {% stepper %}
 {% step %}
-`thenApply`, which is analogous to `map`
+`thenApply`, **which is analogous to** `map`
 
 Transforms the result of a `CompletableFuture` using the provided function.
 
@@ -171,7 +171,7 @@ This is similar to `map` in FP[^3]. The `thenApply` method takes the result of t
 {% endstep %}
 
 {% step %}
-`thenCompose`, which is analogous to `flatMap`
+`thenCompose`, **which is analogous to** `flatMap`
 
 Chains two `CompletableFuture` operations where the second operation depends on the result of the first.
 
@@ -187,7 +187,7 @@ This is similar to `flatMap` in FP. Unlike `thenApply`, which returns a simple v
 {% endstep %}
 
 {% step %}
-`thenCombine`, which is analogous to `combine`
+`thenCombine`, **which is analogous to** `combine`
 
 Combines the results of two independent `CompletableFuture` operations.
 
