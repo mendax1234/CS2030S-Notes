@@ -139,6 +139,11 @@ public <U> Maybe<U> map(Transformer<? super T, ? extends U> t) {
 {% endcode %}
 {% endtab %}
 {% endtabs %}
+
+**Application**
+
+1. You can just think of `map()`, `orElse()/orElseGet()` as an if-else statement. It works like **if** the target is `Maybe.some()` then do the function defined in the map, **else**, do the function inside `orElseGet()`. Finally, it will return the value inside the Maybe.
+2. This is very important! You can chain this and organize just like if-else blocks!!! See more from the `takeWhile()` in Exercise 7!
 {% endstep %}
 
 {% step %}
