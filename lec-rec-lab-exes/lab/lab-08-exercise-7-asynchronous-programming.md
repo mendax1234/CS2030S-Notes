@@ -1,18 +1,16 @@
-# Lab 08
+# Lab 08 - Exercise 7, Asynchronous Programming
 
 ## Exercise 7 Review
+
+> For this part, the implementation of each method can be found in [Exercise 7 — Infinite List](../exercises/exercise-7-infinitelist.md#main-methods-explanation).
 
 ### head() — Retrieve the Head Safely
 
 Write the naive if-else statement first, then convert it into a one-line.
 
-This method will find the first existing head.
-
 ### tail() — Retrieve the Tail
 
 We want the tail, but we use the head to do the if-else, so a mapping is needed.
-
-This method will find the first existing tail.
 
 ### map() — How to map the List Efficiently
 
@@ -26,11 +24,28 @@ To avoid stack overflow, try not use `this.head()` and `this.tail()`.
 
 {% tabs %}
 {% tab title="Iterative Approach" %}
-Add the code which uses the "shrinking" idea to traverse through the InfiniteList.
+Traverse through the list by **shrinking the tail**. This is awesome!
+
+```java
+public void forEach(Consumer<? super T> action) {
+    InfiniteList<T> currList = this;
+    while (!currList.isSentinel()) {
+        // Consume the head
+        currList.head.get().ifPresent(action); // Maybe<T>::ifPresent
+        // Shrink the sublist
+        currList = currList.tail.get();
+    }
+}
+```
 {% endtab %}
 
 {% tab title="Recursive Approach" %}
-Awesome implementation here!
+```java
+public void forEach(Consumer<? super T> action) {
+    this.head.get().ifPresent(action);
+    this.tail.get().forEach(action);
+}
+```
 {% endtab %}
 {% endtabs %}
 
@@ -51,18 +66,11 @@ Awesome implementation here!
 {% hint style="info" %}
 General advice in writing such one-line code
 
-1. Start by considering the condition to use (In this exercise, we always start with `this.head.get()`.
+1. Start by **considering the condition** to use (In this exercise, we always start with `this.head.get()`.
 2. End by using `orElse()`/`orElseGet()`.&#x20;
    1. Anything between the start and the end is your **if** branch.
    2. The "placeholder" in your end is the **else** branch.
 {% endhint %}
-
-### takeWhile()
-
-There are two conditions here
-
-1. whether the head exists
-2. whether the head passes the predicate
 
 ## Asynchronous Programming
 
@@ -70,4 +78,13 @@ There are two conditions here
 
 It can be interpreted as a **task** which will return a result of type `T` when completed.
 
-Add the common methods notes, they are clear and awesome!
+#### Common Completable Future methods
+
+1. `CF(f).then(g)` means: **start** `g` **only after** `f` **has been   completed**.
+   1. Examples: `thenRun`, `thenCombine`, `thenApply`
+2. `static CF.async(g)` means: **start** `g` **on a new thread**
+   1. Examples: `supplyAsync`, `runAsync`
+3. `CF(f).then...async(g)` means: **start** `g` **only after** `f` **has been   &#x20;completed, but use a new thread.**
+   1. Examples: `thenRunAsync`, `thenApplyAsync`.
+
+Difference between `run` and `supply`: `run` executes a void&#x20;function while `supply` executes a function with a return&#x20;value.

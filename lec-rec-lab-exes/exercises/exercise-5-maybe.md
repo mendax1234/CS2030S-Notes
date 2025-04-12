@@ -65,7 +65,7 @@ protected T get() {
 {% endstep %}
 
 {% step %}
-`filter()`
+`filter(BooleanCondition<? super T> c)`
 
 {% code lineNumbers="true" %}
 ```java
@@ -105,7 +105,7 @@ public Maybe<Object> filter(BooleanCondition<? super Object> c) {
 {% endstep %}
 
 {% step %}
-`map()`
+`map(Transformer<? super T, ? extends U> t)`
 
 {% code lineNumbers="true" %}
 ```java
@@ -149,7 +149,7 @@ public <U> Maybe<U> map(Transformer<? super T, ? extends U> t) {
 {% endstep %}
 
 {% step %}
-`flatMap()`
+`flatMap(Transformer<? super T, ? extends Maybe<? extends U>> t)`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -195,7 +195,7 @@ public <U> Maybe<U> flatMap(Transformer<? super Object, ? extends Maybe<? extend
 {% endstep %}
 
 {% step %}
-`orElse()`
+`orElse(T t)`
 
 {% code lineNumbers="true" %}
 ```java
@@ -239,7 +239,7 @@ public T orElse(T t) {
 {% endstep %}
 
 {% step %}
-`orElseGet()`
+`orElseGet(Producer<? extends T> p)`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -278,7 +278,7 @@ public T orElseGet(Producer<? extends T> p) {
 {% endstep %}
 
 {% step %}
-`ifPresent()`
+`ifPresent(Consumer<? super T> c)`
 
 {% code overflow="wrap" lineNumbers="true" %}
 ```java
@@ -318,6 +318,7 @@ public void ifPresent(Consumer<? super T> c) {
 **Application**
 
 1. This is usually used to replace the `(... ≠ null)` check. See [#lab-sheet](../lab/lab-05-factory-method-option-lazy-evaluation.md#lab-sheet "mention") Q2.
+2. It is used to **consume** the value in the Maybe wrapper, in [Infinite List](../lab/lab-08-exercise-7-asynchronous-programming.md#foreach), it can be used to implement the `forEach()` method.
 {% endstep %}
 
 {% step %}
@@ -392,5 +393,10 @@ You can think the Line 1 as creating a naked man and Line 2,3,4 are actually add
 ## Tips
 
 1. In 2030s's Maybe, for every lambda expression passed into the API of maybe, the L.H.S is always the content of the previous Maybe
+2. General advice in writing one-line code
+   1. Start by **considering the condition** to use (In the [Exercise 7 — Infinite List](exercise-7-infinitelist.md), we always start with `this.head.get()`.
+   2. End by using `orElse()`/`orElseGet()`.&#x20;
+      1. Anything between the start and the end is your **if** branch.
+      2. The "placeholder" in your end is the **else** branch.
 
 [^1]: the calling object, the object before `.`
