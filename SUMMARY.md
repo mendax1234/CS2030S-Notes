@@ -42,7 +42,7 @@
   * [Lab 02 - Interface,Wrapper Class, Exercise 1,2](lec-rec-lab-exes/lab/lab-02-interface-wrapper-class-exercise-1-2.md)
   * [Lab 03 - Exceptions, Generics,Exercises 2,3](lec-rec-lab-exes/lab/lab-03-exceptions-generics-exercises-2-3.md)
   * [Lab 04 - Wildcard,Nested Class, Java package](lec-rec-lab-exes/lab/lab-04-wildcard-nested-class-java-package.md)
-  * [Lab 05](lec-rec-lab-exes/lab/lab-05.md)
+  * [Lab 05 - Factory Method, Option, Lazy Evaluation](lec-rec-lab-exes/lab/lab-05-factory-method-option-lazy-evaluation.md)
   * [Lab 06](lec-rec-lab-exes/lab/lab-06.md)
   * [Lab 08](lec-rec-lab-exes/lab/lab-08.md)
 * [Exercises](lec-rec-lab-exes/exercises/README.md)

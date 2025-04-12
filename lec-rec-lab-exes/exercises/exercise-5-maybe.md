@@ -12,6 +12,8 @@ The `findCounter()` function is supposed to map from the bank (domain) to an ava
 
 To solve that, we can create a new Type called `Maybe<Counter>`, which basically extends the codomain to include the `null`. Thus, the `findCounter()` is now **a pure function**!
 
+For more about **what on earth is a maybe**, read the [Lab 05](../lab/lab-05-factory-method-option-lazy-evaluation.md#maybe)!
+
 ***
 
 So, `Maybe<T>` is a **wrapper** for an item that **may or may not exist**. Its key purpose is to handle the possibility of missing values in a more elegant way than using `null` references.
@@ -232,7 +234,7 @@ public T orElse(T t) {
 
 **Application**
 
-1. Remember that this method will always give you the either **content** of the wrapper (See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q3) or the parameter. No wrapper is returned!
+1. Remember that this method will always give you the either **content** of the wrapper (See [#lab-sheet](../lab/lab-05-factory-method-option-lazy-evaluation.md#lab-sheet "mention") Q3) or the parameter. No wrapper is returned!
 2. This is usually used at the last of your function chain because its return type may not be a Maybe, so we cannot chain anymore!
 {% endstep %}
 
@@ -315,7 +317,7 @@ public void ifPresent(Consumer<? super T> c) {
 
 **Application**
 
-1. This is usually used to replace the `(... ≠ null)` check. See [#lab-sheet](../lab/lab-05.md#lab-sheet "mention") Q2.
+1. This is usually used to replace the `(... ≠ null)` check. See [#lab-sheet](../lab/lab-05-factory-method-option-lazy-evaluation.md#lab-sheet "mention") Q2.
 {% endstep %}
 
 {% step %}
