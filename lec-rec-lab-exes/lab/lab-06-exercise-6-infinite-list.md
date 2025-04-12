@@ -85,21 +85,31 @@ Similarly, you can do the same thing on the `flatMap`, `filter` and `combine`. S
 
 ### Keys of being lazy
 
-Note down the usage of `indexOf()`.
+**Core idea**: Delay the evaluation **as much as possible**.
+
+* **Don’t invoke** `produce()` anywhere other than when  &#x20;`get()` is called.
+* **Produce the value only once** and **cache** it immediately.  &#x20;Subsequent calls of `get()` use the cached value directly.
+* **Don’t invoke** `get()` directly. **Compose** the functions  &#x20;into a new Producer in `map`, `flatMap`, `filter`, `combine`  &#x20;and so on.
 
 ## Infinite List
 
-**Motivation**: In the natural world, many things are infinite. But computer data structure can only hold a finite number of data points.
+**Motivation**:&#x20;
+
+* In the natural world, many things are infinite.
+* But computer data structure can only hold a finite number of data points.
+* A need arises: **How to efficiently represent an infinite  &#x20;set of values using a finite structure**?
+* Idea: It is relatively easy to capture the structure of an  &#x20;infinite set **if its elements follow a certain pattern.**
+* We can produce the “next” element based on all  &#x20;previously evaluated elements.
 
 ### Mathematical Context
 
-Recurrence Relation
+The last sentence can be achieved by using **recurrence relation.**
+
+> A **recurrance relation** on a set $$X$$ is defined by $$k$$ initial terms $$x_0,x_1,\cdots,x_{k-1}$$ and a function $$f:X^k\rightarrow X$$ such that $$f(x_i,x_{i+1},\cdots,x_{i+k-1})=x_{i+k}$$.
 
 ### List Creation
 
-Use the recurrence relation to understand. Plus the ps7! The next term is a function of all its previous terms.
-
-Use this, we can rewrite the Infinite list as \[head, successive mapping]. Awesome!
+Use the above idea of **recurrance relation**, we can rewrite the Infinite list as \[head, successive mapping]. Awesome!
 
 ### List Memoisation
 
