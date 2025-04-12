@@ -43,7 +43,7 @@
   * [Lab 03 - Exceptions, Generics,Exercises 2,3](lec-rec-lab-exes/lab/lab-03-exceptions-generics-exercises-2-3.md)
   * [Lab 04 - Wildcard,Nested Class, Java package](lec-rec-lab-exes/lab/lab-04-wildcard-nested-class-java-package.md)
   * [Lab 05 - Factory Method, Option, Lazy Evaluation](lec-rec-lab-exes/lab/lab-05-factory-method-option-lazy-evaluation.md)
-  * [Lab 06](lec-rec-lab-exes/lab/lab-06.md)
+  * [Lab 06 - Exercise 6, Infinite List](lec-rec-lab-exes/lab/lab-06-exercise-6-infinite-list.md)
   * [Lab 08](lec-rec-lab-exes/lab/lab-08.md)
 * [Exercises](lec-rec-lab-exes/exercises/README.md)
   * [Exercise 0 - Circle and Point](lec-rec-lab-exes/exercises/exercise-0-circle-and-point.md)
