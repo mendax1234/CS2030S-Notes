@@ -109,21 +109,15 @@ The last sentence can be achieved by using **recurrence relation.**
 
 ### List Creation
 
-Use the above idea of **recurrance relation**, we can rewrite the Infinite list as \[head, successive mapping]. Awesome!
+Use the above idea of **recurrance relation**, we can rewrite the Infinite list as$$[\text{head}, \text{successive mapping}]$$ `[head, successive mapping]`. This is the one of the key ideas in the Infinite List.
 
-### List Memoisation
+So, the basic field of our Infinite List will be
 
-Motivation and implementation
-
-Lazy\<Maybe\<T>> or Maybe\<Lazy\<T>>
-
-### List Aggregation
-
-Combine n elements into one using the function f provided.
-
-1. Find identity
-2. Find the aggregation function (fancy way of saying combiner)
-
-### Sublist by Predicate
-
-When to stop, when not, important.
+{% code lineNumbers="true" %}
+```java
+class InfiniteList<T> {
+    private Producer<T> head; // A[k]
+    private Producer<InfiniteList<T>> tail; // A[k + 1...]
+}
+```
+{% endcode %}
