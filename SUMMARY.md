@@ -44,7 +44,7 @@
   * [Lab 04 - Wildcard,Nested Class, Java package](lec-rec-lab-exes/lab/lab-04-wildcard-nested-class-java-package.md)
   * [Lab 05 - Factory Method, Option, Lazy Evaluation](lec-rec-lab-exes/lab/lab-05-factory-method-option-lazy-evaluation.md)
   * [Lab 06 - Exercise 6, Infinite List](lec-rec-lab-exes/lab/lab-06-exercise-6-infinite-list.md)
-  * [Lab 08](lec-rec-lab-exes/lab/lab-08.md)
+  * [Lab 08 - Exercise 7, Asynchronous Programming](lec-rec-lab-exes/lab/lab-08-exercise-7-asynchronous-programming.md)
 * [Exercises](lec-rec-lab-exes/exercises/README.md)
   * [Exercise 0 - Circle and Point](lec-rec-lab-exes/exercises/exercise-0-circle-and-point.md)
   * [Exercise 1 - Simulation 1](lec-rec-lab-exes/exercises/exercise-1-simulation-1.md)
@@ -53,6 +53,7 @@
   * [Exercise 4 - Box](lec-rec-lab-exes/exercises/exercise-4-box.md)
   * [Exercise 5 - Maybe](lec-rec-lab-exes/exercises/exercise-5-maybe.md)
   * [Exercise 6 - Lazy](lec-rec-lab-exes/exercises/exercise-6-lazy.md)
+  * [Exercise 7 - InfiniteList](lec-rec-lab-exes/exercises/exercise-7-infinitelist.md)
 
 ## Past Year Exam
 
