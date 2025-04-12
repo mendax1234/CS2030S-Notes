@@ -74,7 +74,7 @@ General advice in writing such one-line code
 
 ## Asynchronous Programming
 
-### CompletableFuture\<T>
+### `CompletableFuture<T>`
 
 It can be interpreted as a **task** which will return a result of type `T` when completed.
 
