@@ -650,7 +650,7 @@ nestedLists.stream()
 // Expected output: 1 2 3 4 5 6
 ```
 
-`flatMap` takes each element in the stream (each inner list) and transforms it into a new stream of its own elements. Then, it "flattens" all these streams into one single stream.
+`flatMap` takes each element in the stream (each inner list) and transforms it into a new stream of its own elements (e.g. a stream of 1,2, a stream of 3, 4, 5 and a stream of 6), a stream of . Then, it "flattens" all these streams into one single stream.
 
 {% hint style="info" %}
 Why `Collection` not `List` here? It is because `Collection` is a broader concept that includes `List`. It’s a way to write **flexible code** that could work with other collection types (like `Set`) if needed. Here, since the inner elements are `List`s, it works perfectly.
@@ -661,6 +661,10 @@ Why `Collection` not `List` here? It is because `Collection` is a broader concep
 `filter()`
 
 The `filter` operation selects elements from the stream that satisfy a given **predicate** (boolean condition), creating a new stream that contains only the elements that passed the test.
+
+{% hint style="info" %}
+What if no element passes the predicate?
+{% endhint %}
 
 **Method Declaration**
 
@@ -708,6 +712,7 @@ List<Integer> duplicates = List.of(1, 2, 2, 3, 3, 3, 4, 4, 4, 4);
 duplicates.stream()
           .distinct()
           .forEach(n -> System.out.print(n + " "));
+// Expected output: 1 2 3 4
 ```
 
 {% hint style="success" %}
@@ -831,7 +836,7 @@ System.out.println("Sum: " + sum);
 {% endstep %}
 
 {% step %}
-**Offer specialized methods like `sum()` and `average()` for numerical operations**
+**Offer specialized methods like** `sum()` **and** `average()` **for numerical operations**
 
 ```java
 // DoubleStream example - Numeric operations
@@ -845,7 +850,7 @@ DoubleStream.of(1.1, 2.2, 3.3, 4.4, 5.5)
 {% endstep %}
 
 {% step %}
-**Can be created through factory methods like `range()`, `rangeClosed()`, or by converting from regular streams using `mapToInt()`, `mapToLong()`, or `mapToDouble()`**
+**Can be created through factory methods like** `range()`**,** `rangeClosed()`**, or by converting from regular streams using** `mapToInt()`**,** `mapToLong()`**, or** `mapToDouble()`
 
 {% code overflow="wrap" %}
 ```java
