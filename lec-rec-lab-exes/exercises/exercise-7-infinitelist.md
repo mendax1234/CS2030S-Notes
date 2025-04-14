@@ -145,6 +145,20 @@ public InfiniteList<T> filter(BooleanCondition<? super T> predicate) {
 }
 ```
 {% endcode %}
+
+{% hint style="danger" %}
+The following code won't work because the `Lazy::filter` will return a `Lazy<Boolean>`, that doesn't fit into the fields of our `InfiniteList`.
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+public InfiniteList<T> filter(BooleanCondition<? super T> predicate) {
+  return new InfiniteList<>(
+      this.head.filter(predicate),
+      this.tail.filter(predicate));
+}
+```
+{% endcode %}
+{% endhint %}
 {% endstep %}
 
 {% step %}
