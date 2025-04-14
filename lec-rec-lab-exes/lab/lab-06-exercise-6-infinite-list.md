@@ -13,45 +13,6 @@
 `equals()`
 
 In `Lazy::equals` evaluate both Lazy first before comparing them.
-
-{% tabs %}
-{% tab title="Wrong" %}
-{% code lineNumbers="true" %}
-```java
-@Override
-public boolean equals(Object obj) {
-    if (obj instanceof Lazy<?>) {
-        @SuppressWarnings("unchecked")
-        Lazy<?> lazy = (Lazy<?>) obj;
-        return this.get().equals(lazy.get());
-    }
-    return false;
-}
-// Not correct because this.get() could return a null.
-```
-{% endcode %}
-{% endtab %}
-
-{% tab title="Correct" %}
-{% code lineNumbers="true" %}
-```java
-@Override
-public boolean equals(Object obj) {
-    if (obj instanceof Lazy<?>) {
-        @SuppressWarnings("unchecked")
-        Lazy<?> lazy = (Lazy<?>) obj;
-        // Evaluate both Lazy
-        this.get();
-        lazy.get();
-        // Now both values are Maybe.Some
-        return this.value.equals(lazy.value);
-    }
-    return false;
-}
-```
-{% endcode %}
-{% endtab %}
-{% endtabs %}
 {% endstep %}
 
 {% step %}
@@ -109,7 +70,7 @@ The last sentence can be achieved by using **recurrence relation.**
 
 ### List Creation
 
-Use the above idea of **recurrance relation**, we can rewrite the Infinite list as$$[\text{head}, \text{successive mapping}]$$ `[head, successive mapping]`. This is the one of the key ideas in the Infinite List.
+Use the above idea of **recurrance relation**, we can rewrite the Infinite list as$$[\text{head}, \text{successive mapping}]$$. This is the one of the key ideas in the Infinite List.
 
 So, the basic field of our Infinite List will be
 

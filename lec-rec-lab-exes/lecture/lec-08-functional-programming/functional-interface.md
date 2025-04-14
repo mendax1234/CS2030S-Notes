@@ -38,7 +38,7 @@ Parameter Type is `T` and return type is `boolean`.
 
 **Lambda Example**
 
-This means whenever the method parameter is a `BooleanCondition<T>`, we can pass the following lambda expression as the method argument.
+This means whenever the method parameter is a `BooleanCondition<T>`, we can pass a lambda expression which is similar to the following as the method argument.
 
 ```java
 BooleanCondition<Integer> isPositive = x -> x > 0;
@@ -77,7 +77,7 @@ No parameter and return type is `T`.
 
 **Lambda Example**
 
-This means whenever the method parameter is a `Producer<T>`, we can pass the following lambda expression as the method argument.
+This means whenever the method parameter is a `Producer<T>`, we can pass a lambda expression which is similar to the following as the method argument.
 
 ```java
 Producer<Double> randomValue = () -> Math.random();
@@ -116,7 +116,7 @@ Parameter type is `T` return type is `void`&#x20;
 
 **Lambda example**
 
-This means whenever the method parameter is a `Consumer<T>`, we can pass the following lambda expression as the method argument.
+This means whenever the method parameter is a `Consumer<T>`, we can pass a lambda expression which is similar to the following as the method argument.
 
 ```java
 Consumer<String> printUpperCase = s -> System.out.println(s.toUpperCase());
@@ -157,7 +157,7 @@ Parameter type is `U`, return type is `T`. Can think it as transforming one valu
 
 **Lambda Example**
 
-This means whenever the method parameter is a `Transformer<T>`, we can pass the following lambda expression as the method argument.
+This means whenever the method parameter is a `Transformer<T>`, we can pass a lambda expression which is similar to the following as the method argument.
 
 ```java
 Transfomer<String, Integer> stringLength = s -> s.length();
@@ -202,7 +202,7 @@ Two parameters of type `S, T` respectively, return type is `R`.
 
 **Lambda Example**
 
-This means whenever the method parameter is a `Combiner<T>`, we can pass the following lambda expression as the method argument.
+This means whenever the method parameter is a `Combiner<T>`, we can pass a lambda expression which is similar to the following as the method argument.
 
 ```java
 Combiner<Integer, Integer, Integer> multiply = (a, b) -> a * b;

@@ -23,6 +23,10 @@ Basically, there are two steps we should follow to make a class **immutable**
 **Add** `final` **to class declaration to prevent inheritance**
 
 This is to prevent subclass of **immutable** class to override some methods to make the internal field of the immutable class mutable.
+
+{% hint style="info" %}
+In Java, if a class is `final`, it **cannot** be **inherited**!
+{% endhint %}
 {% endstep %}
 
 {% step %}
@@ -64,8 +68,10 @@ final class Point {
 We start by making the fields `final` to signal our intention that we do not intend to _assign_ another value to them. Now that the `x` and `y` cannot be re-assigned (a new value or even the same value), to move a point, we shouldn't re-assign to the fields `x` and `y` anymore. Instead, we **return a new** `Point` **instance** to prevent mutating the current instance.
 
 {% hint style="info" %}
-By returning a new instance is a **recommended** and **useful** practice in writing immutable class!
+Returning a new instance is a **recommended** and **useful** practice in writing immutable class!
 {% endhint %}
+
+Similarly, we can write our immutable class `Circle`.
 
 {% code title="Circle.java" lineNumbers="true" %}
 ```java
@@ -85,8 +91,6 @@ final class Circle {
 }
 ```
 {% endcode %}
-
-Similarly, we can write our immutable class `Circle`.
 
 #### Another way to make internal fields immutable
 
@@ -134,7 +138,7 @@ Note that we assume that `Point` is **immutable**!
 
 #### Ease of Understanding <a href="#ease-of-understanding" id="ease-of-understanding"></a>
 
-Code written with immutable objects is easier to reason with and easier to understand because once we create an instance from an immutable class, it's internal fields will never change unless we have explicitly re-assigned it.
+Code written with immutable objects is easier to reason with and easier to understand because once we create an instance from an immutable class, its internal fields will never change unless we have explicitly re-assigned it.
 
 #### Enabling Safe Sharing of Objects <a href="#enabling-safe-sharing-of-objects" id="enabling-safe-sharing-of-objects"></a>
 
@@ -182,7 +186,7 @@ A _nested class_ can be classified into the following four types
 It is a **non-static** _nested class_, thus it can access **all** fields and methods of the containing class.
 
 {% hint style="success" %}
-This means that when instantiating the inner class, you **need** an instance of the containing class and the position of new should be behind the `.` operator.
+This means that when instantiating the inner class, you **need** an instance of the containing class and the position of `new` should be behind the `.` operator.
 {% endhint %}
 
 {% hint style="warning" %}
@@ -220,8 +224,6 @@ class A {
 }
 ```
 {% endcode %}
-
-***
 
 To create an instance of the inner class, we can see the following code
 
@@ -277,13 +279,11 @@ class B {
 ```
 {% endcode %}
 
-1. When you instantiate a static nested class, you can ignore the containing class.
-
 {% hint style="info" %}
-`static` only restricts that the nested class is associated with the **containing class**, NOT an instance. But inside the static nested class, if&#x20;
+1. When you instantiate a static nested class, you can ignore the containing class's instance.\
+   `static` only restricts that the nested class is associated with the containing class **itself**, NOT with any instance.
+2. But **inside the static nested class, if you want to access non-static (instance) members of the outer class, you need an explicit reference to an instance of the outer class**, because `this` in the nested class does not carry a reference to an enclosing `B` instance.
 {% endhint %}
-
-***
 
 #### Hiding nested class
 

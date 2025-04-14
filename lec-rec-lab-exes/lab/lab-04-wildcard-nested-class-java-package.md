@@ -7,7 +7,7 @@ The goal of wildcard in Java is to make generics **covariant**.
 ### Set notation
 
 * Upper bounded wildcard (`? extends T`): It represents a **set** of type $$X$$, where $$X$$ is the **subtype of** `T`**.** $$\{X:X<T\}$$
-* Lower bounded wildcard (`? extends T`): It represents a **set** of type $$Y$$, where $$Y$$ is the **supertype of** `T`**.** $$\{Y:T<Y\}$$
+* Lower bounded wildcard (`? super T`): It represents a **set** of type $$Y$$, where $$Y$$ is the **supertype of** `T`**.** $$\{Y:T<Y\}$$
 
 A **classic problem** is to **find the range of a type parameter given a series of wildcards**. (This is to determine which type you should declare a variable to to be safe to hold the element you get from a sequence).
 

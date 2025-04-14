@@ -4,8 +4,6 @@
 
 `Lazy<T>` is a class that implements lazy evaluation in Java. Lazy evaluation means a value is computed only when it's actually needed, not when it's defined.
 
-***
-
 **Motivation:**
 
 * Improves performance by avoiding unnecessary calculations
@@ -20,8 +18,6 @@ As we have seen in the lecture, Lazy has two ways
 2. Memoization
 
 And the `Lazy<T>` we build today combines these two ways!
-
-***
 
 **Example**
 
@@ -164,7 +160,7 @@ System.out.println(text.get()); // "Number is: 10"
 {% step %}
 `flatMap(Transformer<? super T, ? extends Lazy<? extends U>> t)`
 
-The flatMap method is similar to map but works with transformations that themselves return Lazy values. It prevents ending up with nested Lazy structures (like `Lazy<Lazy>`). When the resulting Lazy is evaluated, it gets this Lazy's value, applies the transformation to get another Lazy, and then gets the value from that second Lazy.
+The flatMap method is similar to map but works with transformations that themselves return Lazy values. It prevents ending up with nested Lazy structures (like `Lazy<Lazy>`). When the resulting Lazy is evaluated, it gets this Lazy's value (`this.get()`), applies the transformation to get another Lazy (`t.transform()`), and then gets the value from that second Lazy (the second `.get()`).
 
 **Implementation**
 
@@ -207,6 +203,10 @@ Lazy<Integer> number = Lazy.of(() -> 15);
 Lazy<Boolean> isEven = number.filter(n -> n % 2 == 0);
 System.out.println(isEven.get()); // false
 ```
+
+{% hint style="info" %}
+The meaning of `Lazy<Boolean>` is that this Lazy wrapper wraps a `Boolean` value, and only when we call its `.get()`, we can know whether the value wrapped is `true` or `false`.
+{% endhint %}
 {% endstep %}
 
 {% step %}

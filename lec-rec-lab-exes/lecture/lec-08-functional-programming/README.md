@@ -40,7 +40,7 @@ We have already seen what this means from above. Now, let's recap an example **w
 void sortNames(List<String> names) {
   Comparator<String> cmp = new Comparator<String>() {
     public int compare(String s1, String s2) {
-    return s1.length() - s2.length();
+      return s1.length() - s2.length();
     }
   };
   names.sort(cmp);
@@ -63,7 +63,7 @@ Such an interface with **exactly one abstract method** is called a **functional 
 An example is as follows, notice that the Lambda Writing can be achieved by **removing the unnecessary part from** the anonymous class writing!
 
 {% tabs %}
-{% tab title="Anonymous Class Writing" %}
+{% tab title="Anonymous Class" %}
 {% code lineNumbers="true" %}
 ```java
 Transformer<Integer, Integer> square = new Transformer<>() {
@@ -76,10 +76,22 @@ Transformer<Integer, Integer> square = new Transformer<>() {
 {% endcode %}
 {% endtab %}
 
-{% tab title="Lambda Writing" %}
+{% tab title="Lambda (Single Line)" %}
 {% code lineNumbers="true" %}
 ```java
 Transformer<Integer, Integer> square = x -> x * x;
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Lambda  (Multiple Line)" %}
+{% code lineNumbers="true" %}
+```java
+Transformer<Integer, Integer> complexSquare = x -> {
+    System.out.println("Squaring the number: " + x);
+    int result = x * x;
+    return result;
+};
 ```
 {% endcode %}
 {% endtab %}
@@ -89,6 +101,8 @@ So, the expression above `x -> x * x` is called **lambda expression**.
 
 1. The LHS lists the **parameters** (use `()` if there is no parameter)
 2. The RHS is the **computation**.
+   1. If RHS only has one line, you can omit curly `{}` braces and `return`.
+   2. If RHS has multiple lines, use curly braces `{}` and explicitly write `return` if a value is returned.
 
 {% hint style="success" %}
 A **lambda expression** is essentially **syntactic sugar** for writing an **anonymous class** that implements a functional interface.

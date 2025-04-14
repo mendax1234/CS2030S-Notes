@@ -305,7 +305,7 @@ This means that we tell the compiler, I want an array of boxes, but I don't care
 
 ## Type Inference
 
-Type inference in Java is the compiler's ability to _automatically determine_ (deduce) the **type arguments** for generic methods, [generic types](#user-content-fn-4)[^4] **based on the context** where they are used.
+Type inference in Java is the compiler's ability to _automatically determine_ (deduce) the **type arguments** for [generic methods](#user-content-fn-4)[^4] **based on the context** where they are used.
 
 {% hint style="info" %}
 **Type Inference** happens usually because when you are **parameterizing** the **generic methods** or **generic types**, you didn't provide the **type arguments**. Thus, it needs to deduce them using some rules.
@@ -392,4 +392,4 @@ where `Type1` and `Type2` are arbitary types.
 
 [^3]: this means that the following rules apply to the time when we try to instantiate something containing generics
 
-[^4]: this usually happens when we calle the **constructor** of a generic type.
+[^4]: this usually happens when we call the **constructor** of a generic type.

@@ -198,8 +198,8 @@ The code after modifying is:
 
 {% code lineNumbers="true" %}
 ```java
-Maybe<Integer> update(Maybe<Integer> x) {
-  return Maybe.some(x.orElse(4));
+String foo(Maybe<Object> m) {
+  return m.map(obj -> String.valueOf(obj)).orElse("?");
 }
 ```
 {% endcode %}
