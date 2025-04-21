@@ -7,7 +7,7 @@
 We have seen much above `Thread` from above. However, `Thread` may have the following limitations:
 
 1. **no return value**: there are no method in `Thread` that returns a value.
-2. **hard to specify the execution order**: there is no method is specify which thread starts after another thread completes.
+2. **hard to specify the execution order**: there is no method that specifies which thread starts after another thread completes.
 3. **overhead**: the creation and deletion of `Thread` in Java takes up "some"[^1] resources.
 
 So, to overcome all these limitations, luckily, we have `CompletableFuture` in Java. In CS2030S, the use of `CompletableFuture` is to save us from the trouble of dealing with `Thread`.
@@ -17,7 +17,7 @@ So, to overcome all these limitations, luckily, we have `CompletableFuture` in J
 Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream.md#monad) that encapsulates a value that is either there or [not there _yet_](#user-content-fn-2)[^2]. Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
 
 {% hint style="info" %}
-A key property of `CompletableFuture` is whether the value it promises is ready — i.e., the tasks that it encapsulates have been _completed_ or not.
+A key property of `CompletableFuture` is whether the value it promises is **ready** — i.e., the tasks that it encapsulates have been _completed_ or not.
 {% endhint %}
 
 #### Create a `CompletableFuture`
@@ -32,14 +32,14 @@ Creates a `CompletableFuture` that is already completed with the given value.
 
 **Example**
 
-{% code overflow="wrap" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<String> future = CompletableFuture.completedFuture("Result is ready immediately");
 String result = future.get(); // No waiting, result is available right away
 ```
 {% endcode %}
 
-This is useful when you need to return a CompletableFuture but already have the result
+This is useful when you need to return a CompletableFuture but **already have the result**.
 {% endstep %}
 
 {% step %}
@@ -49,7 +49,7 @@ Creates a `CompletableFuture` that runs the given `Runnable` asynchronously and 
 
 **Example**
 
-{% code overflow="wrap" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
     System.out.println("Async task running on thread: " + Thread.currentThread().getName());
@@ -76,7 +76,7 @@ Creates a `CompletableFuture` that computes a result asynchronously using the gi
 
 **Example**
 
-{% code overflow="wrap" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
     System.out.println("Computing value on thread: " + Thread.currentThread().getName());
@@ -95,7 +95,7 @@ Integer result = future.get(); // Will wait for computation to complete
 ```
 {% endcode %}
 
-&#x20;Use this when you need to calculate something in the background and use the result later.
+Use this when you need to calculate something in the background and use the result later.
 {% endstep %}
 
 {% step %}
@@ -105,6 +105,7 @@ The example given in CS2030s is `anyOf/allOf`. Basically, it creates a `Completa
 
 **Example**
 
+{% code lineNumbers="true" %}
 ```java
 CompletableFuture<String> future1 = CompletableFuture.supplyAsync(() -> {
     sleep(2000); // This takes longer
@@ -116,12 +117,13 @@ CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> {
     return "Second result";
 });
 ```
+{% endcode %}
 
 The example of calling `anyOf()` and `allOf()` is shown as follows
 
 {% tabs %}
 {% tab title="allOf()" %}
-{% code overflow="wrap" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<Void> allFuture = CompletableFuture.allOf(future1, future2);
 allFuture.thenRun(() -> System.out.println("All futures completed"));
@@ -133,7 +135,7 @@ Use this when you need to wait for multiple independent operations to finish
 {% endtab %}
 
 {% tab title="anyOf()" %}
-{% code overflow="wrap" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 // Completes when either future1 or future2 completes (whichever is first)
 CompletableFuture<Object> anyFuture = CompletableFuture.anyOf(future1, future2);
@@ -162,10 +164,12 @@ Transforms the result of a `CompletableFuture` using the provided function.
 
 **Example**
 
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> 10);
 CompletableFuture<String> result = future.thenApply(i -> "Result: " + i);
 ```
+{% endcode %}
 
 This is similar to `map` in FP[^3]. The `thenApply` method takes the result of the original future (10) and applies a function to transform it into a new value ("Result: 10"). The transformation happens in the same thread that completed the original future.
 {% endstep %}
@@ -394,6 +398,6 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 
 [^1]: For the sake of this course, just treat it as "a lot of" LOL
 
-[^2]: This means that the value is **not yet available**, but it **will be computed and available in the future**—once some asynchronous computation completes.
+[^2]: This means that the value is **not yet available**, but it **will be computed and available in the future —** once some asynchronous computation completes.
 
 [^3]: "FP" stands for **F**unctional **P**rogramming.
