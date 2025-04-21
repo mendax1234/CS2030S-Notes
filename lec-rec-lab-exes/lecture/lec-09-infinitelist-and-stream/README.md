@@ -1,4 +1,4 @@
-# Lecture 09 - InfiniteList and Stream
+# Lec 09 - InfiniteList and Stream
 
 ## Eager List vs. Infinite List
 
@@ -297,7 +297,7 @@ For more information, please see from the [lecture notes](https://nus-cs2030s.gi
 
 ## Streams
 
-Our Infinite List has its counterpart in the Java implementation, which is called `Stream`, but with more functionalities.
+Our Infinite List has its counterpart in the Java implementation, which is called `Stream`, but with more functionalities. All the methods introduced below are called **stream operations!**
 
 ### Building a Stream
 
