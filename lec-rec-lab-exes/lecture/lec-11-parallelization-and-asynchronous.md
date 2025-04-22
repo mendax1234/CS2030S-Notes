@@ -630,7 +630,7 @@ Recall that creating and destroying threads is not cheap, and as much as possibl
 A **thread pool** is a system that:
 
 1. **Has some threads already created and waiting**.
-2. **Holds tasks (units of work) in a queue**.
+2. **Holds tasks (units of work) in a queue**. (Usually, "task" is a `Runnable`, or `Supplier`)
 3. **Lets threads pick tasks from the queue and execute them**.
 4. **Reuses threads** instead of creating a new one every time.
 
@@ -689,7 +689,7 @@ This loop is creating **100 tasks**, where each task is:
 () -> System.out.println(count)
 ```
 
-These are **lambdas** that implement `Runnable` (because they have a `run()` method internally). They just print a number.
+These are **lambdas** that implement `Runnable` (because they have a `run()` method internally). They just print a number. (See more from [functional-interface.md](lec-08-functional-programming/functional-interface.md "mention") if you are unfamiliar with the lambda expression for `Runnable`)
 
 ***
 
@@ -708,6 +708,205 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 2. **You submit tasks** to the thread pool — these tasks get **queued** first.
 3. **The threads in the pool pick up tasks from the queue** and run them **one by one** (or in parallel, depending on how many threads there are).
 
+### Real Fork and Join
+
+Imagine you have an array, you want to get the sum of each element, (I know you have lots of methods to do that :joy:), you could use **one loop (sequentially)** to do that, like&#x20;
+
+{% code lineNumbers="true" %}
+```java
+int sum = 0;
+for (int i = 0; i < array.length; i++) {
+    sum += array[i];
+}
+```
+{% endcode %}
+
+But in **Fork/Join**, you want to speed this up by using **multiple threads**. So you split the task into parts and let **different threads work on the parts at the same time**, then combine (join) their results. In simple words,
+
+> * **Fork**: Break the task into smaller tasks and run them _in parallel_ (with multiple threads).
+> * **Join**: Wait for the results from the smaller tasks and **combine** them to get the final answer.
+
+In Java, we can create a task that we can fork and join as an instance of the abstract class `RecursiveTask<T>`. It has an abstract method `compute()`, which we, as the client, have to define to specify what computation we want to compute. For example,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+class Summer extends RecursiveTask<Integer> {
+  private static final int FORK_THRESHOLD = 2;
+  private int low;
+  private int high;
+  private int[] array;
+
+  public Summer(int low, int high, int[] array) {
+    this.low = low;
+    this.high = high;
+    this.array = array;
+  }
+
+  @Override
+  protected Integer compute() {
+    // stop splitting into subtask if array is already small.
+    // Base case (small enough to be solved directly)
+    if (high - low < FORK_THRESHOLD) {
+      int sum = 0;
+      for (int i = low; i < high; i++) {
+        sum += array[i];
+      }
+      return sum;
+    }
+    
+    // Recursive case (not small enough, still need to divide)
+    int middle = (low + high) / 2;
+    Summer left = new Summer(low, middle, array);
+    Summer right = new Summer(middle, high, array);
+    left.fork();  // Run left half in another thread (parallel)
+    int rightResult = right.compute();  // Compute right half in this thread (sequential)
+    int leftResult = left.join();  // Wait for the left thread to finish and get its result
+    return leftResult + rightResult;  // Combine the two halves
+  }
+}
+```
+{% endcode %}
+
+You define a class like `Summer` that extends `RecursiveTask<Integer>`. This means:
+
+* You’re writing a task that eventually returns an Integer.
+* You’ll define the `compute()` method, which decides whether to:
+  * Split the work into smaller subtasks (`fork()`).
+  * Or solve it directly if it’s small enough (base case).
+
+<details>
+
+<summary>Why call <code>left.fork()</code> and then <code>right.compute()</code>?</summary>
+
+It’s a trick to optimize:
+
+* You **fork** the left half to let another thread work on it.
+* While that’s running, you immediately **compute** the right half yourself.
+* Then you **join** to wait for the left to finish.
+
+This avoids wasting time just waiting around — both halves get done in parallel.
+
+</details>
+
+To run it, we can use
+
+{% code lineNumbers="true" %}
+```java
+ForkJoinPool pool = new ForkJoinPool(4);
+Summer task = new Summer(0, array.length, array);
+int result = pool.invoke(task);
+```
+{% endcode %}
+
+In Line 1, it creates a pool with 4 **threads**.
+
+#### Behind the scene of `pool.invoke(task)`
+
+> * Java uses **multiple worker threads**, each with a personal **task queue (**[**deque**](#user-content-fn-6)[^6]**)**.
+> * When a thread has no work, it **steals** from others — this is called **work stealing**.
+> * `fork()` adds a subtask to the _front_ of the current worker's task queue.
+> * `join()` waits for a task to finish (and maybe does other work while waiting).
+
+**Analogy**
+
+Imagine 4 chefs in a noodle shop kitchen. They are all cooking customer orders (tasks).
+
+Each chef:
+
+* Has their **own queue of tickets** to cook (deque).
+* Always picks **their next task** from the **front** of their queue (LIFO).
+* If they finish early and have nothing left, they **look around** and steal from the **back** of someone else’s queue (FIFO from the victim’s side).
+
+This is efficient — chefs are always busy and help each other out if someone is swamped.
+
+***
+
+Say one customer orders: "Sum these 16 ingredients!"
+
+You (Chef 1) get the full ticket:
+
+```css
+[0-15] → needs to be added up
+```
+
+You split it into two subtasks:
+
+* \[0-7]
+* \[8-15]
+
+You decide to do the right part yourself (`right.compute()`), and you **fork()** the left part, putting it on your own ticket queue:
+
+```java
+left.fork();       // Adds [0-7] to your own task queue
+right.compute();   // You start working on [8-15]
+```
+
+Now imagine that while you’re working on \[8–15], another chef (Chef 2) is idle. He looks around and says:
+
+> “Hey Chef 1 has a task in their queue — I’ll steal it!”
+
+So Chef 2 **steals \[0–7]** and starts computing it. Now, after you’re done with \[8–15], you call:
+
+```java
+left.join();   // Wait for the result of [0–7]
+```
+
+You see:
+
+* Oh! The \[0–7] task isn’t in my queue anymore — but that’s okay.
+* Chef 2 has taken it and is already working.
+* You wait until he finishes and gives you the result.
+
+Now you combine the results:
+
+```css
+[0–7] + [8–15] → full sum
+```
+
+<details>
+
+<summary>What if no one steals?</summary>
+
+If Chef 2 didn't steal the task, and the task was still in Chef 1’s queue, then `join()` would just call `compute()` itself and finish the task directly.
+
+Java is smart that way: it **avoids waiting idly** and just does the work if no one else does it first.
+
+</details>
+
+#### Order of `fork()` and `join()`
+
+TL;DR, your `fork()`, `compute()`, `join()` order should form a [_palindrome_](https://en.wikipedia.org/wiki/Palindrome) and there should be no crossing. This is because the most recently forked task is likely to be executed next, we should `join()` the most recent `fork()` task first.
+
+{% tabs %}
+{% tab title="No Crossing (Correct)" %}
+**Example 1**
+
+```java
+left.fork();  // >-----------+
+right.fork(); // >--------+  | should have
+return right.join() // <--+  | no crossing
+     + left.join(); // <-----+
+```
+
+**Example 2**
+
+```java
+left.fork();  // >-----------+
+return right.compute() //    | compute in middle
+     + left.join(); // <-----+
+```
+{% endtab %}
+
+{% tab title="Crossing (Incorrect)" %}
+```java
+left.fork();  // >-------------+
+right.fork(); // >----------+  | there is crossing
+return left.join()   // <---|--+
+     + right.join(); // <---+
+```
+{% endtab %}
+{% endtabs %}
+
 [^1]: a.k.a, **the thread that calls it**, to find this thread, go back to [#how-to-decide-which-thread-i-am-in-now](lec-11-parallelization-and-asynchronous.md#how-to-decide-which-thread-i-am-in-now "mention")
 
 [^2]: For the sake of this course, just treat it as "a lot of" LOL
@@ -717,3 +916,5 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 [^4]: "FP" stands for **F**unctional **P**rogramming.
 
 [^5]: It’s a **runtime exception** thrown by `CompletableFuture` methods like `.join()` when the computation failed.
+
+[^6]: It is the abbreviation for **double-ended queue**.
