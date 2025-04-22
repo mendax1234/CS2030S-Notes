@@ -192,7 +192,6 @@ public interface Combiner<S, T, R> {
    */
   R combine(S s, T t);
 }
-
 ```
 {% endcode %}
 
@@ -207,6 +206,38 @@ This means whenever the method parameter is a `Combiner<T>`, we can pass a lambd
 ```java
 Combiner<Integer, Integer, Integer> multiply = (a, b) -> a * b;
 ```
+{% endstep %}
+
+{% step %}
+`Runnable`
+
+```java
+@FunctionalInterface
+public interface Runnable {
+  /**
+   * When an object implementing interface Runnable is used to create a thread,
+   * starting the thread causes the object's run method to be called in that
+   * separately executing thread.
+   */
+  void run();
+}
+```
+
+**Lambda Example**
+
+This means whenever the method parameter is a `Runnable`, we can pass a lambda expression which is similar to the following as the method argument.
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+Runnable task = () -> {
+    System.out.println("Running in thread: " + Thread.currentThread().getName());
+};
+```
+{% endcode %}
+
+{% hint style="info" %}
+The lambd **always** has this format `() -> { /* some code */ }`.
+{% endhint %}
 {% endstep %}
 {% endstepper %}
 

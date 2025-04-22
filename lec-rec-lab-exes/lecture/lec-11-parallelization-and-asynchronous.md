@@ -1,6 +1,6 @@
 # Lec 11 - Parallelization and Asynchronous
 
-## /Threads
+## Threads
 
 A **thread** is a single path of execution within a program. Normally, when we run a Java program, it's single-threaded, which means it does one thing at a time. But sometimes, we want a program to do **multiple things at once**, like downloading a file while keeping the UI responsive. That’s where **threads** come in.
 
@@ -206,11 +206,22 @@ So, to overcome all these limitations, luckily, we have `CompletableFuture` in J
 
 ### `CompletableFuture<T>`
 
-Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream.md#monad) that encapsulates a value that is either there or [not there _yet_](#user-content-fn-3)[^3]. Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
+Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream.md#monad) that **encapsulates a value that is either there** or [not there _yet_](#user-content-fn-3)[^3]. (Another wrapper like `Maybe`, `Lazy` we have learned before) Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
 
 {% hint style="info" %}
 A key property of `CompletableFuture` is whether the value it promises is **ready** — i.e., the tasks that it encapsulates have been _completed_ or not.
 {% endhint %}
+
+#### CompletableFuture Rule of Thumb
+
+> 1. `CF(f).then(g)` means: **start** `g` **only after** `f` **has been>    &#x20;completed**.
+>    1. Examples: `thenRun`, `thenCombine`, `thenApply`, etc.
+> 2. `static CF.async(g)` means: **start** `g` **on a new thread**
+>    1. Examples: `supplyAsync`, `runAsync`, etc.
+> 3. `CF(f).then...async(g)` means: **start** `g` **only after** `f` **has been>    &#x20;completed, but use a new thread.**
+>    1. Examples: `thenRunAsync`, `thenApplyAsync`, etc.
+>
+> Difference between `run` and `supply`: `run` executes a void> &#x20;function while `supply` executes a function with a return> &#x20;value.
 
 #### Create a `CompletableFuture`
 
@@ -373,11 +384,13 @@ Chains two `CompletableFuture` operations where the second operation depends on 
 
 **Example**
 
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> 10);
 CompletableFuture<String> result = future.thenCompose(i -> 
     CompletableFuture.supplyAsync(() -> "Result: " + i));
 ```
+{% endcode %}
 
 This is similar to `flatMap` in FP. Unlike `thenApply`, which returns a simple value wrapped in a `CompletableFuture`, `thenCompose` expects a function that returns another `CompletableFuture`. This is useful when you have operations that depend on previous results and also need to be performed asynchronously.
 {% endstep %}
@@ -389,12 +402,14 @@ Combines the results of two independent `CompletableFuture` operations.
 
 **Example**
 
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 10);
 CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> 20);
 CompletableFuture<String> combined = future1.thenCombine(future2, 
     (result1, result2) -> "Sum: " + (result1 + result2));
 ```
+{% endcode %}
 
 This waits for both futures to complete and then applies a function to their results. The function receives the results of both futures as parameters. In this example, it calculates the sum of the two results (10 + 20) and creates a string with the result ("Sum: 30").
 {% endstep %}
@@ -406,6 +421,7 @@ Executes an action after the CompletableFuture completes, without using its resu
 
 **Example**
 
+{% code lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
     System.out.println("Calculating...");
@@ -414,6 +430,7 @@ CompletableFuture<Integer> future = CompletableFuture.supplyAsync(() -> {
 CompletableFuture<Void> result = future.thenRun(() -> 
     System.out.println("Computation finished!"));
 ```
+{% endcode %}
 
 The `thenRun` method executes a Runnable after the current CompletableFuture completes, ignoring its result. This is useful for performing side effects like logging or notifications after an operation completes. In this example, it prints "Computation finished!" after the original future completes.
 {% endstep %}
@@ -425,6 +442,7 @@ Executes an action after both the current CompletableFuture and another specifie
 
 **Example**
 
+{% code lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> {
     sleep(1000);
@@ -439,6 +457,7 @@ CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> {
 CompletableFuture<Void> result = future1.runAfterBoth(future2, () -> 
     System.out.println("Both tasks finished!"));
 ```
+{% endcode %}
 
 This method waits for both the original future and another future to complete before running a specified action. The action doesn't use the results of either future. In this example, "Both tasks finished!" is printed only after both future1 and future2 have completed.
 {% endstep %}
@@ -450,6 +469,7 @@ Executes an action after either the current CompletableFuture or another specifi
 
 **Example**
 
+{% code lineNumbers="true" %}
 ```java
 CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> {
     sleep(2000);
@@ -464,6 +484,7 @@ CompletableFuture<Integer> future2 = CompletableFuture.supplyAsync(() -> {
 CompletableFuture<Void> result = future1.runAfterEither(future2, () -> 
     System.out.println("At least one task is done!"));
 ```
+{% endcode %}
 
 This method runs an action as soon as either the original future or another specified future completes. In this example, since future2 completes faster (1 second vs 2 seconds), "At least one task is done!" will print after "Fast task completed" and before "Slow task completed".
 {% endstep %}
@@ -483,13 +504,56 @@ There are two methods to get the result,
 {% step %}
 `get()`
 
-It may throw a couple of **checked exceptions**, which we need to catch and handle.
+It may throw a couple of **checked exceptions**, which we **must** catch and handle.
+
+**Example**
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+CompletableFuture<String> future1 = CompletableFuture.supplyAsync(() -> "Hello");
+
+try {
+    String result = future1.get(); // Requires handling checked exceptions
+    System.out.println(result);
+} catch (InterruptedException | ExecutionException e) {
+    e.printStackTrace();
+}
+```
+{% endcode %}
+
+* We create a CompletableFuture that completes with the string "Hello"
+* We call `get()` to retrieve the result, which will block until the `future1` completes
+* Since `get()` can throw checked exceptions, we **must handle them**:
+  * `InterruptedException`: thrown if the current thread is interrupted while waiting
+  * `ExecutionException`: thrown if the computation completed exceptionally (wraps the actual exception)
+* After we get the result, we print it out
 {% endstep %}
 
 {% step %}
 `join()`
 
 It won't throw any **checked exception**.
+
+**Example**
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+CompletableFuture<String> future2 = CompletableFuture.supplyAsync(() -> "World");
+
+String result = future2.join(); // No need to handle checked exceptions
+System.out.println(result);
+```
+{% endcode %}
+
+* We create a CompletableFuture that completes with the string "World"
+* We call `join()` to retrieve the result, which will also block until the future completes
+* Unlike `get()`, `join()` doesn't throw checked exceptions, so we **don't need** a try-catch block
+* If the computation fails, `join()` will throw an unchecked `CompletionException` instead
+* After we get the result, we print it out
+
+{% hint style="success" %}
+For the sake of **cleaner code**, we may prefer `.join()` over `.get()`.
+{% endhint %}
 {% endstep %}
 {% endstepper %}
 
@@ -497,9 +561,65 @@ It won't throw any **checked exception**.
 
 ### Example
 
-1. Create one instance of `CompletableFuture` is equal to create a thread.
+Given two numbers i and j, we want to find the difference between the i-th prime number and the j-th prime number. We can do the following:
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+int findIthPrime(int i) {
+  return Stream
+          .iterate(2, x -> x + 1)
+          .filter(x -> isPrime(x))
+          .limit(i)
+          .reduce((x, y) -> y)
+          .orElse(0);
+}
+
+// Create two threads for findIthPrime()
+CompletableFuture<Integer> ith = CompletableFuture.supplyAsync(() -> findIthPrime(i));
+CompletableFuture<Integer> jth = CompletableFuture.supplyAsync(() -> findIthPrime(j));
+
+// Combine the result
+CompletableFuture<Integer> diff = ith.thenCombine(jth, (x, y) -> x - y);
+
+// Join(Get) the result
+diff.join();
+```
+{% endcode %}
 
 #### Handle Exceptions
+
+During the chaining operations for our `CompletableFuture<T>`, we may get some exceptions. For example,
+
+{% code lineNumbers="true" %}
+```java
+CompletableFuture.<Integer>supplyAsync(() -> null)
+                 .thenApply(x -> x + 1)
+                 .join();
+```
+{% endcode %}
+
+There will be a `NullPointerException` after Line 2 and if we execute the code, we will get a [`CompletionException`](#user-content-fn-5)[^5]. So, instead of using a `try-catch` block to deal with such an exception, we can use the **inline** `.handle()`, which takes in a **Combiner**, to deal with such an exception. For example,
+
+{% code lineNumbers="true" %}
+```java
+cf.thenApply(x -> x + 1)
+  .handle((t, e) -> (e == null) ? t : 0)
+  .join();
+```
+{% endcode %}
+
+In Line 2, especially inside the Combiner,
+
+1. the first parameter of the `Combiner` is the **value**,
+2. the second is the **exception**,
+3. the third is the **return value**.
+
+Only **one** of them will be non-null:
+
+* If everything went fine: `e == null`, so we return `t`.
+* If an exception happened: `t == null`, `e != null`, so we return `0` as a fallback/default.
+
+So instead of the program crashing or needing to catch the exception manually, we catch it inside the chain and return a safe value (`0` in this case).
 
 ## Fork and Join
 
@@ -595,3 +715,5 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 [^3]: This means that the value is **not yet available**, but it **will be computed and available in the future —** once some asynchronous computation completes.
 
 [^4]: "FP" stands for **F**unctional **P**rogramming.
+
+[^5]: It’s a **runtime exception** thrown by `CompletableFuture` methods like `.join()` when the computation failed.
