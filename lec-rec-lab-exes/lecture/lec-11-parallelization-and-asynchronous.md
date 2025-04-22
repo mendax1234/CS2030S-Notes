@@ -1,6 +1,198 @@
 # Lec 11 - Parallelization and Asynchronous
 
-## Threads
+## /Threads
+
+A **thread** is a single path of execution within a program. Normally, when we run a Java program, it's single-threaded, which means it does one thing at a time. But sometimes, we want a program to do **multiple things at once**, like downloading a file while keeping the UI responsive. That’s where **threads** come in.
+
+{% hint style="info" %}
+1. Each thread runs independently, and multiple threads can run **concurrently**, or even **in parallel** (especially on multi-core CPUs).&#x20;
+2. Threads can be used to handle **asynchronous operations**, like network requests or file I/O, **without blocking the main flow**.
+{% endhint %}
+
+### Create a Thread
+
+This can be done using the **`Thread`** class with a `Runnable`. For example,
+
+{% code lineNumbers="true" %}
+```java
+// Thread 1 prints _
+new Thread(() -> {
+    for (int i = 0; i < 50; i++) {
+        System.out.print("_");
+    }
+}).start();
+
+// Thread 2 prints *
+new Thread(() -> {
+    for (int i = 0; i < 50; i++) {
+        System.out.print("*");
+    }
+}).start();
+```
+{% endcode %}
+
+{% hint style="info" %}
+`.start()` triggers the thread to run. **Don’t use `.run()`**, or it will just execute in the current thread like a normal method call.
+{% endhint %}
+
+#### Runnable
+
+`Runnable` is a **functional interface** (has only one method: `run()`), used to define a task to be executed by a thread. It can be implemented using a **lambda expression** (as shown above). For example,
+
+{% code lineNumbers="true" %}
+```java
+Runnable task = () -> System.out.println("Running in a thread");
+Thread thread = new Thread(task);
+thread.start();
+```
+{% endcode %}
+
+### Name of Thread
+
+Every thread has a **name**, we can use `getName()` to get the name of a thread, which can help us debug or understand how threads are being used. For example,
+
+{% code lineNumbers="true" %}
+```java
+Thread thread = new Thread(() -> {
+    System.out.println("This is running on: " + Thread.currentThread().getName());
+});
+thread.start();
+
+// Output
+// This is running on: Thread-0
+```
+{% endcode %}
+
+<details>
+
+<summary>How to decide which thread I am in now?</summary>
+
+**Rule of Thumb**
+
+1. If you're **inside a lambda or Runnable given to `new Thread(...)`**, you're in that **new thread**.
+2. If you're **outside**, in the main method or just general program logic, you're usually in the **main thread**.
+
+{% hint style="info" %}
+Here, "you're" means the position of code you call `Thread.(whatever)`.
+{% endhint %}
+
+> You can always find out what thread you're in by using:
+>
+> {% code lineNumbers="true" %}
+> ```java
+> System.out.println(Thread.currentThread().getName());
+> ```
+> {% endcode %}
+
+For example,
+
+{% code overflow="wrap" lineNumbers="true" %}
+```java
+Thread findPrime = new Thread(() -> {
+    System.out.println("Inside findPrime: " + Thread.currentThread().getName());
+});
+
+System.out.println("Before starting thread: " + Thread.currentThread().getName());
+
+findPrime.start();
+
+System.out.println("After starting thread: " + Thread.currentThread().getName());
+
+// Output
+// Before starting thread: main
+// After starting thread: main
+// Inside findPrime: Thread-0
+```
+{% endcode %}
+
+</details>
+
+To have a deeper glimpse of `getName()`, we can use a parallel stream example
+
+{% tabs %}
+{% tab title="Sequential Stream" %}
+Sequential Stream means **single-threaded**.
+
+{% code lineNumbers="true" %}
+```java
+IntStream.range(0, 5).forEach(i ->
+    System.out.println(i + " on " + Thread.currentThread().getName()));
+    
+// Output
+// 0 on main
+// 1 on main
+// 2 on main
+// 3 on main
+// 4 on main
+```
+{% endcode %}
+{% endtab %}
+
+{% tab title="Parallel Stream" %}
+Parallel stream means **multi-threaded**.
+
+{% code lineNumbers="true" %}
+```java
+IntStream.range(0, 5).parallel().forEach(i ->
+    System.out.println(i + " on " + Thread.currentThread().getName()));
+    
+// Output (One possibility)
+
+// 3 on ForkJoinPool.commonPool-worker-4
+// 0 on ForkJoinPool.commonPool-worker-2
+// 4 on ForkJoinPool.commonPool-worker-3
+// 2 on main
+// 1 on ForkJoinPool.commonPool-worker-1
+```
+{% endcode %}
+{% endtab %}
+{% endtabs %}
+
+### Pause a Thread
+
+This can be done using `Thread.sleep(milliseconds)`, which is a **static method** that pauses the [**current thread**](#user-content-fn-1)[^1] for a specified number of milliseconds. Things to note down when we pause a thread,
+
+1. The thread is **put to sleep**, meaning it **temporarily stops execution**.
+2. During that time, the thread doesn’t do anything — it’s like it’s napping.
+3. After the time is up, the thread **becomes eligible** to run again, **but doesn't necessarily start immediately**. The **OS scheduler** decides when exactly it gets CPU time again.
+4. While a thread is sleeping, **other threads can keep running**.
+
+For example,
+
+{% code lineNumbers="true" %}
+```java
+// findPrime Thread
+Thread findPrime = new Thread(() -> {
+  System.out.println(
+      Stream.iterate(2, i -> i + 1)
+          .filter(i -> isPrime(i))
+          .limit(1_000_000L)
+          .reduce((x, y) -> y)
+          .orElse(null));
+});
+
+findPrime.start();
+
+// main Thread
+while (findPrime.isAlive()) {
+  try {
+    Thread.sleep(1000);
+    System.out.print(".");
+  } catch (InterruptedException e) {
+    System.out.print("interrupted");
+  }
+}
+
+// Output (One possibility)
+// ............32452843
+```
+{% endcode %}
+
+After Line 10, the `findPrime` thread will start doing some heavy computation at the **background**. And, within the `main`  thread, which contains a `while` loop,
+
+* The `main` thread checks if `findPrime` is **still running** using `.isAlive()`.
+* If yes, the `main` thread **sleeps for 1 second**, then prints `"."`.
+* Repeats until the `findPrime` thread finishes.
 
 ## Asynchronous Programming
 
@@ -8,13 +200,13 @@ We have seen much above `Thread` from above. However, `Thread` may have the foll
 
 1. **no return value**: there are no method in `Thread` that returns a value.
 2. **hard to specify the execution order**: there is no method that specifies which thread starts after another thread completes.
-3. **overhead**: the creation and deletion of `Thread` in Java takes up "some"[^1] resources.
+3. **overhead**: the creation and deletion of `Thread` in Java takes up "some"[^2] resources.
 
 So, to overcome all these limitations, luckily, we have `CompletableFuture` in Java. In CS2030S, the use of `CompletableFuture` is to save us from the trouble of dealing with `Thread`.
 
 ### `CompletableFuture<T>`
 
-Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream.md#monad) that encapsulates a value that is either there or [not there _yet_](#user-content-fn-2)[^2]. Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
+Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream.md#monad) that encapsulates a value that is either there or [not there _yet_](#user-content-fn-3)[^3]. Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
 
 {% hint style="info" %}
 A key property of `CompletableFuture` is whether the value it promises is **ready** — i.e., the tasks that it encapsulates have been _completed_ or not.
@@ -171,7 +363,7 @@ CompletableFuture<String> result = future.thenApply(i -> "Result: " + i);
 ```
 {% endcode %}
 
-This is similar to `map` in FP[^3]. The `thenApply` method takes the result of the original future (10) and applies a function to transform it into a new value ("Result: 10"). The transformation happens in the same thread that completed the original future.
+This is similar to `map` in FP[^4]. The `thenApply` method takes the result of the original future (10) and applies a function to transform it into a new value ("Result: 10"). The transformation happens in the same thread that completed the original future.
 {% endstep %}
 
 {% step %}
@@ -396,8 +588,10 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 2. **You submit tasks** to the thread pool — these tasks get **queued** first.
 3. **The threads in the pool pick up tasks from the queue** and run them **one by one** (or in parallel, depending on how many threads there are).
 
-[^1]: For the sake of this course, just treat it as "a lot of" LOL
+[^1]: a.k.a, **the thread that calls it**, to find this thread, go back to [#how-to-decide-which-thread-i-am-in-now](lec-11-parallelization-and-asynchronous.md#how-to-decide-which-thread-i-am-in-now "mention")
 
-[^2]: This means that the value is **not yet available**, but it **will be computed and available in the future —** once some asynchronous computation completes.
+[^2]: For the sake of this course, just treat it as "a lot of" LOL
 
-[^3]: "FP" stands for **F**unctional **P**rogramming.
+[^3]: This means that the value is **not yet available**, but it **will be computed and available in the future —** once some asynchronous computation completes.
+
+[^4]: "FP" stands for **F**unctional **P**rogramming.
