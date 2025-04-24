@@ -206,7 +206,7 @@ So, to overcome all these limitations, luckily, we have `CompletableFuture` in J
 
 ### `CompletableFuture<T>`
 
-Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream.md#monad) that **encapsulates a value that is either there** or [not there _yet_](#user-content-fn-3)[^3]. (Another wrapper like `Maybe`, `Lazy` we have learned before) Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
+Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream/#monad) that **encapsulates a value that is either there** or [not there _yet_](#user-content-fn-3)[^3]. (Another wrapper like `Maybe`, `Lazy` we have learned before) Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
 
 {% hint style="info" %}
 A key property of `CompletableFuture` is whether the value it promises is **ready** — i.e., the tasks that it encapsulates have been _completed_ or not.

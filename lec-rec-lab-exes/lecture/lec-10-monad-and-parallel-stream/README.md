@@ -25,15 +25,15 @@ The class may also have other methods besides the two above. Additionally, the m
 
 ***
 
-More specifically, **monads** are the classes that we wrote can follow certain patterns that make them well-behaved when we create them with `of` and chain them with `flatMap`.
+More specifically, **monads** are the classes we wrote that can follow [**certain patterns**](./#monad-laws) that make them well-behaved when we create them with `of` and chain them with `flatMap`.
 
 {% hint style="info" %}
-For ths sake of this course, we are only interested in deciding whether a **class/type** is a **monad** using the monad law or applying these laws to analyze the behavior of a **monad.**
+For ths sake of this course, we are only interested in deciding whether a **class/type** is a **monad** using the **monad law** or applying these laws to analyze the behavior of a **monad.**
 {% endhint %}
 
 ### Monad Laws
 
-Let `Monad` be a type that is a monad and `monad` be an instance of it, a Monad should following the following three laws,
+Let `Monad` be a type that is a monad and `monad` be an instance of it, a Monad should follow the following three laws,
 
 {% stepper %}
 {% step %}
@@ -42,6 +42,10 @@ Let `Monad` be a type that is a monad and `monad` be an instance of it, a Monad 
 `Monad.of(x).flatMap(x -> f(x))` must be the same as `f(x)`
 
 Our `of` method should not do anything extra to the value and side information — it should simply wrap the value `x` into the `Monad`. Our `flatMap` method should not do anything extra to the value and the side information, it should simply apply the given lambda expression to the value.
+
+{% hint style="info" %}
+According to the nature of `flatMap`, we assume that the output of `f(x)` is a **monad** by nature.
+{% endhint %}
 {% endstep %}
 
 {% step %}
@@ -67,7 +71,7 @@ A **Monad** helps us reason about our code!
 
 ## Functors
 
-A **functor** is a simpler construction than a [monad](lec-10-monad-and-parallel-stream.md#monad) in that it only ensures **lambdas can be applied sequentially to the value**, without worrying about side information.
+A **functor** is a simpler construction than a [monad](./#monad) in that it only ensures **lambdas can be applied sequentially to the value**, without worrying about side information.
 
 {% hint style="info" %}
 Recall that when we build our `Loggable<T>` abstraction, we add a [`map`](https://nus-cs2030s.github.io/2425-s2/35-logger.html#making-loggable-general) that only updates the value but changes nothing to the side information. One can think of a functor as an **abstraction that supports** `map`.
@@ -75,7 +79,7 @@ Recall that when we build our `Loggable<T>` abstraction, we add a [`map`](https:
 
 ### Functor Laws
 
-Let `Functor` be a type that is a functor and `functor` be an instance of it, a **functor** should following the following three laws,
+Let `Functor` be a type that is a functor and `functor` be an instance of it, a **functor** should follow the following two laws,
 
 {% stepper %}
 {% step %}
@@ -101,10 +105,10 @@ Our classes from `cs2030s.fp`, `Lazy<T>`, `Maybe<T>`, and `InfiniteList<T>` are 
 
 1. For a class/type to be a Monad, it must have
    1. Two methods: `of` and `flatMap` which does their corresponding jobs respectively
-   2. Adhere to the three [#monad-laws](lec-10-monad-and-parallel-stream.md#monad-laws "mention")
+   2. Adhere to the three [#monad-laws](./#monad-laws "mention")
 2. For a class/type to be a Functor, it must have
    1. One method: `map` which does its job
-   2. Adfere to the two [#functor-laws](lec-10-monad-and-parallel-stream.md#functor-laws "mention")
+   2. Adfere to the two [#functor-laws](./#functor-laws "mention")
 3. A class/type can be **both** monad and functor!
 4. Every **Monad is a Functor**, But not every **Functor is a Monad**.
 
@@ -116,13 +120,13 @@ Our classes from `cs2030s.fp`, `Lazy<T>`, `Maybe<T>`, and `InfiniteList<T>` are 
 
 {% tabs %}
 {% tab title="Sequencity" %}
-<figure><img src="../../.gitbook/assets/lec10-sequencity.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec10-sequencity.png" alt=""><figcaption></figcaption></figure>
 
 **Sequencity** means that at any one time, there is only one instruction of the program running on a processor.
 {% endtab %}
 
 {% tab title="Concurrency" %}
-<figure><img src="../../.gitbook/assets/lec10-concurrency.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec10-concurrency.png" alt=""><figcaption></figcaption></figure>
 
 **Concurrency** refers to the ability of a program to manage multiple tasks at the same time. Even on a single-core processor — where only one instruction can be executed at any moment (this is **sequencity**) — concurrency allows the program to switch between tasks quickly, giving the illusion that they are running simultaneously.
 
@@ -130,9 +134,9 @@ This is often achieved using **threads**, which are smaller units of a process. 
 {% endtab %}
 
 {% tab title="Parallelism" %}
-<figure><img src="../../.gitbook/assets/lec10-parallelism.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec10-parallelism.png" alt=""><figcaption></figcaption></figure>
 
-While concurrency gives the illusion of subtasks running at the same time, **parallel** computing refers to the scenario where multiple subtasks are truly running at the same time — either we have a processor that is capable of running multiple instructions at the same time, or we have multiple cores/processors and dispatch the instructions to the cores/processors so that they are executed at the same time.
+While concurrency gives the illusion of subtasks running at the same time, **parallel** computing refers to the scenario where multiple subtasks are **truly running at the same time** — either we have a processor that is capable of running multiple instructions at the same time, or we have multiple cores/processors and dispatch the instructions to the cores/processors so that they are executed at the same time.
 {% endtab %}
 {% endtabs %}
 
@@ -164,7 +168,7 @@ list.stream().parallel().forEach(System.out::println);
 ```
 {% endcode %}
 
-`.paralle()` is a **lazy operation** — it merely **marks** the stream to be processed in parallel. As such, you can insert `.parallel()`  anywhere in the pipeline **after the** **data source** and **before the** [**terminal operation**](lec-09-infinitelist-and-stream/#terminal-operations)**.**
+`.parallel()` is a **lazy operation** — it merely **marks** the stream to be processed in parallel. As such, you can insert `.parallel()`  anywhere in the pipeline **after the** **data source** and **before the** [**terminal operation**](../lec-09-infinitelist-and-stream/#terminal-operations)**.**
 
 {% hint style="info" %}
 `.sequential()`
@@ -178,7 +182,7 @@ s.parallel().filter(x -> x < 0).sequential().forEach(..);
 {% endstep %}
 
 {% step %}
-**Calling** `Stream.parallelStream()` **on a collection**
+**Calling** `Stream.parallelStream()` **on a** [**collection**](#user-content-fn-1)[^1]
 
 <pre class="language-java" data-line-numbers><code class="lang-java">List&#x3C;Integer> numbers = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
@@ -203,13 +207,13 @@ numbers.parallelStream()
 
 You may notice that the output is **reordered**.
 
-1. This is because `Stream` has broken down the numbers into subsequences (more formally speaking, it is **spliting into multiple threads**), and run `forEach` for each subsequence in parallel.
+1. This is because `Stream` has broken down the [original stream](#user-content-fn-2)[^2] into subsequences (more formally speaking, it is **spliting into multiple threads**), and run `forEach` for each subsequence in parallel.
 2. Since there is no coordination among the parallel tasks on the order of the printing, **whichever parallel tasks that complete first will output the result to screen first**.
 3. This causes the sequence of numbers to be **reordered**.
 
 #### What can be parallelized
 
-To ensure that the output of the parallel execution is correct, the [**stream operations**](#user-content-fn-1)[^1]
+To ensure that the output of the parallel execution is correct, the [**stream operations**](#user-content-fn-3)[^3]
 
 {% stepper %}
 {% step %}
@@ -220,7 +224,7 @@ To ensure that the output of the parallel execution is correct, the [**stream op
 {% code lineNumbers="true" %}
 ```java
 List<String> list = new ArrayList<>(List.of("Luke", "Leia", "Han"));
-list.stream()
+list.parallelStream()
     .peek(name -> {
          if (name.equals("Han")) {
            list.add("Chewie"); // they belong together
@@ -266,6 +270,8 @@ Because of this property of **being stateful**, stateful operations may affect t
 
 {% step %}
 **Side effects should be kept minimum**
+
+> What are **sides effects?** Go back to review [#pure-functions](../lec-08-functional-programming/#pure-functions "mention") from Lec 08.
 
 **Why?** This is because parallel streams run in **multiple threads**, and if multiple threads modify the **same variable** at the same time → you get **race conditions** and **unpredictable behavior**. For example,
 
@@ -327,7 +333,7 @@ combiner.apply(identity, i) == i
 {% endstep %}
 
 {% step %}
-**Associativity**
+**Associativity Rule**
 
 ```java
 (x * y) * z == x * (y * z)
@@ -343,10 +349,25 @@ The grouping of operations doesn’t affect the result.
 
 * When you split the stream, reduce in different threads, and combine later,
 * You’re **changing the grouping** — so associativity ensures the result stays the same.
+
+**What's the target of the Associativity Law?**
+
+Both the **accumulator** and the **combiner** should adhere to this law because
+
+**1. Accumulator**
+
+* Used to combine a stream element into a result.
+* In **parallel streams**, elements are grouped arbitrarily and reduced in parallel.
+* If the accumulator is **not associative**, different groupings will give different results.
+
+**2. Combiner**
+
+* Merges the results of substreams.
+* If **combiner is not associative**, merging partial results can lead to inconsistencies.
 {% endstep %}
 
 {% step %}
-**Compatibility**
+**Compatibility Rule**
 
 ```java
 combiner.apply(u, accumulator.apply(identity, t))
@@ -367,4 +388,8 @@ Otherwise, parallel combining would give wrong results.
 
 _Parallelizing a stream does not always improve the performance_. This is because creating a thread to run a task incurs some overhead, and the overhead of creating too many threads might outweigh the benefits of parallelization.
 
-[^1]: these include the **terminal opeartions** and the **intermediate stream operations** we have introduced in [lec-09-infinitelist-and-stream](lec-09-infinitelist-and-stream/ "mention")
+[^1]: `List`, `Array`, etc, are considered as **collection**.
+
+[^2]: In this case, it is a list of **integers**.
+
+[^3]: these include the **terminal opeartions** and the **intermediate stream operations** we have introduced in [lec-09-infinitelist-and-stream](../lec-09-infinitelist-and-stream/ "mention")
