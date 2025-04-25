@@ -829,7 +829,7 @@ In Line 1, it creates a pool with 4 **threads**.
 > * When `join()` is called, several cases might happen.
 >   * If the subtask to be joined **hasn't been executed**, this subtaks will be **popped out first**, and then its `compute()` method is called and the subtask is executed.
 >   * If the subtask to be joined **has been completed** (some other thread has stolen this and completed it), then the result is read, and `join()` returns.
->   * If the subtask to be joined has been stolen and is being executed by another thread, then the current thread either finds some other tasks to work on from its local deque, or steals another task from another deque.
+>   * If the subtask to be joined has been stolen and is being executed by another thread, then the current thread either finds some other tasks to work on from its **local deque**, or steals another task from **another deque**.
 
 For more examples, please find it in:
 
