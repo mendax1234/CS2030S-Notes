@@ -11,7 +11,7 @@ A **thread** is a single path of execution within a program. Normally, when we r
 
 ### Create a Thread
 
-This can be done using the **`Thread`** class with a `Runnable`. For example,
+This can be done using the `Thread` class with a `Runnable`. For example,
 
 {% code lineNumbers="true" %}
 ```java
@@ -32,12 +32,12 @@ new Thread(() -> {
 {% endcode %}
 
 {% hint style="info" %}
-`.start()` triggers the thread to run. **Don’t use `.run()`**, or it will just execute in the current thread like a normal method call.
+`.start()` triggers the thread to run. **Don’t use** `.run()`, or it will just execute in the current thread like a normal method call.
 {% endhint %}
 
 #### Runnable
 
-`Runnable` is a **functional interface** (has only one method: `run()`), used to define a task to be executed by a thread. It can be implemented using a **lambda expression** (as shown above). For example,
+`Runnable` is a **functional interface** (has only one method: `run()`). It is used to define a task to be executed by a thread. It can be implemented using a **lambda expression** (as shown above). For example,
 
 {% code lineNumbers="true" %}
 ```java
@@ -69,8 +69,8 @@ thread.start();
 
 **Rule of Thumb**
 
-1. If you're **inside a lambda or Runnable given to `new Thread(...)`**, you're in that **new thread**.
-2. If you're **outside**, in the main method or just general program logic, you're usually in the **main thread**.
+1. If you're **inside a lambda or Runnable** which is passed to `new Thread(...)`, you're in that **new thread**.
+2. If you're **outside** the `new Thread(...)`, e.g. in the main method you're usually in the **main thread**.
 
 {% hint style="info" %}
 Here, "you're" means the position of code you call `Thread.(whatever)`.
@@ -145,6 +145,10 @@ IntStream.range(0, 5).parallel().forEach(i ->
 // 1 on ForkJoinPool.commonPool-worker-1
 ```
 {% endcode %}
+
+{% hint style="info" %}
+Here, we are calling `Thread.(whatever)` after `.parallel()`, which means it is called inside each thread!
+{% endhint %}
 {% endtab %}
 {% endtabs %}
 
@@ -206,7 +210,7 @@ So, to overcome all these limitations, luckily, we have `CompletableFuture` in J
 
 ### `CompletableFuture<T>`
 
-Basically, `ComputableFuture<T>` is a [**monad**](lec-10-monad-and-parallel-stream/#monad) that **encapsulates a value that is either there** or [not there _yet_](#user-content-fn-3)[^3]. (Another wrapper like `Maybe`, `Lazy` we have learned before) Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
+Basically, `ComputableFuture<T>` is a [**monad**](../lec-10-monad-and-parallel-stream/#monad) that **encapsulates a value that is either there** or [not there _yet_](#user-content-fn-3)[^3]. (Just another wrapper like `Maybe`, `Lazy` we have learned before) Such an abstraction is also known as a **promise** in other languages — it encapsulates the **promise** to produce a value.
 
 {% hint style="info" %}
 A key property of `CompletableFuture` is whether the value it promises is **ready** — i.e., the tasks that it encapsulates have been _completed_ or not.
@@ -231,7 +235,7 @@ In the lecture, the following **four** methods are introduced to create a `Compl
 {% step %}
 **Use the** `completedFuture` **method**
 
-Creates a `CompletableFuture` that is already completed with the given value.
+Creates a `CompletableFuture` that is **already completed with the given value**.
 
 **Example**
 
@@ -689,7 +693,7 @@ This loop is creating **100 tasks**, where each task is:
 () -> System.out.println(count)
 ```
 
-These are **lambdas** that implement `Runnable` (because they have a `run()` method internally). They just print a number. (See more from [functional-interface.md](lec-08-functional-programming/functional-interface.md "mention") if you are unfamiliar with the lambda expression for `Runnable`)
+These are **lambdas** that implement `Runnable` (because they have a `run()` method internally). They just print a number. (See more from [functional-interface.md](../lec-08-functional-programming/functional-interface.md "mention") if you are unfamiliar with the lambda expression for `Runnable`)
 
 ***
 
@@ -710,7 +714,7 @@ To summarize, the following is the **general working mechanism** of **Thread Poo
 
 ### Real Fork and Join
 
-Imagine you have an array, you want to get the sum of each element, (I know you have lots of methods to do that :joy:), you could use **one loop (sequentially)** to do that, like&#x20;
+Imagine you have an array, you want to get the sum of each element, (I know you have lots of methods to do that :joy:), but you could just use **one loop (sequentially)** to do that, like&#x20;
 
 {% code lineNumbers="true" %}
 ```java
@@ -790,6 +794,19 @@ This avoids wasting time just waiting around — both halves get done in paralle
 
 To run it, we can use
 
+{% tabs %}
+{% tab title="Understand compute()" %}
+{% code lineNumbers="true" %}
+```java
+Summer task = new Summer(0, array.length, array);
+int sum = task.compute();
+```
+{% endcode %}
+
+The line `task.compute()` above is just like another method invocation.
+{% endtab %}
+
+{% tab title="Understand multi-threads" %}
 {% code lineNumbers="true" %}
 ```java
 ForkJoinPool pool = new ForkJoinPool(4);
@@ -799,79 +816,24 @@ int result = pool.invoke(task);
 {% endcode %}
 
 In Line 1, it creates a pool with 4 **threads**.
+{% endtab %}
+{% endtabs %}
 
 #### Behind the scene of `pool.invoke(task)`
 
-> * Java uses **multiple worker threads**, each with a personal **task queue (**[**deque**](#user-content-fn-6)[^6]**)**.
-> * When a thread has no work, it **steals** from others — this is called **work stealing**.
-> * `fork()` adds a subtask to the _front_ of the current worker's task queue.
-> * `join()` waits for a task to finish (and maybe does other work while waiting).
+> * Each thread has a deque[^6] of tasks.
+> * When a thread is idle, it checks its deque of tasks.
+>   * If the deque is **not empty**, it picks up a task at the head of the deque to execute (e.g., invoke its `compute()` method).
+>   * Otherwise, if the deque is **empty**, it picks up a task from the _**tail**_ of the deque of another thread to run. The latter is a mechanism called _work stealing_.
+> * When `fork()` is called, the caller adds itself to the _**head**_ of the deque of the executing thread. This is done so that the most recently forked task gets executed next, similar to how normal recursive calls.
+> * When `join()` is called, several cases might happen.
+>   * If the subtask to be joined **hasn't been executed**, this subtaks will be **popped out first**, and then its `compute()` method is called and the subtask is executed.
+>   * If the subtask to be joined **has been completed** (some other thread has stolen this and completed it), then the result is read, and `join()` returns.
+>   * If the subtask to be joined has been stolen and is being executed by another thread, then the current thread either finds some other tasks to work on from its local deque, or steals another task from another deque.
 
-**Analogy**
+For more examples, please find it in:
 
-Imagine 4 chefs in a noodle shop kitchen. They are all cooking customer orders (tasks).
-
-Each chef:
-
-* Has their **own queue of tickets** to cook (deque).
-* Always picks **their next task** from the **front** of their queue (LIFO).
-* If they finish early and have nothing left, they **look around** and steal from the **back** of someone else’s queue (FIFO from the victim’s side).
-
-This is efficient — chefs are always busy and help each other out if someone is swamped.
-
-***
-
-Say one customer orders: "Sum these 16 ingredients!"
-
-You (Chef 1) get the full ticket:
-
-```css
-[0-15] → needs to be added up
-```
-
-You split it into two subtasks:
-
-* \[0-7]
-* \[8-15]
-
-You decide to do the right part yourself (`right.compute()`), and you **fork()** the left part, putting it on your own ticket queue:
-
-```java
-left.fork();       // Adds [0-7] to your own task queue
-right.compute();   // You start working on [8-15]
-```
-
-Now imagine that while you’re working on \[8–15], another chef (Chef 2) is idle. He looks around and says:
-
-> “Hey Chef 1 has a task in their queue — I’ll steal it!”
-
-So Chef 2 **steals \[0–7]** and starts computing it. Now, after you’re done with \[8–15], you call:
-
-```java
-left.join();   // Wait for the result of [0–7]
-```
-
-You see:
-
-* Oh! The \[0–7] task isn’t in my queue anymore — but that’s okay.
-* Chef 2 has taken it and is already working.
-* You wait until he finishes and gives you the result.
-
-Now you combine the results:
-
-```css
-[0–7] + [8–15] → full sum
-```
-
-<details>
-
-<summary>What if no one steals?</summary>
-
-If Chef 2 didn't steal the task, and the task was still in Chef 1’s queue, then `join()` would just call `compute()` itself and finish the task directly.
-
-Java is smart that way: it **avoids waiting idly** and just does the work if no one else does it first.
-
-</details>
+1. [#id-11-15.-forkjoinpool](diagnostic-quiz.md#id-11-15.-forkjoinpool "mention")
 
 #### Order of `fork()` and `join()`
 
@@ -907,7 +869,7 @@ return left.join()   // <---|--+
 {% endtab %}
 {% endtabs %}
 
-[^1]: a.k.a, **the thread that calls it**, to find this thread, go back to [#how-to-decide-which-thread-i-am-in-now](lec-11-parallelization-and-asynchronous.md#how-to-decide-which-thread-i-am-in-now "mention")
+[^1]: To find this thread, go back to [#how-to-decide-which-thread-i-am-in-now](./#how-to-decide-which-thread-i-am-in-now "mention")
 
 [^2]: For the sake of this course, just treat it as "a lot of" LOL
 
@@ -917,4 +879,4 @@ return left.join()   // <---|--+
 
 [^5]: It’s a **runtime exception** thrown by `CompletableFuture` methods like `.join()` when the computation failed.
 
-[^6]: It is the abbreviation for **double-ended queue**.
+[^6]: double-ended queue

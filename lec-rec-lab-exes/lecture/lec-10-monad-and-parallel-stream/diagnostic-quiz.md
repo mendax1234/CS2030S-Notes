@@ -63,7 +63,7 @@ By tracing through the program step by step, we can start from **left to right**
 
 > Include the three rules for `reduce()`  to be parallelizable into cheatsheet!
 
-<figure><img src="../../../.gitbook/assets/lec10-quiz-14.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../../.gitbook/assets/lec10-quiz-14.png" alt="" width="563"><figcaption></figcaption></figure>
 
 This questions explicitly asks for **the compatibility rule**, so we want to test
 
