@@ -96,6 +96,10 @@ public T get(int n) {
 {% endtabs %}
 
 **Difference**: Both implementations use the same recursive approach, but InfiniteList's implementation inherently evaluates lazily due to its structure.
+
+{% hint style="info" %}
+When `n ≠ 0`, due to the implementation of `tail()`, the InfiniteList will evaluate the elements from the start all the way until getting the element you want! This may be useful in stack and heap tracing.
+{% endhint %}
 {% endstep %}
 
 {% step %}
