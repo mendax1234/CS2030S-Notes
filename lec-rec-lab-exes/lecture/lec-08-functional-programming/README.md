@@ -148,6 +148,12 @@ x::compareTo       // y -> x.compareTo(y)
 
 However, in Line 4, we should be extremely careful because if there are multiple matches or if there is ambiguity in which method matches, the Java compiler will generate a **compile error**!
 
+{% hint style="info" %}
+1. In Method Referencing, if the thing before `::` is an **instance**, it **does not** need to be **effectively final**.
+2. In `A::foo`, if `foo` is an **instance method**, it will use the **first** input as the **instance**, and pass the remaining **inputs** as arguments. Otherwise, it will call the **class** method and pass **all inputs** as arguments.
+3. The **number of inputs** is decided in the **functional interface**'s abstract metho&#x64;**.** It is the same as the number of **parameters** in that abstract method.
+{% endhint %}
+
 ## Curried Functions
 
 Mathematically, a **function** takes in only **one value** and returns **one value**. In programming, however, we may write functions that take in more than one value. In FP, this can be achieved by using **curried functions.**

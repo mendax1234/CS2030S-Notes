@@ -282,7 +282,7 @@ so, here inside these two lambdas, it will follow the exact rules of [variable c
 
 > the **local class** (including the anonymous class) will capture the following variables
 >
-> 1. The **local variables** of the method where the local class comes from (including the arguments, see more in [Diagnostic Quiz Q13](https://wenbo-notes.gitbook.io/cs2030s-notes/lec-rec-lab-exes/lecture/lec-07-immutability-and-nested-classes/diagnostic-quiz#id-13.-variable-capture))
+> 1. The **local variables** of the method where the local class comes from (including **only** the arguments **that the lambda uses**, see more in [Diagnostic Quiz Q13](https://wenbo-notes.gitbook.io/cs2030s-notes/lec-rec-lab-exes/lecture/lec-07-immutability-and-nested-classes/diagnostic-quiz#id-13.-variable-capture))
 > 2. The **instance** that invokes the method where the local class comes from. (See more in [Rec 05](https://wenbo-notes.gitbook.io/cs2030s-notes/lec-rec-lab-exes/recitation/rec-05#id-01.-stack-and-heap-with-nested-class))
 
 So, the two lambdas capture the variable `init`. The `tail` additionally captures the variable `next`, which itself is an instance of `Transformer<T, T>`.
@@ -294,6 +294,11 @@ Similarly, you will get the final graph shown like below
 <figure><img src="../../../.gitbook/assets/lec09-stack-heap-2.png" alt=""><figcaption></figcaption></figure>
 
 For more information, please see from the [lecture notes](https://nus-cs2030s.github.io/2425-s2/33-infinitelist.html#under-the-hood).
+
+{% hint style="info" %}
+1. When you call `infiList1 = InfiniteList.operation`, the `head`  and `tail` fields in the `infiList1` point to two **anonymous classes** implemented in lambdas which **capture** the variable appeared in that **lambda**.
+2. When you call `infiList2 = infiList1.opeartion`, the `head` and `tail` fields in teh `infiList2` point to two **anonymouse classes** also, but with another `this` field in each of them, which points to `infiList1`.
+{% endhint %}
 
 ## Streams
 

@@ -68,6 +68,10 @@ Suppose we have an instance of `Monad<T>` called `m`. "What we want" is `m.map(x
   * `m`
 * This is equivalent to "what we want". Thus, the **identity** law is preserved!
 
+### 02. Parallel Stream
+
+> Calling a 3-parameter `reduce()` on a normal stream (not parallelized), we just do the normal reducing method. If same `reduce()` is called on a parallelized stream (e.g., `stream().parallel()`), we **cannot** decide the final output.
+
 ## Tips
 
 1. Every **Monad** is a **Functor**! Since it is generalisable, include the implementation of `map()` using `of()` and `flatMap()` into the cheatsheet.

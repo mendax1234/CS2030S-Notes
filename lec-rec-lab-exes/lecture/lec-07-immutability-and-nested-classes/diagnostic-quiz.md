@@ -37,7 +37,7 @@ A a = new A(new int[] {1, 2, 3, 4});
 
 ### 12. Inner class and effectively `final`
 
-> The "effectively final" rule applies to _reading_ the variable’s value, not to enabling assignments.
+> The "effectively final" rule applies to _reading_ the variable’s value, not to enabling assignments. a.k.a. we **cannot assign** any value to the **captured variables.**
 
 With the following code, which line will cause the compilation error?
 
@@ -77,7 +77,7 @@ Line 12 `x=1` and Line 14 `z=1` won't compile, because `x` is a captured variabl
 > In variable capture, the following will be captured:
 >
 > 1. The **local variables** of the method where the local class comes from (including the arguments)
-> 2. The **instance** that invokes the method where the local class comes from.
+> 2. The **instance** that invokes the method where the local class comes from, the **member** of this instance **won't be captured explicitly**, but the member can be **accessed freely** (no effective final).
 
 Consider the code below.  Which variables are captured by the returned object from `foo`?
 
@@ -111,5 +111,18 @@ s
 ### 15. Valid anonymous class
 
 > An anonymous can only extend one class or implement one interface. (A generic type is also considered as one class, remember that in Java, type is a synonym of class!)
+
+## Tips
+
+1. Aliasing means several different objects are referencing the same [object address](#user-content-fn-1)[^1], (**sharing the same address**), so if you change the object address, all the different objects will be changed. So, **the key to judge whether a snippet of code is aliasing is that whether two references share the same address.**
+2. **Factory method** must be `static`. Otherwise, if your constructor is `private` and your factory method is non-static, there is no way to instantiate an object from that class.
+3. **Varargs**
+   1. The triple `.` notation is a Java syntax for a **variable number of arguments of the same type**. Often called _varargs_, this is just syntactic sugar for passing in an array of items to a method.
+   2. If the type is a generic type, we need to use `@SafeVarargs` to indicate that our code is safe.
+4. The "effectively final" rule applies to _reading_ the variable’s value, not to enabling assignments. a.k.a. we **cannot assign** any value to the **captured variables.**
+5. In variable capture, the following will be captured:
+   1. The **local variables** of the method where the local class comes from (including the arguments)
+   2. The **instance** that invokes the method where the local class comes from, the **member** of this instance **won't be captured explicitly**, but the member can be **accessed freely** (no effective final).
+6. An anonymous can only extend one class or implement one interface. (A generic type is also considered as one class, remember that in Java, type is a synonym of class!)
 
 [^1]: also can be understood as object reference.

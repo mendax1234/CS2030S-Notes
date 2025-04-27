@@ -2,7 +2,7 @@
 
 ## Problems
 
-### 1. Pure Functions
+### 01. Pure Functions
 
 > Pure functions can take in **no** input, but every time they are given the same input, we must get the same output!
 
@@ -15,11 +15,12 @@ public long foo() {
 }
 ```
 
-### 2. Functional Interface
+### 02. Functional Interface
 
-> A functional interface must have **exactly one abstract method**, **no field** is allowed!
+> 1. A functional interface must have **exactly one abstract method**, it can have any number of helpers (constants, [static/default methods](#user-content-fn-1)[^1]). It can extend from another class, but if the parent class has multiple **abstract method**, then the interface is **no longer** a **functional interface**.
+> 2. All the **fields** in an **interface** are treated as `public static final` by default.
 
-### 4. Variable Capture in Lambda Expression
+### 04. Variable Capture in Lambda Expression
 
 > The lambda can only use variables that are either its own parameters (e.g., `x` in `x -> ...`) or variables in scope (like `y` in this case, this is done by variable capture).
 
@@ -34,7 +35,7 @@ In Java, lambda expressions can "capture" variables from their enclosing scope, 
 
 An example code is shown as follows:
 
-{% code overflow="wrap" %}
+{% code overflow="wrap" lineNumbers="true" %}
 ```java
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -45,7 +46,7 @@ public class LambdaCaptureExample {
     int y = 10;
 
     public void demonstrateCapture() {
-        // Local variable that is effectively final
+        // Local variable that is final
         final int localZ = 5;
 
         // Local variable that is effectively final (not modified after initialization)
@@ -92,8 +93,46 @@ public class LambdaCaptureExample {
 ```
 {% endcode %}
 
-### 6. Stack and Heap with Variable Capture in Lambda Expression
+### \*09. Function Interface Implementation with Method Reference
 
-### 9. Function Interface Implementation with Method Reference
+> 1. In Method Referencing, if the thing before `::` is an **instance**, it **does not** need to be **effectively final**.
+> 2. In `A::foo`, if `foo` is an **instance method**, it will use the **first** input as the **instance**, and pass the remaining **inputs** as arguments. Otherwise, it will call the **class** method and pass **all inputs** as arguments.
+> 3. The **number of inputs** is decided in the **functional interface**'s abstract metho&#x64;**.** It is the same as the number of **parameters** in that abstract method.
+> 4. Include the steps to solve this kind of question into Cheatsheet.
+
+This is a very tricky question, but use what we have summarized from lectures above, we should be able to solve it.
+
+<figure><img src="../../../.gitbook/assets/lec08-quiz-09.png" alt="" width="563"><figcaption></figcaption></figure>
+
+{% stepper %}
+{% step %}
+**Determine the number of inputs according to the functional interface**
+
+For example, for interface `F<T>`, the number of input is 1. Similarly, for `G<S, T>`, the number of input is 2. Thus, their corresponding lambda will be `x -> ...` and `(x, y) -> ...`.
+{% endstep %}
+
+{% step %}
+**Use the rule to rewrite the normal lambda to see if it compiles**
+
+For example, the logic for the third option is
+
+1. `(x, y) -> x.foo(y)`, since `foo` is an **instance method** and it will use the first input `x` as the **instance**.
+{% endstep %}
+{% endstepper %}
 
 ## Tips
+
+1. Pure functions can take in **no** input, but every time they are given the same input, we must get the same output!
+2. **Functional Interface Requirements**
+   1. A functional interface must have **exactly one abstract method**, it can have any number of helpers (constants, [static/default methods](#user-content-fn-1)[^1]). It can extend from another class, but if the parent class has multiple **abstract method**, then the interface is **no longer** a **functional interface**.
+   2. All the **fields** in an **interface** are treated as `public static final` by default.
+3. The lambda can only use variables that are either its own parameters (e.g., `x` in `x -> ...`) or variables in scope (like `y` in this case, this is done by variable capture).
+4. **Method Referencing Rule of Thumb**
+   1. In Method Referencing, if the thing before `::` is an **instance**, it **does not** need to be **effectively final**.
+   2. In `A::foo`, if `foo` is an **instance method**, it will use the **first** input as the **instance**, and pass the remaining **inputs** as arguments. Otherwise, it will call the **class** method and pass **all inputs** as arguments.
+   3. The **number of inputs** is decided in the **functional interface**'s abstract metho&#x64;**.** It is the same as the number of **parameters** in that abstract method.
+5. **Method Referencing Solving Steps**
+   1. Determine the **number of inputs** according to the functional interface, then your lambda will be like `(x, y, ..) -> ...`, the L.H.S is the **number of inputs**
+   2. Use the method referencing rule of thumb to rewrite the normal lambda to see if 1) number of parameters matches 2) type matches
+
+[^1]: This is called [**impure interface**](https://nus-cs2030s.github.io/2425-s2/18-interface.html#impure-interfaces), and it is avoided in CS2030S.

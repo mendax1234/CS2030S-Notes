@@ -327,7 +327,7 @@ The **declaration** and the **instantiation** of a local class is usually sepera
 
 It is a behavior that the **local class** will capture the following variables
 
-1. The **local variables** of the method where the local class comes from (including the arguments, see more in [Diagnostic Quiz Q13](diagnostic-quiz.md#id-13.-variable-capture))
+1. The **local variables** of the method where the local class comes from (including **only** the arguments **that the lambda uses**, see more in [Diagnostic Quiz Q13](diagnostic-quiz.md#id-13.-variable-capture))
 2. The **instance** that invokes the method where the local class comes from. (See more in [Rec 05](../../recitation/rec-05.md#id-01.-stack-and-heap-with-nested-class))
 
 #### Effectively `final`
