@@ -4,7 +4,7 @@
 
 ### \*1-7. Application of Monad Laws
 
-> **Trace through the program step by step** to see if the certain class/type legic follows the three Monad Laws anot.
+> **Trace through the program step by step** to see if the certain class/type logic follows the three Monad Laws anot.
 
 Question 1-6 are actually proving that this type A follows the three **monad laws**. Among these questions, I think those related to the **associative law** are worth trying again!
 
@@ -116,7 +116,7 @@ Since L.H.S $$\neq$$ R.H.S, it **fails** the **compatibility rule**.
 
 ## Tips
 
-1. **Trace through the program step by step** to see if the certain class/type legic follows the three Monad Laws anot.
+1. **Trace through the program step by step** to see if the certain class/type logic follows the three Monad Laws anot.
 2. Having multiple cores/processors is a prerequisite to running a program in **parallel**.
 3. The **stream operations** pipeline **should not** have:
    1. an operation with a **side effect**

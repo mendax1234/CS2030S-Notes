@@ -70,7 +70,7 @@ thread.start();
 **Rule of Thumb**
 
 1. If you're **inside a lambda or Runnable** which is passed to `new Thread(...)`, you're in that **new thread**.
-2. If you're **outside** the `new Thread(...)`, e.g. in the main method you're usually in the **main thread**.
+2. If you're **outside** the `new Thread(...)`, e.g. in the main method, then you're usually in the **main thread**.
 
 {% hint style="info" %}
 Here, "you're" means the position of code you call `Thread.(whatever)`.
@@ -668,7 +668,7 @@ In this simple **thread pool**, we have the following:
 * `Runnable`: Each **task** is a `Runnable`, which means **it can be run by a thread**.
 * `new Thread(...)`: This **creates a single worker thread** (the thread pool only has 1 thread in this simple example).
 * `while (true) {...}`: This thread runs **forever**, constantly checking the queue.
-* `queue.dequeue() + r.run()`: If there’s a task, it **takes it out** of the queue and **executes** it.
+* `queue.dequeue()` and `r.run()`: If there’s a task, it **takes it out** of the queue and **executes** it.
 
 More vividely speaking, you can think it of as
 
@@ -824,7 +824,7 @@ In Line 1, it creates a pool with 4 **threads**.
 > * Each thread has a deque[^6] of tasks.
 > * When a thread is idle, it checks its deque of tasks.
 >   * If the deque is **not empty**, it picks up a task at the head of the deque to execute (e.g., invoke its `compute()` method).
->   * Otherwise, if the deque is **empty**, it picks up a task from the _**tail**_ of the deque of another thread to run. The latter is a mechanism called _work stealing_.
+>   * Otherwise, if the deque is **empty**, it picks up a task from the _**tail**_ of the deque of another thread to run. This is a mechanism called _work stealing_.
 > * When `fork()` is called, the caller adds itself to the _**head**_ of the deque of the executing thread. This is done so that the most recently forked task gets executed next, similar to how normal recursive calls.
 > * When `join()` is called, several cases might happen.
 >   * If the subtask to be joined **hasn't been executed**, this subtaks will be **popped out first**, and then its `compute()` method is called and the subtask is executed.

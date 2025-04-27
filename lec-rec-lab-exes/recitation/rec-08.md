@@ -61,7 +61,7 @@ public <R> Monad<R> map(Transformer<? super T, ? extends R> f) {
 
 **Proof of Functor Laws — Identity Law**
 
-Suppose we have an instance of `Monad<T>` called `m`. "What we want" is `m.map(x -> x)` is `m`. So, we start from `m.map(x -> x)` and slowly derive that it is ultimately equivalent to `m`.
+Suppose we have an instance of `Monad<T>` called `m`. "What we want" is `m.map(x -> x)` = `m`. So, we start from `m.map(x -> x)` and slowly derive that it is ultimately equivalent to `m`.
 
 * Using our implementation, `m.map(x -> x)` is equivalent to `m.flatMap(x -> Monad.of(x))`.
 * By invoking Monad's **Right Identity Law** on the whole expression, we find that it is equivalent to the expression below

@@ -659,7 +659,7 @@ nestedLists.stream()
 // Expected output: 1 2 3 4 5 6
 ```
 
-`flatMap` takes each element in the stream (each inner list) and transforms it into a new stream of its own elements (e.g. a stream of 1,2, a stream of 3, 4, 5 and a stream of 6), a stream of . Then, it "flattens" all these streams into one single stream.
+`flatMap` takes each element in the stream (each inner list) and transforms it into a new stream of its own elements (e.g. a stream of 1,2, a stream of 3, 4, 5 and a stream of 6) . Then, it "flattens" all these streams into one single stream.
 
 {% hint style="info" %}
 Why `Collection` not `List` here? It is because `Collection` is a broader concept that includes `List`. It’s a way to write **flexible code** that could work with other collection types (like `Set`) if needed. Here, since the inner elements are `List`s, it works perfectly.
