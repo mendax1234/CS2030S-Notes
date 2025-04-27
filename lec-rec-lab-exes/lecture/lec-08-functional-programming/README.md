@@ -6,8 +6,8 @@ In maths, we have learned that **function** refers to a **mapping** from domain 
 
 Basically, mathematical functions have the following two advantages:
 
-1. **No side effects**: This means given a function $$f$$, applying it on $$x$$, a.k.a $$f(x)$$ doesn't change the value of $$x$$ or any other unknowns $$y,z$$ etc.It simply computes and returns the value.
-2. **Referential transparency**: This means if we let $$f(x)=a$$, then in every formula that $$f(x)$$ appears in, we can safely replace occurances of $$f(x)$$ with $$a$$. We can be guaranteed that teh resulting formulas are still equivalent.
+1. **No side effects**: This means given a function $$f$$, applying it on $$x$$, a.k.a $$f(x)$$ doesn't change the value of $$x$$ or any other unknowns $$y,z$$ etc. It simply computes and returns the value.
+2. **Referential transparency**: This means if we let $$f(x)=a$$, then in every formula that $$f(x)$$ appears in, we can safely replace occurances of $$f(x)$$ with $$a$$. We can be guaranteed that the resulting formulas are still equivalent.
 
 ## Pure Functions
 

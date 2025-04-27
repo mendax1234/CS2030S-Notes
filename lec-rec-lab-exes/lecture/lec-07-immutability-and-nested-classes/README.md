@@ -146,7 +146,7 @@ This means we can now safely create a **class field** to represent an **immutabl
 
 #### Enabling Safe Sharing of Internals <a href="#enabling-safe-sharing-of-internals" id="enabling-safe-sharing-of-internals"></a>
 
-This advantage also utilizes the fact the the internal fields of an instance from an immutable class are immutable. See more from the [lecture notes](https://nus-cs2030s.github.io/2425-s2/28-immutability.html#enabling-safe-sharing-of-internals).
+This advantage also utilizes the fact that the internal fields of an instance from an immutable class are immutable. See more from the [lecture notes](https://nus-cs2030s.github.io/2425-s2/28-immutability.html#enabling-safe-sharing-of-internals).
 
 #### Enabling Safe Concurrent Execution <a href="#enabling-safe-concurrent-execution" id="enabling-safe-concurrent-execution"></a>
 
@@ -170,9 +170,9 @@ class A {
 class `A` is a containing class and class `B` is a nested class.
 {% endhint %}
 
-**Use**: It usage is to **encapsulate information within a container class**.
+**Use**: It usage is to **encapsulate information within a containing class**.
 
-**Property**: A _nested class_ is a **field** of the containing class and can access **fields** and **methods** of the _container class_, including those declared as `private`.&#x20;
+**Property**: A _nested class_ is a **field** of the containing class and can access **fields** and **methods** of the _containing class_, including those declared as `private`.&#x20;
 
 A _nested class_ can be classified into the following four types
 
@@ -252,28 +252,28 @@ It is a **static** _nested class_, thus it is associated with the containing cla
 This means when instantiating the static nested class, you don't need an instance of the containing class.
 {% endhint %}
 
-So, it can only access **static fields** and **static methods** of the containing class. If you want to access the fields of the containing class, you can do so by using object reference.
+So, by default, it can only access **static fields** and **static methods** of the containing class. If you want to access the fields of the containing class, you can do so by using object reference.
 
 {% code lineNumbers="true" %}
 ```java
-class B {
+class A {
     static int x = 0;
     
     void foo() {
-        A a = new A();
+        B b = new B();
     }
     
-    static class A {
+    static class B {
         int y = 0;
     
-        A() {
-            this.y = B.x + 1;
+        B() {
+            this.y = A.x + 1;
         }
     }
     
     public static void main(String[] args) {
-        A a = new A(); // B.A = new B.A() is allowed! B.new A() is not allowed
-        System.out.println(String.format("A.y: %d", a.y));
+        B b = new B(); // A.B b = new A.B() is allowed! A.new B() is not allowed
+        System.out.println(String.format("B.y: %d", b.y));
     }
 }
 ```
@@ -282,7 +282,7 @@ class B {
 {% hint style="info" %}
 1. When you instantiate a static nested class, you can ignore the containing class's instance.\
    `static` only restricts that the nested class is associated with the containing class **itself**, NOT with any instance.
-2. But **inside the static nested class, if you want to access non-static (instance) members of the outer class, you need an explicit reference to an instance of the outer class**, because `this` in the nested class does not carry a reference to an enclosing `B` instance.
+2. But **inside the static nested class, if you want to access non-static (instance) members of the containing class, you need an explicit reference to an instance of the containing class**, because `this` in the nested class does not carry a reference to an enclosing `B` instance.
 {% endhint %}
 
 #### Hiding nested class
