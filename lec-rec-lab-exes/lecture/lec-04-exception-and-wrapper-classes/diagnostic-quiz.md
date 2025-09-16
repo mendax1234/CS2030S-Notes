@@ -10,9 +10,9 @@ That is, if $$A<:B$$ and $$B<:C$$, then $$A<:C$$
 
 ### 02. Type casting and compile-time error
 
-> To see whether a code will generate compile-error or not, we **only** see the CTT of the variable and the type casting.
+> To see whether a code will generate compile-error or not, we **only** see the CTT of the variable and the type casting. The casted type must be the subtype of CTT of L.H.S and should be withn the type hierarchy (either subtype of supertype) of the CTT of R.H.S
 
-Type casting will cast the variable to that specific type during the **compile-time**.
+Type casting will cast the variable to that specific type dyuring the **compile-time**.
 
 ### 03. Type casting and rum-time error
 
