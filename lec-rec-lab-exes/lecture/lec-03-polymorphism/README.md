@@ -15,9 +15,10 @@ In other words, we create an overloaded method by changing the **type,** [**orde
 
 ### Overloading vs. [Overriding](../lec-02-class-instance-methods-inheritance/#overriding)
 
-| Override | **must** have same [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor) |
-| -------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Overload | **must** have same method name, in the same class and **different** method signature.                                   |
+| Name     | Difference                                                                                                                                                     |
+| -------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Override | **must** have same [_method descriptor_](../lec-02-class-instance-methods-inheritance/#method-signature-and-descriptor) (the return type can be subtype also!) |
+| Overload | **must** have same method name, in the same class and **different** method signature.                                                                          |
 
 {% hint style="info" %}
 Note that in overloading methods, the **return type doesn't matter**. Sometimes, it will be useful to write overloading methods with different return types. See more in this [thread](https://edstem.org/us/courses/72783/discussion/6049016?comment=14044537).

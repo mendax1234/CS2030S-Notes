@@ -77,3 +77,10 @@ To interact with objects, we "make a request". What does this mean?
 {% hint style="info" %}
 Later you will find out that this is the famous "[Tell, Don't Ask](lec-02-class-instance-methods-inheritance/#tell-dont-ask)" Rule.
 {% endhint %}
+
+## Four pillars of OOP
+
+1. Abstraction: **Hide away unnecessary complexity and details** so that programmers do not have to bogged down with the nitty-gritty.
+2. Encapsulation: A process to **package** data and behavior into one bundle.
+3. Inheritence: It allows you to define a new class based on an existing class.
+4. Polymorphism: The ability of different objects to respond, each in its own way, to identical messages.
