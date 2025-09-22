@@ -256,8 +256,7 @@ interface GetAreable {
 {% endcode %}
 
 {% hint style="info" %}
-1. All methods declared in an interface are `public abstract` by default, so we can omit these two keywords.
-2. Interface **cannot** have fields.
+All methods declared in an interface are `public abstract` by default, so we can omit these two keywords. Similary, all fields declared in an interface are `public static final` (constant) by default, so we can omit these three keywords also.
 {% endhint %}
 
 Now, for every class that we wish to be able call `getArea()` on, we tell Java that the class `implements` that particular interface.
@@ -278,7 +277,7 @@ abstract class Shape implements GetAreable {
 {% endstep %}
 
 {% step %}
-**For an concrete class**
+**For a concrete class**
 
 For a concrete class, it can also implement the interface. For example,
 
