@@ -172,7 +172,7 @@ try {
 {% endcode %}
 
 {% hint style="warning" %}
-Exceptions are **always** triggered at **run-time**.
+#### Exceptions are **always** triggered at **run-time**.
 
 For example, the following code **won't generate a compile error**, **but will generate a runtime error!**
 
