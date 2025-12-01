@@ -73,10 +73,12 @@ Notice that in the `getArea()`, we have replaced `r` with `this.r`. Usually, it 
 
 #### Default Constructor
 
-If we have class has **no** explicit constructor, then a default constructor will be added automatically at **compile time**. The default constructor has **no parameter** and has **no code** written for the body.
+If we have a class that has **no** explicit constructor, then a default constructor will be added automatically at **compile time**. The default constructor has **no parameter** and has **no code** written for the body.
 
-{% hint style="info" %}
-Note that in a class, there may exist many constructors, but
+{% hint style="warning" %}
+#### Note
+
+In a class, there may exist many constructors, but
 
 1. They have the **same method name**, which is the same as the class name
 2. They have **different number of parameters**
@@ -187,7 +189,7 @@ boolean isInCircle = c.contains(x, y);
 
 Now, the `Circle` class can change its internal structure (e.g., the type of the fields) without affecting the client.
 
-{% hint style="info" %}
+{% hint style="success" %}
 1. In general, a task that is **performed only on the fields of a class** should be implemented in the class itsel&#x66;_._
 2. For beginner OO programmers, it is better to **not define classes with any accessor and modifier** to the `private` fields and force yourselves to think in the OO way — to **tell an object what task to perform as a client, and then implement this task within the class as a method as the implementer**.
 {% endhint %}
@@ -217,7 +219,7 @@ class Math {
 
 We call these `static` fields that are associated with a **class** as _class fields_ and fields that are associated with an **object** as _instance fields_. _Class fields_ are useful for storing pre-computed values or configuration parameters associated with a class rather than individual objects. `static` fields have **exactly one instance** of it throughout the lifetime of the program.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 A `static` class field needs **not** be `final` and it needs **not** be `public`.
 {% endhint %}
 
@@ -251,7 +253,7 @@ public double getArea() {
 {% endstep %}
 {% endstepper %}
 
-{% hint style="info" %}
+{% hint style="danger" %}
 To access a _class field_. It is **only allowed** to use `class.FIELD_NAME`, we **cannot** use `object.FIELD_NAME` to access a `static` field inside an object!
 {% endhint %}
 
@@ -290,7 +292,7 @@ A class method is always invoked **without being attached to an instance**, so i
 }
 </code></pre>
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Note that all of the above are done privately **beneath the abstraction barrier**.
 {% endhint %}
 
@@ -428,7 +430,7 @@ Its stack and frame diagram should look like as follows:
 
 To summarize, Java uses _call by value_ for primitive types, and [_call by reference_](#user-content-fn-2)[^2] for objects.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 Unlike in C, In Java, we don't have to manage our memory manually, the JVM has a _garbage collector_ that does all this stuff for us!
 {% endhint %}
 
@@ -454,13 +456,13 @@ We now show you how we can introduce this _subtype_ relationship in Java, using 
 
 We have just created a new type called `ColoredCircle` as a class that **extends** from `Circle`. We call `Circle` the _parent class_ or _superclass_ of `ColoredCircle`; and `ColoredCircle` a _subclass_ of `Circle`.
 
-{% hint style="info" %}
+{% hint style="warning" %}
 The constructor for the subclass **should** invoke the constructor of the superclass.
 {% endhint %}
 
 Line 5 of the code above introduces another keyword in Java: `super`. Here, we use `super` to call the **constructor** of the superclass, to initialize its center and radius.
 
-{% hint style="info" %}
+{% hint style="success" %}
 We can think of inheritance as a model for the "_**is a**_" relationship between two entities. And when to use _inheritance_ and when to use _composition_ depends on the following rule:
 
 > _Use composition to model a **has-a** relationship; and inheritance for an **is-a** relationship_. _Make sure inheritance preserves the meaning of subtyping_.
@@ -478,7 +480,7 @@ Circle c = new ColoredCircle(p, 0, blue); // OK
 
 Recall that `Circle` is called the **compile-time type** of `c`. Here, we see that `c` is now referencing an object of the subtype `ColoredCircle`. Since this assignment happens during **run-time**, we say that the _run-time type_ of `c` is `ColoredCircle`. The distinction between these two types will be important later in [Polymorphism](../lec-03-polymorphism/#polymorphism).
 
-Here, Java allows we assign a variable to store its subtype because this is considered as a **widening type conversion** and as we have seen earlier, ithappens automatically and is allowed.
+Here, Java allows us to assign a variable to store its **subtype** because this is considered as a **widening type conversion** and as we have seen earlier, this happens automatically and is allowed.
 
 ## Overriding
 
@@ -528,8 +530,8 @@ class Circle {
 
 From this example, we can see that _inheritance_ is not only good for extending the behavior of an existing class but through method _overriding_, we can _alter_ the behavior of an existing class as well.
 
-{% hint style="info" %}
-**Using** `super` **to access overriden methods**
+{% hint style="success" %}
+#### **Using** `super` **to access overriden methods**
 
 After a subclass overrides a method in the superclass, the methods that have been overridden can still be called, with the `super` keyword. For instance, the following `Circle::toString` calls `Object::toString` to prefix the string representation of the circle with `Circle@1ce92674`.
 
